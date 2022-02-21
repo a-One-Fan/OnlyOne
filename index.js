@@ -14,14 +14,14 @@ const sequelize = new Sequelize("database", "user", "password", {
 	storage: "database.sqlite",
 });
 
-//	TODO: Use ENUM for ignore and reactType instead of INTEGER
+//	TODO: Use ENUM for reactType instead of INTEGER? Unless, potentially, javascript can't have proper enums?
 client.db = sequelize.define("db", {
 	userID: { type: Sequelize.STRING, unique: true, allowNull: false },
 	reputation: { type: Sequelize.FLOAT, defaultValue: 0, allowNull: false },
 	upperOne: { type: Sequelize.INTEGER, defaultValue: 0, allowNull: false },
 	lowerOne: { type: Sequelize.INTEGER, defaultValue: 0, allowNull: false },
 	digitOne: { type: Sequelize.INTEGER, defaultValue: 0, allowNull: false },
-	ignore: { type: Sequelize.INTEGER, defaultValue: 0, allowNull: false },
+	ignore: { type: Sequelize.BOOLEAN, defaultValue: false, allowNull: false },
 	reactType: { type: Sequelize.INTEGER, defaultValue: 0, allowNull: false },
 	addendum: Sequelize.TEXT,
 });

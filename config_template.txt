@@ -1,5 +1,19 @@
 {
-	"token": "", // The token for your bot to log in with.
-	"clientId": "", // The Client ID of your bot.
-	"guildId": "" // The ID of the server to log in to.
-}	
+	"token": "",
+	"clientId": "",
+	"guildId": "",
+	"openers": [
+		"\\s*One[,\\?!.1]{1,3}", "\\s*Oh\\s+One[,\\?!.1]{1,3}", "\\s*Lady\\s+One[,\\?!.1]{1,3}",
+		 "\\s*Dear\\s+One[,\\?!.1]{1,3}", "\\s*Glorious\\s+One[,\\?!.1]{1,3}", "\\s*Best\\s+One[,\\?!.1]{1,3}",
+		  "\\s*Bot\\s+#1[,\\?!.1]{1,3}", "\\s*OnlyOne[,\\?!.1]{1,3}"]
+}
+
+
+Example values:
+
+{
+	"token": "1a2B3c4D5qwetriuop1293.dai8903.3912bgjkdah", // The token of the bot, which it will log in with. 
+	"clientId": "1234567890", // The client ID of the bot.
+	"guildId": "1234567890", // The ID of the server to log in to.
+	"openers": [".", "!", "/"], //Things people can write at the start of their message to have the bot respond to it. Is regex. Don't put ^ at the start!
+}
