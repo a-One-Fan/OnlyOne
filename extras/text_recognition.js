@@ -47,17 +47,28 @@ module.exports = {
 	// About code deduplication, see above: how?????
 	countOnes(text) {
 		if (text == null) return null;
-		const bits = ["\\sOne[\\s,.?!]|^One[\\s,.?!]|\\sOne$", "\\sone[\\s,.?!]|^one[\\s,.?!]|\\sone$", "1"];
+		const bits = ["[\\s,.?!a-z]One[\\s,.?!A-Z]", "[\\s,.?!]one[\\s,.?!A-Z]", "1"];
 
 		const res = [0];
-		for (const bit of bits.entries()) {
-			const matched = text.match(RegExp(bit + "/g"));
+		text = " " + text + " ";
+		for (const bit of bits) {
+			let textCut = text;
+			let foundIdx = textCut.search(RegExp(bit));
 			let count = 0;
-			if (matched != null) count = matched.length;
+			// Special code needed to match Regexes that slightly overlap, e.g.:
+			// One One One One One
+			// All of these are separated by 1 whitespace, by themselves they fit the regex but running the regex globally would "eat" the space from the first " One ", ending up with "One One One One ",
+			// won't match that first One in the remaining string. Using ^ here won't fix this, as this isn't really the start of the string.
+			while (foundIdx >= 0) {
+				textCut = textCut.substr(foundIdx + 1);
+				foundIdx = textCut.search(RegExp(bit));
+				count++;
+			}
 
 			res.push(count);
 			res[0] += count;
 		}
+		console.log(text, res);
 		if (res[0] == 0) return null;
 		return res;
 	},
