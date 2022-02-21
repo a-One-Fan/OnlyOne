@@ -1,14 +1,33 @@
 // Require the necessary discord.js classes
 const fs = require("fs");
+const Sequelize = require("sequelize");
 const { Client, Collection, Intents } = require("discord.js");
 const { token } = require("./config.json");
 
 // Create a new client instance
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.DIRECT_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MESSAGE_TYPING] });
 
+const sequelize = new Sequelize("database", "user", "password", {
+	host: "localhost",
+	dialect: "sqlite",
+	logging: false,
+	storage: "database.sqlite",
+});
+
+//	TODO: Use ENUM for ignore and reactType instead of INTEGER
+client.db = sequelize.define("db", {
+	userID: { type: Sequelize.STRING, unique: true, allowNull: false },
+	reputation: { type: Sequelize.FLOAT, defaultValue: 0, allowNull: false },
+	upperOne: { type: Sequelize.INTEGER, defaultValue: 0, allowNull: false },
+	lowerOne: { type: Sequelize.INTEGER, defaultValue: 0, allowNull: false },
+	digitOne: { type: Sequelize.INTEGER, defaultValue: 0, allowNull: false },
+	ignore: { type: Sequelize.INTEGER, defaultValue: 0, allowNull: false },
+	reactType: { type: Sequelize.INTEGER, defaultValue: 0, allowNull: false },
+	addendum: Sequelize.TEXT,
+});
+
+
 client.commands = new Collection();
-
-
 const commandFiles = fs.readdirSync("./commands").filter(file => file.endsWith(".js"));
 
 for (const file of commandFiles) {

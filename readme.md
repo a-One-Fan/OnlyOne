@@ -6,12 +6,13 @@ Dependencies:
 Node.js >=16.6.0
 
 ```
-npm install discord.js @discordjs/rest @discordjs/builders discord-api-types
+npm install discord.js @discordjs/rest @discordjs/builders discord-api-types sequelize sqlite3
 npm install --save-dev eslint
 ```
 
 
 How to use:
 Fill out the config_template.txt, remove the comments and rename it to config.json
+Launch a command prompt inside this folder, and:
 `node deploy-commands.js`
 `node .`
