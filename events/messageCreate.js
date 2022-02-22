@@ -16,9 +16,9 @@ module.exports = {
 		if (message.content == commandData.unignore) {
 			firstCommand = true;
 			const row = await message.client.db.findOne({ where: { userID: message.author.id } });
-			textContent += "Alright. ";
+			textContent += "Alright.";
 			if (!row) {
-				textContent += "Looks like it's our first time.\n";
+				textContent += " Looks like it's our first time.\n";
 				try {
 					await message.client.db.create({ userID: message.author.id, ignore: false });
 				} catch (error) {
@@ -30,7 +30,7 @@ module.exports = {
 					}
 				}
 			} else {
-				if (!row.ignore) textContent += "...Though you already can.\n";
+				if (!row.ignore) textContent += ".. Though you already can.\n";
 				await message.client.db.update({ ignore: false }, { where: { userID: message.author.id } });
 			}
 		}
