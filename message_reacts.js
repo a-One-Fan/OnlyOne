@@ -38,7 +38,7 @@ module.exports = {
 	reactChoose(message, row, oneCount) {
 		if (row.reactType < 0 || row.reactType >= module.exports.reactTypes.length) return [];
 
-		const res = module.exports.reactTypes[row.reactType](message, row, oneCount);
+		const res = module.exports.reactTypes[row.reactType].testReact(message, row, oneCount);
 
 		if (res && (Math.random() < row.reactChance)) return [oneReactID];
 
