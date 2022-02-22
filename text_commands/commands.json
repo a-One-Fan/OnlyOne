@@ -1,0 +1,17 @@
+{
+    "unknown": ["I didn't quite catch that, care to try again?\n", "I couldn't quite parse that, sorry.\n", "I don't know what you mean, sorry.\n"],
+    "unignore": "One, I'd like to interact with you!",
+    "commands": [
+        {"name": "printAuthor", "regexParams": "i", "help": "What are my stats?", "description": "I will reply with info about you.",
+            "regex": "what\\s+do\\s+you\\s+know\\s+about\\s+me[.?!]{0,3}\\s*$|what\\s+are\\s+my\\s+stats[.?!]{0,3}\\s*$|what\\s+do\\s+you\\s+think\\s+of\\s+me[.?!]{0,3}\\s*$"},
+
+        {"name": "ignoreAuthor", "regexParams": "i", "help": "Ignore me.", "description": "I will stop interacting with you.",
+            "regex": "ignore\\s+me[.?!]{0,3}\\s*$|don'?t\\s+talk\\s+to\\s+me[.?!]{0,3}\\s*$|don'?t\\s+react\\s+to\\s+me[.?!]{0,3}\\s*$"},
+
+        {"name": "setReact", "regexParams": "i", "help": "", "description": "",
+            "regex": "set\\s+my\\s+reacttype\\s+to\\s+(\\d)[.?!]{0,3}\\s*$"},
+        
+        {"name": "listCommands", "regexParams": "i", "help": "What are the commands?", "description": "I will list available text-based commands.",
+            "regex": "what\\s+are\\s+the\\s+commands[.?!]{0,3}\\s*$|what\\s+can\\s+you\\s+do[.?!]{0,3}\\s*$"}
+    ]
+}
