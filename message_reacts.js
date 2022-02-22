@@ -40,7 +40,7 @@ module.exports = {
 
 		const res = module.exports.reactTypes[row.reactType].testReact(message, row, oneCount);
 
-		if (res && (Math.random() < row.reactChance)) return [oneReactID];
+		if (res && (Math.random() <= row.reactChance)) return [oneReactID];
 
 		return [];
 	},

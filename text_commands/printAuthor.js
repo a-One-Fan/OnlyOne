@@ -7,6 +7,6 @@ module.exports = {
 		`Your reactType is ${row.reactType}.\n`;
 		if (row.addendum) res += `Addendum: ${row.addendum}\n`;
 
-		return res;
+		return { text: res };
 	},
 };

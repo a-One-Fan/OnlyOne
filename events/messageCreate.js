@@ -10,7 +10,7 @@ module.exports = {
 		if (message.author.bot) return;
 
 
-		// TODO: Even less yandev-ish code (mainly in if split and if oneCount, this here \\/ is a special case that shouldn't get regex'd and all that other stuff)
+		// TODO: Make this if here better somehow?
 		let textContent = "";
 		let firstCommand = false;
 		if (message.content == commandData.unignore) {
@@ -52,17 +52,22 @@ module.exports = {
 				const reactRes = RegExp(command.regex).exec(split[1]);
 				if (reactRes) {
 					const func = require("../text_commands/" + command.name + ".js");
-					commandRes = func.execute(message, reactRes);
+					commandRes = await func.execute(message, reactRes);
 					break;
 				}
 			}
 		}
 
-		if (!commandRes.abortReact) {
+		if ((commandRes && !(commandRes.abortReact)) || !commandRes) {
 			for (const emot of emotes) {
 				message.react(emot);
 			}
 		}
+
+		if (commandRes && commandRes.text) {
+			textContent += commandRes.text;
+		}
+
 		if (textContent != "") {
 			message.reply({ content: textContent, allowedMentions: { repliedUser: false } });
 		}
