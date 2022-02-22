@@ -6,6 +6,6 @@ module.exports = {
 		for (const command of commands) {
 			res += `"${command.help}", ${command.description}\n`;
 		}
-		return res;
+		return { text: res };
 	},
 };
