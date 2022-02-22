@@ -44,7 +44,6 @@ module.exports = {
 			res[0] += count;
 		}
 		console.log(text, res);
-		if (res[0] == 0) return null;
 		return res;
 	},
 

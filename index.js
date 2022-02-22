@@ -23,6 +23,7 @@ client.db = sequelize.define("db", {
 	digitOne: { type: Sequelize.INTEGER, defaultValue: 0, allowNull: false },
 	ignore: { type: Sequelize.BOOLEAN, defaultValue: false, allowNull: false },
 	reactType: { type: Sequelize.INTEGER, defaultValue: 0, allowNull: false },
+	reactChance: { type: Sequelize.FLOAT, defaultValue: 0.1, allowNull: false },
 	addendum: Sequelize.TEXT,
 });
 
