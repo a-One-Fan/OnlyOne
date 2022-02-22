@@ -3,9 +3,9 @@
 	"clientId": "",
 	"guildId": "",
 	"openers": [
-		"(Oh\\s+)?One[,?!.1]{1,3}", "(Oh\\s+)?Lady\\s+One[,\\s?!.1]{1,3}",
-		"(Oh\\s+)?Dear\\s+One[,\\s?!.1]{1,3}", "(Oh\\s+)?Glorious\\s+One[,\\s?!.1]{1,3}", "(Oh\\s+)?Best\\s+One[,\\s?!.1]{1,3}",
-		"Bot\\s+#1[,\\s?!.1]{1,3}", "OnlyOne[,\\s?!.1]{1,3}", "(Oh\\s+)?Please,\\s*One[,\\s?!.1]{1,3}"]
+		"(?:Oh\\s+)?One[,?!.1]{1,3}", "(?:Oh\\s+)?Lady\\s+One[,\\s?!.1]{1,3}",
+		"(?:Oh\\s+)?Dear\\s+One[,\\s?!.1]{1,3}", "(?:Oh\\s+)?Glorious\\s+One[,\\s?!.1]{1,3}", "(?:Oh\\s+)?Best\\s+One[,\\s?!.1]{1,3}",
+		"(?:Oh\\s+)?Bot\\s+#1[,\\s?!.1]{1,3}", "(?:Oh\\s+)?OnlyOne[,\\s?!.1]{1,3}", "(?:Oh\\s+)?Please,\\s*One[,\\s?!.1]{1,3}"]
 }
 
 
