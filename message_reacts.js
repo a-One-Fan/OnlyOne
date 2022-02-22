@@ -2,33 +2,34 @@
 const oneReactID = "944199066911395840";
 module.exports = {
 	reactTypes: [
-		{ name: "React when mentioning \"One\", \"one\" or \"1\".",
+		// The name should start with something that you could sensibly add "I will " to, and not end with punctuation.
+		{ name: "react when you mention \"One\", \"one\" or \"1\"",
 			testReact(message, row, oneCount) {
 				return oneCount[0];
 			},
 		},
-		{ name: "Only react when mentioning \"One\".",
+		{ name: "only react when you mention \"One\"",
 			testReact(message, row, oneCount) {
 				return oneCount[1];
 			},
 		},
-		{ name: "Only react when mentioning \"one\"",
+		{ name: "only react when you mention \"one\"",
 			testReact(message, row, oneCount) {
 				return oneCount[2];
 			},
 		},
-		{ name: "Only react when mentioning \"1\"",
+		{ name: "only react when you mention \"1\"",
 			testReact(message, row, oneCount) {
 				return oneCount[3];
 			},
 		},
-		{ name: "React every 10 mentions of \"One\" or \"one\".",
+		{ name: "react every 10 mentions of \"One\" or \"one\" you make",
 			async testReact(message, row, oneCount) {
 				const oldtotal = row.lowerOne + row.upperOne;
 				return (Math.floor((oldtotal + oneCount[0] - oneCount[4]) / 10) - Math.floor(oldtotal / 10)) > 0;
 			},
 		},
-		{ name: "React every 10 mentions of \"One\", \"one\" or \"1\".",
+		{ name: "react every 10 mentions of \"One\", \"one\" or \"1\" you make",
 			async testReact(message, row, oneCount) {
 				const oldtotal = row.lowerOne + row.upperOne + row.digitOne;
 				return (Math.floor((oldtotal + oneCount[0]) / 10) - Math.floor(oldtotal / 10)) > 0;
@@ -44,4 +45,5 @@ module.exports = {
 
 		return [];
 	},
+	unknownReact: "Unknown reaction type",
 };
