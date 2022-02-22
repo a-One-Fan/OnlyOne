@@ -25,13 +25,13 @@ module.exports = {
 		{ name: "React every 10 mentions of \"One\" or \"one\".",
 			async testReact(message, row, oneCount) {
 				const oldtotal = row.lowerOne + row.upperOne;
-				return Math.floor((oldtotal + oneCount[0] - oneCount[4]) / 10) - Math.floor(oldtotal / 10) > 0;
+				return (Math.floor((oldtotal + oneCount[0] - oneCount[4]) / 10) - Math.floor(oldtotal / 10)) > 0;
 			},
 		},
 		{ name: "React every 10 mentions of \"One\", \"one\" or \"1\".",
 			async testReact(message, row, oneCount) {
 				const oldtotal = row.lowerOne + row.upperOne + row.digitOne;
-				return Math.floor((oldtotal + oneCount[0]) / 10) - Math.floor(oldtotal / 10) > 0;
+				return (Math.floor((oldtotal + oneCount[0]) / 10) - Math.floor(oldtotal / 10)) > 0;
 			},
 		},
 	],
