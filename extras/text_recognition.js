@@ -1,4 +1,4 @@
-const { openers } = require("../config.json");
+const { openers, oneRegexes } = require("../config.json");
 
 module.exports = {
 	// Whether 'text' starts with a string regex from 'customOpeners'.
@@ -51,6 +51,6 @@ module.exports = {
 	// Counts how many times the user mentioned One.
 	// Returns: [Total, One mentions, one mentions, 1 mentions]
 	countOnes(text) {
-		return module.exports.countOcurrences(text, ["[\\s,.?!a-z]One[\\s,.?!A-Z]", "[\\s,.?!]one[\\s,.?!A-Z]", "1"]);
+		return module.exports.countOcurrences(text, oneRegexes);
 	},
 };
