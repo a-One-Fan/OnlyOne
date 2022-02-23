@@ -49,7 +49,7 @@ module.exports = {
 		if (split && !firstCommand) {
 			// TODO: better names
 			for (const command of commandData.commands) {
-				const reactRes = RegExp(command.regex).exec(split[1]);
+				const reactRes = RegExp(command.regex, command.regexParams).exec(split[1]);
 				if (reactRes) {
 					try {
 						const func = require("../text_commands/" + command.name + ".js");
