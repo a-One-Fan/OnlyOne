@@ -62,6 +62,9 @@ module.exports = {
 					break;
 				}
 			}
+			if (!commandRes) {
+				textContent += commandData.unknown[Math.floor(Math.random()*commandData.unknown.length)];
+			}
 		}
 
 		if ((commandRes && !(commandRes.abortReact)) || !commandRes) {
