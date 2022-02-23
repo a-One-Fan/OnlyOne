@@ -1,4 +1,3 @@
-
 module.exports = {
 	async execute(message, regexResults) {
 		const row = await message.client.db.findOne({ where: { userID: message.author.id } });
