@@ -63,7 +63,7 @@ module.exports = {
 				}
 			}
 			if (!commandRes) {
-				textContent += commandData.unknown[Math.floor(Math.random()*commandData.unknown.length)];
+				textContent += commandData.unknown[Math.floor(Math.random() * commandData.unknown.length)];
 			}
 		}
 
