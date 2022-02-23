@@ -51,8 +51,14 @@ module.exports = {
 			for (const command of commandData.commands) {
 				const reactRes = RegExp(command.regex).exec(split[1]);
 				if (reactRes) {
-					const func = require("../text_commands/" + command.name + ".js");
-					commandRes = await func.execute(message, reactRes);
+					try {
+						const func = require("../text_commands/" + command.name + ".js");
+						commandRes = await func.execute(message, reactRes);
+					} catch (error) {
+						// TODO: DM the error to me? :)
+						textContent += `Looks like something when wrong when executing "${command.name}".\n`;
+						console.log(error);
+					}
 					break;
 				}
 			}
