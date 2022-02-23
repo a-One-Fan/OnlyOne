@@ -8,8 +8,8 @@
         {"name": "ignoreAuthor", "regexParams": "i", "help": "Ignore me.", "description": "I will stop interacting with you.",
             "regex": "ignore\\s+me[,.?!\\s]{0,3}\\s*$|don'?t\\s+talk\\s+to\\s+me[,.?!\\s]{0,3}\\s*$|don'?t\\s+react\\s+to\\s+me[,.?!\\s]{0,3}\\s*$"},
 
-        {"name": "setReact", "regexParams": "i", "help": "", "description": "",
-            "regex": "set\\s+my\\s+reacttype\\s+to\\s+(\\d)[,.?!\\s]{0,3}\\s*$"},
+        {"name": "setAuthorReact", "regexParams": "i", "help": "Set my react type to 4.", "description": "Change how/when I react to your messages.",
+            "regex": "set\\s+my\\s+react\\s*type\\s+to\\s+(\\d+)[,.?!\\s]{0,3}\\s*$"},
         
         {"name": "listCommands", "regexParams": "i", "help": "What are the commands?", "description": "I will list available text-based commands.",
             "regex": "what\\s+are\\s+the\\s+commands[,.?!\\s]{0,3}\\s*$|what\\s+can\\s+you\\s+do[,.?!\\s]{0,3}\\s*$|help[,.?!\\s]{0,3}\\s*$"},
