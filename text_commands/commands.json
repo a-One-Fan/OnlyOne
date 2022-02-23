@@ -12,6 +12,9 @@
             "regex": "set\\s+my\\s+reacttype\\s+to\\s+(\\d)[.?!]{0,3}\\s*$"},
         
         {"name": "listCommands", "regexParams": "i", "help": "What are the commands?", "description": "I will list available text-based commands.",
-            "regex": "what\\s+are\\s+the\\s+commands[.?!]{0,3}\\s*$|what\\s+can\\s+you\\s+do[.?!]{0,3}\\s*$|help[.?!]{0,3}\\s*$"}
+            "regex": "what\\s+are\\s+the\\s+commands[.?!]{0,3}\\s*$|what\\s+can\\s+you\\s+do[.?!]{0,3}\\s*$|help[.?!]{0,3}\\s*$"},
+        
+        {"name": "exceptionTest", "regexParams": "i", "help": "Test your exception handling!", "description": "I will cause an exception while executing a command.", "hidden": true,
+            "regex": "test\\s+(?:(?:your)|(?:the))?\\s+exception\\s+handling[.?!\\s]{0,3}\\s*$|\\s+try\\s+to\\s+die\\s+while\\s+running\\s+a?\\s+command[.?!]{0,3}\\s*$"}
     ]
 }
