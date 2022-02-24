@@ -18,7 +18,7 @@
             "regex": "what\\s+(?:are\\s+)?(?:the\\s+)?react(?:ion)?\\s*types?[,.?!\\s]{0,3}\\s*$|how\\s+(?:can\\s+)?(?:you\\s+)?react[,.?!\\s]{0,3}\\s*$|help[,.?!\\s]{0,3}\\s*$|list\\s+(?:the\\s+)?react(?:ion)?\\s*types?[,.?!\\s]{0,3}\\s*$"},
         
         {"name": "setAuthorReactChance", "regexParams": "i", "help": "Set my reaction chance to 50%.", "description": "The chance that I will react to you.",
-            "regex": "set\\s+my\\s+react(?:ion)?\\s*chance\\s+(?:to\\s+)?(\\d*.?\\d*%?)[,.?!\\s]{0,3}\\s*$"},
+            "regex": "set\\s+my\\s+react(?:ion)?\\s*chance\\s+(?:to\\s+)?(-?\\d*.?\\d*%?)[,.?!\\s]{0,3}\\s*$"},
         
         {"name": "exceptionTest", "regexParams": "i", "help": "Test your exception handling!", "description": "I will cause an exception while executing a command.",
             "regex": "test\\s+(?:(?:your)|(?:the))?\\s+exception\\s+handling[.?!\\s]{0,3}\\s*$|\\s+try\\s+to\\s+die\\s+while\\s+running\\s+a?\\s+command[,.?!\\s]{0,3}\\s*$"},
