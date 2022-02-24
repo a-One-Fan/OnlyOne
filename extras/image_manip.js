@@ -1,6 +1,8 @@
 const fs = require("fs");
 const https = require("https");
 const { permittedUrls } = require("../config.json");
+const { execFile } = require("child_process");
+const { blenderLocation } = require("../config.json");
 
 module.exports = {
 	downloadImage(url, filepath) {
@@ -20,6 +22,17 @@ module.exports = {
 					reject(new Error(`Request failed with status code: ${msg.statusCode}`));
 				}
 			});
+		});
+	},
+	renderBlend(filepath, extension = "png", outpath = "//render", pythonics = "pass") {
+		return new Promise((resolve, reject) => {
+			const cp = execFile(blenderLocation, ["-b", filepath, "--python-expr", pythonics, "-f", "0", "-F", extension, "-o", outpath + "." + extension], (error, stdout, stderr) => {
+				if (error) {
+					reject(`Error when rendering!\nError:\n${error}\nstdout:\n${stdout}\nstderr:\n${stderr}`);
+				}
+			});
+			cp.on("error", (err) => reject(err))
+				.once("close", (code) => resolve(code));
 		});
 	},
 };
