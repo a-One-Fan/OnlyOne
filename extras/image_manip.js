@@ -10,12 +10,13 @@ module.exports = {
 			if (!regexResult) {
 				return reject(new Error("Bad URL"));
 			}
+			const extensionlessPath = filepath;
 			filepath = filepath + "." + regexResult[1];
 			https.get(url, (msg) => {
 				if (msg.statusCode === 200) {
 					msg.pipe(fs.createWriteStream(filepath))
 						.on("error", reject)
-						.once("close", () => resolve(filepath));
+						.once("close", () => resolve([extensionlessPath, regexResult[1]]));
 				} else {
 					msg.resume();
 					reject(new Error(`Request failed with status code: ${msg.statusCode}`));
@@ -36,9 +37,9 @@ module.exports = {
 	},
 	doFfmpeg(args) {
 		return new Promise((resolve, reject) => {
-			const cp = execFile(ffmpegLocation, args, (error, stdout, stderr) => {
+			const cp = execFile(ffmpegLocation, ["-hide_banner"].concat(args), (error, stdout, stderr) => {
 				if (error) {
-					reject(`Error when rendering!\nError:\n${error}\nstdout:\n${stdout}\nstderr:\n${stderr}`);
+					reject(`Error when using ffmpeg!\nError:\n${error}\nstdout:\n${stdout}\nstderr:\n${stderr}`);
 				}
 			});
 			cp.on("error", (err) => reject(err))
