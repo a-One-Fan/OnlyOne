@@ -1,12 +1,13 @@
 const { openers, oneRegexes } = require("../config.json");
 
 module.exports = {
-	// Whether 'text' starts with a string regex from 'customOpeners'.
+	// Whether 'text' matches any regex of "customOpeners"
 	// Returns the index of the regex and the rest of 'text' if valid, null otherwise.
-	startsWith(text, customOpeners, regexParams = "") {
+	// TODO: refactor regexes and use no whitespace option so they're actually readable?
+	testAnyRegex(text, customOpeners, regexParams = "") {
 		if (text == null) return null;
 		for (const [i, opener] of customOpeners.entries()) {
-			const split = text.split(RegExp("^" + opener, regexParams));
+			const split = text.split(RegExp(opener, regexParams));
 			if (split.length > 1) return [i, split[1]];
 		}
 		return null;
@@ -16,9 +17,9 @@ module.exports = {
 	validStart(text) {
 		const newOpeners = [];
 		for (const opener of openers) {
-			newOpeners.push("\\s*" + opener + "\\s*");
+			newOpeners.push("^\\s*" + opener + "\\s*");
 		}
-		return module.exports.startsWith(text, newOpeners, "i");
+		return module.exports.testAnyRegex(text, newOpeners, "i");
 	},
 
 	// Counts how many times 'text' has each string regex in 'bits' in it.
