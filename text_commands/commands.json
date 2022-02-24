@@ -20,6 +20,12 @@
         {"name": "setAuthorReactChance", "regexParams": "i", "help": "Set my reaction chance to 50%.", "description": "The chance that I will react to you.",
             "regex": "set\\s+my\\s+react(?:ion)?\\s*chance\\s+(?:to\\s+)?(-?\\d*.?\\d*%?)[,.?!\\s]{0,3}\\s*$"},
         
+        {"name": "IMShower", "regexParams": "i", "help": "Shower!", "description": "\\*showering\\*",
+            "regex": "shower[,.?!\\s]{0,3}\\s*$"},
+
+        {"name": "IMDance", "regexParams": "i", "help": "Shower!", "description": "\\*showering\\*",
+            "regex": "dance[,.?!\\s]{0,3}\\s*$"},
+        
         {"name": "exceptionTest", "regexParams": "i", "help": "Test your exception handling!", "description": "I will cause an exception while executing a command.",
             "regex": "test\\s+(?:(?:your)|(?:the))?\\s+exception\\s+handling[.?!\\s]{0,3}\\s*$|\\s+try\\s+to\\s+die\\s+while\\s+running\\s+a?\\s+command[,.?!\\s]{0,3}\\s*$"},
         
