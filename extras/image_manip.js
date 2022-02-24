@@ -23,7 +23,7 @@ module.exports = {
 			});
 		});
 	},
-	renderBlend(filepath, extension = "png", outpath = "//render", pythonics = "pass") {
+	renderBlend(filepath, extension = "png", outpath = "//../tmp/render", pythonics = "pass") {
 		return new Promise((resolve, reject) => {
 			const cp = execFile(blenderLocation, ["-b", filepath, "--python-expr", pythonics, "-f", "0", "-F", extension, "-o", outpath + "." + extension], (error, stdout, stderr) => {
 				if (error) {
