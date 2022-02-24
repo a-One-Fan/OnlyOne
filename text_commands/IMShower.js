@@ -1,5 +1,5 @@
 module.exports = {
 	async execute(message, regexResults) {
-		return { text: "<imgur link here>" };
+		return { text: "https://i.imgur.com/dOujMWX.webm" };
 	},
 };
