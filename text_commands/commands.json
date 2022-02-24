@@ -18,6 +18,9 @@
             "regex": "what\\s+(?:are\\s+)?(?:the\\s+)?react(?:ion)?\\s*types?[,.?!\\s]{0,3}\\s*$|how\\s+(?:can\\s+)?(?:you\\s+)?react[,.?!\\s]{0,3}\\s*$|help[,.?!\\s]{0,3}\\s*$|list\\s+(?:the\\s+)?react(?:ion)?\\s*types?[,.?!\\s]{0,3}\\s*$"},
         
         {"name": "exceptionTest", "regexParams": "i", "help": "Test your exception handling!", "description": "I will cause an exception while executing a command.", "hidden": true,
-            "regex": "test\\s+(?:(?:your)|(?:the))?\\s+exception\\s+handling[.?!\\s]{0,3}\\s*$|\\s+try\\s+to\\s+die\\s+while\\s+running\\s+a?\\s+command[,.?!\\s]{0,3}\\s*$"}
+            "regex": "test\\s+(?:(?:your)|(?:the))?\\s+exception\\s+handling[.?!\\s]{0,3}\\s*$|\\s+try\\s+to\\s+die\\s+while\\s+running\\s+a?\\s+command[,.?!\\s]{0,3}\\s*$"},
+        
+        {"name": "renderMonkeys", "regexParams": "i", "help": "do a test render of this: https://only.one.com//one.png", "description": "I will do a test render with that image.", "hidden": true,
+            "regex": "(?:do\\s+a\\s+)?test\\s+render\\s+(?:of\\s+)?(?:this\\s+)?: (.)$"}
     ]
 }
