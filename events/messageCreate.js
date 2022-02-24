@@ -78,7 +78,9 @@ module.exports = {
 		}
 
 		if (textContent != "") {
-			message.reply({ content: textContent, allowedMentions: { repliedUser: false } });
+			let _files = [];
+			if (commandRes.files) _files = commandRes.files;
+			message.reply({ content: textContent, allowedMentions: { repliedUser: false }, files: _files });
 		}
 	},
 };
