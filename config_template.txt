@@ -9,7 +9,7 @@
 	"oneRegexes": ["[\\s,.?!a-z]One[\\s,.?!A-Z]", "[\\s,.?!]one[\\s,.?!A-Z]", "1"],
 	"ffmpegLocation": "",
 	"blenderLocation": "",
-	"permittedUrls": "^https:\\/\\/(?:(?:media\\.discordapp\\.net|cdn\\.discordapp\\.com)\\/attachments\\/|i\\.imgur\\.com\\/).*\\.(?:png|jpg|jpeg|jfif|tiff|exr|hdr|mp4|mkv|webm|gif)$",
+	"permittedUrls": "^https:\\/\\/(?:(?:media\\.discordapp\\.net|cdn\\.discordapp\\.com)\\/attachments\\/|i\\.imgur\\.com\\/).*\\.(png|jpg|jpeg|jfif|tiff|exr|hdr|mp4|mkv|webm|gif)$",
 	"downloadFilepath": "./download"
 }
 
