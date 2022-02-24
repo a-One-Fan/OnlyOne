@@ -1,11 +1,10 @@
 const fs = require("fs");
 const https = require("https");
-const { permittedUrls } = require("../config.json");
 const { execFile } = require("child_process");
-const { blenderLocation } = require("../config.json");
+const { blenderLocation, permittedUrls, downloadFilepath } = require("../config.json");
 
 module.exports = {
-	downloadImage(url, filepath) {
+	downloadImage(url, filepath = downloadFilepath) {
 		return new Promise((resolve, reject) => {
 			const regexResult = RegExp(permittedUrls).exec(url);
 			if (!regexResult) {
