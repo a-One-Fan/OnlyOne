@@ -1,6 +1,6 @@
 const fs = require("fs");
 const https = require("https");
-const { validURLs } = require("../config.json");
+const { permittedUrls } = require("../config.json");
 
 module.exports = {
 	downloadImage(url, filepath) {
@@ -11,9 +11,14 @@ module.exports = {
 		// https://gist.github.com/kamal-hossain/5b50b01ac141301cebbaf3ce424b9ec9
 		// Should a code tidbit this small even get attributed to one single person?
 		return new Promise((resolve, reject) => {
-			if (!RegExp(validURLs).test(url)) {
-				return 1;
+			const regexResult = RegExp(permittedUrls).exec(url);
+			console.log(url);
+			console.log(permittedUrls);
+			console.log(regexResult);
+			if (!regexResult) {
+				return reject(new Error("Bad URL"));
 			}
+			filepath = filepath + "." + regexResult[1];
 			https.get(url, (msg) => {
 				if (msg.statusCode === 200) {
 					msg.pipe(fs.createWriteStream(filepath))
