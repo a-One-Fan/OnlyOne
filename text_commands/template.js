@@ -1,6 +1,6 @@
 module.exports = {
 	async execute(message, regexResults) {
 
-		return { text: "Done." };
+		return { text: "Done.", files: [] };
 	},
 };
