@@ -4,17 +4,8 @@ const { permittedUrls } = require("../config.json");
 
 module.exports = {
 	downloadImage(url, filepath) {
-		// What the shit? Who even wrote the original?
-		// https://scrapingant.com/blog/download-image-javascript
-		// https://lzomedia.com/blog/how-to-download-images-with-nodejs/
-		// https://www.scien.cx/2021/08/26/how-to-download-images-with-nodejs/
-		// https://gist.github.com/kamal-hossain/5b50b01ac141301cebbaf3ce424b9ec9
-		// Should a code tidbit this small even get attributed to one single person?
 		return new Promise((resolve, reject) => {
 			const regexResult = RegExp(permittedUrls).exec(url);
-			console.log(url);
-			console.log(permittedUrls);
-			console.log(regexResult);
 			if (!regexResult) {
 				return reject(new Error("Bad URL"));
 			}
