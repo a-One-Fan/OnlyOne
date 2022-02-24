@@ -77,10 +77,12 @@ module.exports = {
 			textContent += commandRes.text;
 		}
 
-		if (textContent != "") {
-			let _files = [];
-			if (commandRes.files) _files = commandRes.files;
-			message.reply({ content: textContent, allowedMentions: { repliedUser: false }, files: _files });
+		let _files = [];
+		if (commandRes && commandRes.files) _files = commandRes.files;
+
+		if (textContent != "" || _files != "") {
+			if (_files != "") message.reply({ content: textContent, allowedMentions: { repliedUser: false }, files: _files });
+			else message.reply({ content: textContent, allowedMentions: { repliedUser: false } });
 		}
 	},
 };
