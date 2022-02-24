@@ -6,7 +6,7 @@
 		"(?:Oh\\s+)?One[,?!.1]{1,3}", "(?:Oh\\s+)?Lady\\s+One[,\\s?!.1]{1,3}",
 		"(?:Oh\\s+)?Dear\\s+One[,\\s?!.1]{1,3}", "(?:Oh\\s+)?Glorious\\s+One[,\\s?!.1]{1,3}", "(?:Oh\\s+)?Best\\s+One[,\\s?!.1]{1,3}",
 		"(?:Oh\\s+)?Bot\\s+#1[,\\s?!.1]{1,3}", "(?:Oh\\s+)?OnlyOne[,\\s?!.1]{1,3}", "(?:Oh\\s+)?Please,\\s*One[,\\s?!.1]{1,3}"],
-	"oneRegexes": ["[\\s,.?!a-z]One[\\s,.?!A-Z]", "[\\s,.?!]one[\\s,.?!A-Z]", "1"],
+	"oneRegexes": ["[^A-Z]One[^a-z]", "[^A-Za-z]one[^a-z]", "1"],
 	"ffmpegLocation": "",
 	"blenderLocation": "",
 	"permittedUrls": "^https:\\/\\/(?:(?:media\\.discordapp\\.net|cdn\\.discordapp\\.com)\\/attachments\\/|i\\.imgur\\.com\\/).*\\.(png|jpg|jpeg|jfif|tiff|exr|hdr|mp4|mkv|webm|gif)$",
