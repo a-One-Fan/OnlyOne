@@ -30,6 +30,9 @@
             "regex": "test\\s+(?:(?:your)|(?:the))?\\s+exception\\s+handling[.?!\\s]{0,3}\\s*$|\\s+try\\s+to\\s+die\\s+while\\s+running\\s+a?\\s+command[,.?!\\s]{0,3}\\s*$"},
         
         {"name": "renderMonkeys", "regexParams": "i", "help": "do a test render of this: https://only.one.com//one.png", "description": "I will do a test render with that image.",
-            "regex": "(?:do\\s+a\\s+)?test\\s+render(?:\\s+of)?(?:\\s+this)?(?:\\s+image)?: (.*)$"}
+            "regex": "(?:do\\s+a\\s+)?test\\s+render(?:\\s+of)?(?:\\s+this)?(?:\\s+image)?: (.*)$"},
+        
+        {"name": "renderSnap", "regexParams": "i", "help": "snap this out of existence: https://only.one.com//zero.png", "description": "I will snap that image or video out of existence..",
+            "regex": "(Thanos\\s+)?snap\\s+(?:this\\s+)?(?:\\s+image|\\s+video|\\s+picture)?(?:\\s+out of existence)?: (.*)$"}
     ]
 }
