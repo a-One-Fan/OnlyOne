@@ -5,6 +5,12 @@
         {"name": "printAuthor", "regexParams": "i", "help": "What are my stats?", "description": "I will reply with info about you.",
             "regex": "what\\s+(?:do\\s+)?you\\s+know\\s+about\\s+me[,.?!\\s]{0,3}\\s*$|what\\s+(?:are\\s+)?my\\s+stats[,.?!\\s]{0,3}\\s*$|what\\s+(?:do\\s+)?you\\s+think\\s+(?:of\\s+)?me[,.?!\\s]{0,3}\\s*$"},
 
+        {"name": "respondHowAreYou", "regexParams": "i", "help": "How are you?", "description": "I will tell you how I'm feeling.",
+            "regex": "how\\s+are\\s+you[,.?!\\s]{0,3}\\s*$"},
+
+        {"name": "respondIm", "regexParams": "i", "help": "I'm glad to be with you.", "description": "I will note your feelings.",
+            "regex": "I'?m (.*)$"},
+
         {"name": "ignoreAuthor", "regexParams": "i", "help": "Ignore me.", "description": "I will stop interacting with you.",
             "regex": "ignore\\s+me[,.?!\\s]{0,3}\\s*$|don'?t\\s+(?:talk|react|respond)\\s+to\\s+me(?:\\s+or\\s+my\\s+(?:son|daughter))?(?:\\s+ever(?:\\s+again))?[,.?!\\s]{0,3}\\s*$"},
 
