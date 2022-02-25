@@ -24,6 +24,7 @@ module.exports = {
 			});
 		});
 	},
+	// TODO: no .on("error") if we already have if (error) ?
 	renderBlend(filepath, extension = "png", outpath = "//../tmp/render", pythonics = "pass") {
 		return new Promise((resolve, reject) => {
 			const cp = execFile(blenderLocation, ["-b", filepath, "--python-expr", pythonics, "-f", "0", "-F", extension, "-o", outpath + "." + extension], (error, stdout, stderr) => {
@@ -47,4 +48,21 @@ module.exports = {
 				.once("close", (code) => resolve(code));
 		});
 	},
+	getResolution(filepath) {
+		const ffprobeLocation = ffmpegFolderLocation + "ffprobe.exe";
+		return new Promise((resolve, reject) => {
+			let res = "";
+			const cp = execFile(ffprobeLocation, ["-v", "error", "-select_streams", "v:0", "-show_entries", "stream=width,height", "-of", "default=nw=1:nk=1", filepath], (error, stdout, stderr) => {
+
+				if (error) reject(`Error when using ffprobe!\nError:\n${error}\nstdout:\n${stdout}\nstderr:\n${stderr}`);
+
+				res = stdout;
+			});
+			cp.once("close", (code) => {
+				res = res.split("\n");
+				res = [parseInt(res[0]), parseInt(res[1])];
+				resolve(res);
+			});
+		});
+	}
 };
