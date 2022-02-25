@@ -21,7 +21,7 @@ module.exports = {
 		}
 
 		let aspectRatio = resolution[0] / resolution[1];
-		aspectRatio = clamp(0.2, 2.5, aspectRatio);
+		aspectRatio = clamp(0.2, 5.0, aspectRatio);
 		const targetArea = 600 * 600;
 		let newWidth = Math.sqrt(targetArea / aspectRatio);
 		let newHeight = newWidth * aspectRatio;
