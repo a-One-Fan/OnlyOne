@@ -5,8 +5,14 @@ const { blenderLocation, ffmpegFolderLocation, permittedUrls, downloadFilepath }
 
 module.exports = {
 	// Make resolution even so that h264 can properly encode.
+	// TODO: move these elsehwere?
 	evenify(resolution) {
 		return [resolution[0] + resolution[0] % 2, resolution[1] + resolution[1] % 2];
+	},
+	clamp(min, max, val) {
+		if (val < min) return min;
+		if (val > max) return max;
+		return val;
 	},
 	downloadImage(url, filepath = downloadFilepath) {
 		return new Promise((resolve, reject) => {
