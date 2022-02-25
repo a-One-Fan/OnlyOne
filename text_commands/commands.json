@@ -20,11 +20,11 @@
         {"name": "setAuthorReact", "regexParams": "i", "help": "Set my reaction type to 4.", "description": "Change how/when I react to your messages.",
             "regex": "set\\s+my\\s+react(?:ion)?\\s*type\\s+(?:to\\s+)?(\\d+)[,.?!\\s]{0,3}\\s*$"},
         
-        {"name": "listCommands", "regexParams": "i", "help": "What are the commands?", "description": "I will list available text-based commands.",
-            "regex": "what\\s+(?:are\\s+)?(?:the\\s+)?commands[,.?!\\s]{0,3}\\s*$|what\\s+(?:can\\s+)?you\\s+do[,.?!\\s]{0,3}\\s*$|help[,.?!\\s]{0,3}\\s*$|list\\s+(?:the\\s+)?commands?[,.?!\\s]{0,3}\\s*$"},
+        {"name": "listCommands", "regexParams": "i", "help": "'Help!' or 'What are the commands, page 3?'", "description": "I will list available text-based commands.",
+            "regex": "(?:what\\s+(?:are\\s+)?(?:the\\s+)?commands|what\\s+(?:can\\s+)?you\\s+do|help|list(?:\\s+the)?(?:\\s+commands?)?)(?:,?\\s+page\\s+(\\d+))?[,.?!\\s]{0,3}\\s*$"},
 
         {"name": "listReactTypes", "regexParams": "i", "help": "List reaction types.", "description": "I will list available options for reacting to your messages.",
-            "regex": "what\\s+(?:are\\s+)?(?:the\\s+)?react(?:ion)?\\s*types?[,.?!\\s]{0,3}\\s*$|how\\s+(?:can\\s+)?(?:you\\s+)?react[,.?!\\s]{0,3}\\s*$|help[,.?!\\s]{0,3}\\s*$|list\\s+(?:the\\s+)?react(?:ion)?\\s*types?[,.?!\\s]{0,3}\\s*$"},
+            "regex": "what\\s+(?:are\\s+)?(?:the\\s+)?react(?:ion)?\\s*types?[,.?!\\s]{0,3}\\s*$|how\\s+(?:can\\s+)?(?:you\\s+)?react[,.?!\\s]{0,3}\\s*$|list\\s+(?:the\\s+)?react(?:ion)?\\s*types?[,.?!\\s]{0,3}\\s*$"},
         
         {"name": "setAuthorReactChance", "regexParams": "i", "help": "Set my reaction chance to 50%.", "description": "The chance that I will react to you.",
             "regex": "set\\s+my\\s+react(?:ion)?\\s*chance\\s+(?:to\\s+)?(-?\\d*.?\\d*%?)[,.?!\\s]{0,3}\\s*$"},
