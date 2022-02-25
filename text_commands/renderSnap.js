@@ -4,7 +4,7 @@ const { MessageAttachment } = require("discord.js");
 module.exports = {
 	async execute(message, regexResults) {
 		const [ impath, extension ] = await downloadImage(regexResults[7]);
-		console.log("impath, extension:", impath, extension);
+		console.log("Downloaded file.");
 		let resolution = await getResolution(impath + "." + extension);
 		let vfscale = [];
 		// fuk ur syntactic sugar i want it readable
@@ -12,8 +12,8 @@ module.exports = {
 			resolution = evenify(resolution);
 			vfscale = ["-vf", `scale=${resolution[0]}:${resolution[1]}`];
 		}
-		await doFfmpeg(["-stream_loop", "-1", "-r", "30", "-i", impath + "." + extension, "-frames:v", "240", "-t", "8"].concat(vfscale).concat(["-y", "./tmp/snapvid.mp4"]));
-
+		await doFfmpeg(["-stream_loop", "-1", "-i", impath + "." + extension, "-vf", "fps=fps=30", "-r", "30", "-t", "8"].concat(vfscale).concat(["-y", "./tmp/snapvid.mp4"]));
+		console.log("Converted to good video.");
 		let angle = 0;
 		if (regexResults[2]) {
 			angle = parseFloat(regexResults[2]);
@@ -59,7 +59,10 @@ bpy.data.node_groups["Tile fadeout"].nodes["Distribution distance"].outputs[0].d
 bpy.data.node_groups["Tile fadeout"].nodes["Size modifier"].outputs[0].default_value = ${size}
 `;
 		await renderBlend("extras/snapped.blend", ["-a"], pythonics);
-		const _file = new MessageAttachment("./tmp/snaprender.mp4");
+		console.log("Rendered.");
+		await doFfmpeg(["-i", "./tmp/snaprender.mp4", "-i", "./tmp/snapvid.mp4", "-map", "0:v", "-map", "1:a", "-af", "afade=t=out:st=4:d=3.5", "-y", "./tmp/snapped.mp4"]);
+		console.log("Audio merged.");
+		const _file = new MessageAttachment("./tmp/snapped.mp4");
 		return { text: ["Bye bye.", "It's no more.", "There it goes...", "Watch it vanish."][(Math.floor(Math.random() * 4))], files: [_file] };
 	},
 };
