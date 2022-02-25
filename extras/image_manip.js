@@ -7,6 +7,7 @@ module.exports = {
 	// Make resolution even so that h264 can properly encode.
 	// TODO: move these elsehwere?
 	evenify(resolution) {
+		resolution = [Math.floor(resolution[0]), Math.floor(resolution[1])];
 		return [resolution[0] + resolution[0] % 2, resolution[1] + resolution[1] % 2];
 	},
 	clamp(min, max, val) {
@@ -37,7 +38,8 @@ module.exports = {
 	// TODO: no .on("error") if we already have if (error) ?
 	renderBlend(filepath, args, pythonics = "pass") {
 		return new Promise((resolve, reject) => {
-			const cp = execFile(blenderLocation, ["-b", filepath, "--python-expr", pythonics].concat(args), (error, stdout, stderr) => {
+			const args_combined = ["-b", filepath, "--python-expr", pythonics].concat(args);
+			const cp = execFile(blenderLocation, args_combined, (error, stdout, stderr) => {
 				if (error) {
 					reject(`Error when rendering!\nError:\n${error}\nstdout:\n${stdout}\nstderr:\n${stderr}`);
 				}
