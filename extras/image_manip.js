@@ -4,6 +4,10 @@ const { execFile } = require("child_process");
 const { blenderLocation, ffmpegFolderLocation, permittedUrls, downloadFilepath } = require("../config.json");
 
 module.exports = {
+	// Make resolution even so that h264 can properly encode.
+	evenify(resolution) {
+		return [resolution[0] + resolution[0] % 2, resolution[1] + resolution[1] % 2];
+	},
 	downloadImage(url, filepath = downloadFilepath) {
 		return new Promise((resolve, reject) => {
 			const regexResult = RegExp(permittedUrls).exec(url);
