@@ -23,7 +23,7 @@ Example values:
 	"openers": [".\\s?", "!", "/"], // Things people can write at the start of their message to have the bot respond to it. Is regex. Don't put ^ at the start, and ESPECIALLY don't usce capturing groups!
 	"oneRegexes": ["One", "\\s+one\\s+", "1"], // Regexes for matching One, one and 1 respectively. Don't put ^ in these as well; they're counted in a special way - the text gets padded with spaces at start and end, and
 	// the regex is run repeatedly to get as many matches as possible, because regexes will eat characters when they match, breaking in e.g. "One One One One One" and only counting 2 ones.
-	"ffmpegLocation": "C:/ffmpeg/bin/ffmpeg.exe", // Points to the ffmpeg exe (not the folder)
+	"ffmpegFolderLocation": "C:/ffmpeg/bin/", // Points to the ffmpeg folder! Needs to end with a /
 	"blenderLocation": "C:/blender-3.0/blender.exe", // Points to the blender exe (not the folder)
 	// Feel free to put them in a folder here if it's your first time using them. I just have existing Blender and ffmpeg versions and I'll point it to those.
 	"permittedUrls": "https:\/\/my.site.gov\/%d*\/poopfart.jpg", // Regex for whitelisted URLs.

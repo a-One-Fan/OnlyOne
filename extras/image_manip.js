@@ -1,7 +1,7 @@
 const fs = require("fs");
 const https = require("https");
 const { execFile } = require("child_process");
-const { blenderLocation, ffmpegLocation, permittedUrls, downloadFilepath } = require("../config.json");
+const { blenderLocation, ffmpegFolderLocation, permittedUrls, downloadFilepath } = require("../config.json");
 
 module.exports = {
 	downloadImage(url, filepath = downloadFilepath) {
@@ -36,6 +36,7 @@ module.exports = {
 		});
 	},
 	doFfmpeg(args) {
+		const ffmpegLocation = ffmpegFolderLocation + "ffmpeg.exe";
 		return new Promise((resolve, reject) => {
 			const cp = execFile(ffmpegLocation, ["-hide_banner"].concat(args), (error, stdout, stderr) => {
 				if (error) {

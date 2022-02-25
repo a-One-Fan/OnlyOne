@@ -1,5 +1,5 @@
 const { access } = require("fs");
-const { ffmpegLocation, blenderLocation } = require("../config.json");
+const { ffmpegFolderLocation, blenderLocation } = require("../config.json");
 
 module.exports = {
 	name: "ready",
@@ -8,9 +8,16 @@ module.exports = {
 		const db = await client.db.sync();
 		console.log(`Loaded db "${db}"`);
 
+		const ffmpegLocation = ffmpegFolderLocation + "ffmpeg.exe";
 		access(ffmpegLocation, (err) => {
 			if (err) console.log(`Error when trying to open Ffmpeg exe at "${ffmpegLocation}":\n${err}`);
 			else console.log("Ffmpeg exe can be opened successfully.");
+		});
+
+		const ffprobeLocation = ffmpegFolderLocation + "ffprobe.exe";
+		access(ffprobeLocation, (err) => {
+			if (err) console.log(`Error when trying to open Ffprobe exe at "${ffprobeLocation}":\n${err}`);
+			else console.log("Ffprobe exe can be opened successfully.");
 		});
 
 		access(blenderLocation, (err) => {
