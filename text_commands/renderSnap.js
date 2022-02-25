@@ -60,7 +60,7 @@ bpy.data.node_groups["Tile fadeout"].nodes["Size modifier"].outputs[0].default_v
 `;
 		await renderBlend("extras/snapped.blend", ["-a"], pythonics);
 		console.log("Rendered.");
-		await doFfmpeg(["-i", "./tmp/snaprender.mp4", "-i", "./tmp/snapvid.mp4", "-map", "0:v", "-map", "1:a", "-af", "afade=t=out:st=4:d=3.5", "-y", "./tmp/snapped.mp4"]);
+		await doFfmpeg(["-i", "./tmp/snaprender.mp4", "-i", "./tmp/snapvid.mp4", "-map", "0:v", "-map", "1:a?", "-af", "afade=t=out:st=4:d=3.5", "-y", "./tmp/snapped.mp4"]);
 		console.log("Audio merged.");
 		const _file = new MessageAttachment("./tmp/snapped.mp4");
 		return { text: ["Bye bye.", "It's no more.", "There it goes...", "Watch it vanish."][(Math.floor(Math.random() * 4))], files: [_file] };
