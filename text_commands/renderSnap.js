@@ -12,7 +12,7 @@ module.exports = {
 			resolution = evenify(resolution);
 			vfscale = ["-vf", `scale=${resolution[0]}:${resolution[1]}`];
 		}
-		await doFfmpeg(["-stream_loop", "-1", "-i", impath + "." + extension, "-vf", "fps=fps=30", "-r", "30", "-t", "8"].concat(vfscale).concat(["-y", "./tmp/snapvid.mp4"]));
+		await doFfmpeg(["-stream_loop", "-1", "-i", impath + "." + extension, "-vf", "fps=fps=30", "-t", "8"].concat(vfscale).concat(["-y", "./tmp/snapvid.mp4"]));
 		console.log("Converted to good video.");
 		let angle = 0;
 		if (regexResults[2]) {
