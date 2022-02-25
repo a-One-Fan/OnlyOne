@@ -25,9 +25,9 @@ module.exports = {
 		});
 	},
 	// TODO: no .on("error") if we already have if (error) ?
-	renderBlend(filepath, extension = "png", outpath = "//../tmp/render", pythonics = "pass") {
+	renderBlend(filepath, args, pythonics = "pass") {
 		return new Promise((resolve, reject) => {
-			const cp = execFile(blenderLocation, ["-b", filepath, "--python-expr", pythonics, "-f", "0", "-F", extension, "-o", outpath + "." + extension], (error, stdout, stderr) => {
+			const cp = execFile(blenderLocation, ["-b", filepath, "--python-expr", pythonics].concat(args), (error, stdout, stderr) => {
 				if (error) {
 					reject(`Error when rendering!\nError:\n${error}\nstdout:\n${stdout}\nstderr:\n${stderr}`);
 				}
