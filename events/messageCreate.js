@@ -46,6 +46,8 @@ module.exports = {
 		const split = validStart(message.content);
 
 		let commandRes = null;
+		// TODO: Is there a better way to do this without this flag? Or is this good enough
+		let commandError = false;
 		if (split && !firstCommand) {
 			// TODO: better names
 			for (const command of commandData.commands) {
@@ -55,15 +57,18 @@ module.exports = {
 						const func = require("../text_commands/" + command.name + ".js");
 						commandRes = await func.execute(message, reactRes);
 					} catch (error) {
+						commandError = true;
 						// TODO: DM the error to me? :)
 						textContent += `Looks like something when wrong when executing "${command.name}".\n`;
+						if (error.message == "Bad URL") textContent += "It's because I didn't like your URL.\n";
 						console.log(error);
 					}
 					break;
 				}
 			}
 			if (!commandRes) {
-				textContent += commandData.unknown[Math.floor(Math.random() * commandData.unknown.length)];
+				if (!commandError) textContent += commandData.unknown[Math.floor(Math.random() * commandData.unknown.length)];
+				else textContent += "Now try again.\n";
 			}
 		}
 
