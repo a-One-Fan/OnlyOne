@@ -33,6 +33,6 @@
             "regex": "(?:do\\s+a\\s+)?test\\s+render(?:\\s+of)?(?:\\s+this)?(?:\\s+image)?: (.*)$"},
         
         {"name": "renderSnap", "regexParams": "i", "help": "snap this out of existence: https://only.one.com//zero.png", "description": "I will snap that image or video out of existence..",
-            "regex": "(Thanos\\s+)?snap\\s+(?:this\\s+)?(?:\\s+image|\\s+video|\\s+picture)?(?:\\s+out of existence)?: (.*)$"}
+            "regex": "(Thanos\\s+)?snap(?:\\s+this)?(?:\\s+image|\\s+video|\\s+picture)?(?:\\s+out of existence)?: (.*)$"}
     ]
 }
