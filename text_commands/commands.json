@@ -32,7 +32,7 @@
         {"name": "IMShower", "regexParams": "i", "help": "Shower!", "description": "\\*showering\\*",
             "regex": "shower[,.?!\\s]{0,3}\\s*$"},
 
-        {"name": "IMDance", "regexParams": "i", "help": "Shower!", "description": "\\*showering\\*",
+        {"name": "IMDance", "regexParams": "i", "help": "Dance!", "description": "\\*dancing\\*",
             "regex": "dance[,.?!\\s]{0,3}\\s*$"},
         
         {"name": "exceptionTest", "regexParams": "i", "help": "Test your exception handling!", "description": "I will cause an exception while executing a command.",
