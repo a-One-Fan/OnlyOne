@@ -38,10 +38,19 @@
         {"name": "exceptionTest", "regexParams": "i", "help": "Test your exception handling!", "description": "I will cause an exception while executing a command.",
             "regex": "test\\s+(?:(?:your)|(?:the))?\\s+exception\\s+handling[.?!\\s]{0,3}\\s*$|\\s+try\\s+to\\s+die\\s+while\\s+running\\s+a?\\s+command[,.?!\\s]{0,3}\\s*$"},
         
-        {"name": "renderMonkeys", "regexParams": "i", "help": "Do a test render of this: https://only.one.com//one.png", "description": "I will do a test render with that image.",
+        {"name": "renderMonkeys", "regexParams": "i", "help": "Do a test render of this: https://only.one.com/one.png", "description": "I will do a test render with that image.",
             "regex": "(?:do\\s+a\\s+)?test\\s+render(?:\\s+of)?(?:\\s+this)?(?:\\s+image)?:\\s*[`'\"<|]*(.*[\\w\\\\/])[`'\">|\\s]*$"},
         
-        {"name": "renderSnap", "regexParams": "i", "help": "Snap this out of existence rotated 45 using Hexagon and distance 3.0 and size 3.0: https://only.one.com//zero.png", "description": "I will snap that image or video out of existence.\nOptional parameters are the shape - Circle, Hexagon, Octagon, One, Tile, Triangle - the minimum distance - [1.0, 25.0] - and the size - [0.1, 20].",
-            "regex": "(Thanos\\s+)?snap(?:\\s+this)?(?:\\s+image|\\s+video|\\s+picture)?(?:\\s+out of existence)?(?:\\s+rotated\\s*(-?\\d*\\.?\\d*)(r|rad|radians)?(?:d|deg|degrees)?)?(?:\\s+using\\s+(\\w+))?(?:\\s+(?:and\\s+)?(?:distance\\s+(-?\\d*\\.?\\d*)))?(?:\\s+(?:and\\s+)?(?:size\\s+(-?\\d*\\.?\\d*)))?:\\s*[`'\"<|]*(https?:.*[\\w\\\\/])(?:[`'\">|\\s]*)$"}
+        {"name": "renderSnap", "regexParams": "i", "help": "Snap this out of existence: https://only.one.com/zero.png", "description": "I will snap that image or video out of existence.",
+            "regex": "(Thanos\\s+)?snap\\s+this\\s+(?:.*):\\s*[`'\"<|]*(https?:.*[\\w\\\\/])(?:[`'\">|\\s]*)$",
+            "extraRegex": [
+                "rotated\\s+(-?\\d*\\.?\\d*)(r|rad|radians)?(?:d|deg|degrees)?",
+                "using\\s+(\\w+)\\s+",
+                "(?:min\\s+|minimum\\s+)?distance\\s+(-?\\d*\\.?\\d*)",
+                "size\\s+(-?\\d*\\.?\\d*)",
+                "(?:bgcolor|background(?:\\s*color)?)\\s+(#?[A-Fa-f1-9]{6})"
+            ],
+            "extraHelp": "Optional parameters are:\nShape - Circle, Hexagon, Octagon, One, Tile, Triangle\nMinimum distance (between each particle) - [1.0, 25.0]\nSize (of each particle) - [0.1, 20.0]\nBackground color - hexadecimal color\nLong example:\nOne, snap this"
+        }
     ]
 }

@@ -2,8 +2,8 @@ const { downloadImage, renderBlend, doFfmpeg, getResolution, evenify, clamp } = 
 const { MessageAttachment } = require("discord.js");
 
 module.exports = {
-	async execute(message, regexResults) {
-		const [ impath, extension ] = await downloadImage(regexResults[7]);
+	async execute(message, regexResults, extraRegex) {
+		const [ impath, extension ] = await downloadImage(regexResults[2]);
 		console.log("Downloaded file.");
 		let resolution = await getResolution(impath + "." + extension);
 		let vfscale = [];
@@ -14,11 +14,6 @@ module.exports = {
 		}
 		await doFfmpeg(["-stream_loop", "-1", "-i", impath + "." + extension, "-vf", "fps=fps=30", "-t", "8"].concat(vfscale).concat(["-y", "./tmp/snapvid.mp4"]));
 		console.log("Converted to good video.");
-		let angle = 0;
-		if (regexResults[2]) {
-			angle = parseFloat(regexResults[2]);
-			if (!regexResults[3]) angle = angle * (Math.PI / 180);
-		}
 
 		let aspectRatio = resolution[0] / resolution[1];
 		aspectRatio = clamp(0.2, 5.0, aspectRatio);
@@ -27,23 +22,46 @@ module.exports = {
 		let newHeight = newWidth * aspectRatio;
 		[ newWidth, newHeight ] = evenify([newWidth, newHeight]);
 
-		let shape = regexResults[4];
+		let bonusText = "Starting render";
+
+		let angle = 0;
+		if (extraRegex[0]) {
+			angle = parseFloat(extraRegex[0][1]);
+			if (!regexResults[0][2]) angle = angle * (Math.PI / 180);
+			bonusText += ` rotated ${angle} radians`;
+		}
+
+		let shape = extraRegex[1];
 		if (!shape || !["Circle", "Hexagon", "Octagon", "One", "Triangle"].find((str) => {return shape == str;})) {
 			shape = "Tile";
+		} else {
+			bonusText += `, shape ${shape}`;
 		}
 
 		let distance = 3.0;
-		if (regexResults[5]) {
-			distance = parseFloat(regexResults[5]);
+		if (extraRegex[2]) {
+			distance = parseFloat(extraRegex[2][1]);
 			distance = clamp(1, 25, distance);
+			bonusText += `, minimum particle distance ${distance}`;
 		}
 		distance = distance * 0.01;
 
 		let size = 1.0;
-		if (regexResults[6]) {
-			size = parseFloat(regexResults[6]);
+		if (extraRegex[3]) {
+			size = parseFloat(extraRegex[3][1]);
 			size = clamp(0.1, 20, size);
+			bonusText += `, particle size ${size}`;
 		}
+
+		let color = "36393F";
+		if (extraRegex[4]) {
+			color = extraRegex[4][1];
+			bonusText += ` with the background colored #${color}`;
+		}
+
+		bonusText += "...";
+
+		message.reply({ content: bonusText, allowedMentions: { repliedUser: false } });
 
 		const pythonics = `
 import bpy
@@ -57,6 +75,8 @@ bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
 bpy.data.node_groups["Tile fadeout"].nodes["Object Info"].inputs[0].default_value = bpy.data.objects['${shape}']
 bpy.data.node_groups["Tile fadeout"].nodes["Distribution distance"].outputs[0].default_value = ${distance}
 bpy.data.node_groups["Tile fadeout"].nodes["Size modifier"].outputs[0].default_value = ${size}
+(r, g, b) = map(lambda c: c / 255.0, bytes.fromhex("${color}"))
+bpy.data.materials["Plane background"].node_tree.nodes["Emission"].inputs[0].default_value = (r, g, b, 1)
 `;
 		await renderBlend("extras/snapped.blend", ["-a"], pythonics);
 		console.log("Rendered.");
