@@ -48,7 +48,7 @@
                 "using\\s+(\\w+)\\s+",
                 "(?:min\\s+|minimum\\s+)?distance\\s+(-?\\d*\\.?\\d*)",
                 "size\\s+(-?\\d*\\.?\\d*)",
-                "(?:bgcolor|background(?:\\s*color)?)\\s+(#?[A-Fa-f1-9]{6})"
+                "(?:bgcolor|background(?:\\s*color)?)\\s+(#?[A-Fa-f0-9]{6})"
             ],
             "extraHelp": "Optional parameters are:\nShape - Circle, Hexagon, Octagon, One, Tile, Triangle\nMinimum distance (between each particle) - [1.0, 25.0]\nSize (of each particle) - [0.1, 20.0]\nBackground color - hexadecimal color\nLong example:\nOne, snap this"
         }
