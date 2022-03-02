@@ -32,10 +32,9 @@ module.exports = {
 			bonusText += ` rotated ${angle} radians`;
 		}
 
-		let shape = extraRegex[1];
-		if (!shape || !["Circle", "Hexagon", "Octagon", "One", "Triangle", "Tile"].find((str) => {return shape == str;})) {
-			shape = "Tile";
-		} else {
+		let shape = "Tile";
+		if (extraRegex[1] && ["Circle", "Hexagon", "Octagon", "One", "Triangle", "Tile"].find((str) => {return extraRegex[1][1] == str;})) {
+			shape = extraRegex[1][1];
 			bonusText += `, with ${shape}-shaped particles`;
 			hasWith = true;
 		}
