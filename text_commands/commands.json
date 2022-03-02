@@ -45,7 +45,7 @@
             "regex": "(Thanos\\s+)?snap\\s+this\\s*(?:.*):\\s*[`'\"<|]*(https?:.*[\\w\\\\/])(?:[`'\">|\\s]*)$",
             "extraRegex": [
                 "rotated\\s+(-?\\d*\\.?\\d*)(r|rad|radians)?(?:d|deg|degrees)?",
-                "using\\s+(\\w+)\\s+",
+                "(?:using|shaped?(?:\\s+like)?)\\s+(\\w+)",
                 "(?:min\\s+|minimum\\s+)?distance\\s+(-?\\d*\\.?\\d*)",
                 "size\\s+(-?\\d*\\.?\\d*)",
                 "(?:bgcolor|background(?:\\s*color)?)\\s+#?([A-Fa-f0-9]{6})"
