@@ -16,7 +16,7 @@ module.exports = {
 		console.log("Converted to good video.");
 
 		let aspectRatio = resolution[0] / resolution[1];
-		aspectRatio = clamp(0.2, 5.0, aspectRatio);
+		aspectRatio = clamp(0.1, 10.0, aspectRatio);
 		const targetArea = 600 * 600;
 		let newWidth = Math.sqrt(targetArea / aspectRatio);
 		let newHeight = newWidth * aspectRatio;
