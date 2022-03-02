@@ -54,8 +54,12 @@ module.exports = {
 				const reactRes = RegExp(command.regex, command.regexParams).exec(split[1]);
 				if (reactRes) {
 					try {
+						const extraRes = [];
+						for (const extraRegex of command.extraRegex) {
+							extraRes.push(RegExp(extraRegex, command.regexParams).exec(split[1]));
+						}
 						const func = require("../text_commands/" + command.name + ".js");
-						commandRes = await func.execute(message, reactRes);
+						commandRes = await func.execute(message, reactRes, extraRes);
 					} catch (error) {
 						commandError = true;
 						// TODO: DM the error to me? :)
