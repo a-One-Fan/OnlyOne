@@ -22,7 +22,8 @@ module.exports = {
 		let newHeight = newWidth * aspectRatio;
 		[ newWidth, newHeight ] = evenify([newWidth, newHeight]);
 
-		let bonusText = "Starting render";
+		let bonusText = "Snapping that";
+		let hasWith = false;
 
 		let angle = 0;
 		if (extraRegex[0]) {
@@ -32,17 +33,19 @@ module.exports = {
 		}
 
 		let shape = extraRegex[1];
-		if (!shape || !["Circle", "Hexagon", "Octagon", "One", "Triangle"].find((str) => {return shape == str;})) {
+		if (!shape || !["Circle", "Hexagon", "Octagon", "One", "Triangle", "Tile"].find((str) => {return shape == str;})) {
 			shape = "Tile";
 		} else {
-			bonusText += `, shape ${shape}`;
+			bonusText += `, with ${shape}-shaped particles`;
+			hasWith = true;
 		}
 
 		let distance = 3.0;
 		if (extraRegex[2]) {
 			distance = parseFloat(extraRegex[2][1]);
 			distance = clamp(1, 25, distance);
-			bonusText += `, minimum particle distance ${distance}`;
+			bonusText += `${hasWith ? " and " : ", with "}minimum particle distance ${distance}`;
+			hasWith = true;
 		}
 		distance = distance * 0.01;
 
@@ -50,13 +53,15 @@ module.exports = {
 		if (extraRegex[3]) {
 			size = parseFloat(extraRegex[3][1]);
 			size = clamp(0.1, 20, size);
-			bonusText += `, particle size ${size}`;
+			bonusText += `${hasWith ? " and " : ", with "}particle size ${size}`;
+			hasWith = true;
 		}
 
 		let color = "36393F";
 		if (extraRegex[4]) {
 			color = extraRegex[4][1];
-			bonusText += ` with the background colored #${color}`;
+			bonusText += `${hasWith ? " and " : ", with "}the background colored #${color}`;
+			hasWith = true;
 		}
 
 		bonusText += "...";
