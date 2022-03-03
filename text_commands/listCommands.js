@@ -13,7 +13,7 @@ module.exports = {
 		const commandsEnd = clamp(0, commandData.commands.length, page * commandsPerPage);
 
 		let res = "";
-		if (page == 1) res = "You may adress be my \"One\", \"Lady One\", \"Oh Glorious One\", \"Dear One\" and such other names.\nThen, adressing me, you can ask me the following things:\n";
+		if (page == 1) res = "You may address me by \"One\", \"Lady One\", \"Oh Glorious One\", \"Dear One\" and such other names.\nThen, adressing me, you can ask me the following things:\n";
 
 		for (let i = commandsStart; i < commandsEnd; i++) {
 			const command = commandData.commands[i];
