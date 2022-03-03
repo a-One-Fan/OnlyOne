@@ -17,7 +17,7 @@ module.exports = {
 
 		for (let i = commandsStart; i < commandsEnd; i++) {
 			const command = commandData.commands[i];
-			if (!command.hidden) res += `"${command.help}", ${command.description}\n`;
+			if (!command.hidden) res += `[${command.name}]: "${command.help}", ${command.description}\n`;
 		}
 
 		const fakePageStr = (page == fakePage) ? `${page}` : `"${fakePage}"`;
