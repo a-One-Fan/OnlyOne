@@ -14,7 +14,7 @@
         {"name": "respondYoure", "regexParams": "i", "help": "You're so nice to be around.", "description": "Compliment me. Preferably.",
             "regex": "you\\s*(?:are|'?re) (.*)$"},
 
-        {"name": "respondWhatAre", "regexParams": "i", "help": "You're so nice to be around.", "description": "Compliment me. Preferably.",
+        {"name": "respondWhatIs", "regexParams": "i", "help": "You're so nice to be around.", "description": "Compliment me. Preferably.",
             "regex": "what\\s*(are|'?re|is|'?s) (.*)$"},
 
         {"name": "respondWhoIs", "regexParams": "i", "help": "You're so nice to be around.", "description": "Compliment me. Preferably.",
