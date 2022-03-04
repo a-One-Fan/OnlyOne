@@ -3,14 +3,10 @@ const { pickRandom } = require("../extras/math_stuff");
 module.exports = {
 	async execute(message, regexResults) {
 		let responses = [];
-		if (regexResults[1] == "is") {
-			responses = ["I'm doing fine, thanks for asking.", "I'm fine.", "I'm feeling slightly happier right now. I haven't felt like that in a while.",
-				"I'm not feeling particularly great, sorry.", "I'm peeved.", "I'm feeling uneasy right now.",
-				"I'm glad you're concerned about me. I'm alright."];
+		if (regexResults[1] == "is" || regexResults[1] == "'s" || regexResults[1] == "s") {
+			responses = ["1.", "11.", "10.", "100.", "111", "101", "A dog.", "A cat.", "A dragon.", "It's pointless.", "Crazy."];
 		} else {
-			responses = ["I'm doing fine, thanks for asking.", "I'm fine.", "I'm feeling slightly happier right now. I haven't felt like that in a while.",
-				"I'm not feeling particularly great, sorry.", "I'm peeved.", "I'm feeling uneasy right now.",
-				"I'm glad you're concerned about me. I'm alright."];
+			responses = ["Please give me plural whatIs responses :("];
 		}
 
 		return { text: pickRandom(responses) };
