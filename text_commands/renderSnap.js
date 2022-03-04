@@ -1,4 +1,5 @@
-const { downloadImage, renderBlend, doFfmpeg, getResolution, evenify, clamp } = require("../extras/image_manip");
+const { downloadImage, renderBlend, doFfmpeg, getResolution } = require("../extras/image_manip");
+const { evenify, clamp } = require("../extras/mathStuff.js");
 const { MessageAttachment } = require("discord.js");
 
 module.exports = {
