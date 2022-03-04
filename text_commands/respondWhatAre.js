@@ -1,3 +1,5 @@
+const { pickRandom } = require("../extras/mathStuff");
+
 module.exports = {
 	async execute(message, regexResults) {
 		let responses = [];
@@ -11,6 +13,6 @@ module.exports = {
 				"I'm glad you're concerned about me. I'm alright."];
 		}
 
-		return { text: responses[Math.floor(Math.random() * responses.length)] };
+		return { text: pickRandom(responses) };
 	},
 };
