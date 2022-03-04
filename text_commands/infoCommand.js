@@ -4,7 +4,7 @@ module.exports = {
 	async execute(message, regexResults) {
 		let command = [];
 		for (const c of commands) {
-			if(c.name == regexResults[1]) {
+			if (c.name == regexResults[1]) {
 				command = c;
 				break;
 			}
