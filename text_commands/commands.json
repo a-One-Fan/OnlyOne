@@ -9,13 +9,16 @@
             "regex": "how\\s+are\\s+you[,.?!\\s]{0,3}\\s*$"},
 
         {"name": "respondIm", "regexParams": "i", "help": "I'm glad to be with you.", "description": "I will note your feelings.",
-            "regex": "I'?m (.*)$"},
+            "regex": "I(?:\\s+am|'?m) (.*)$"},
 
         {"name": "respondYoure", "regexParams": "i", "help": "You're so nice to be around.", "description": "Compliment me. Preferably.",
-            "regex": "you'?re (.*)$"},
+            "regex": "you(?:\\s+are|'?re) (.*)$"},
 
         {"name": "respondWhatAre", "regexParams": "i", "help": "You're so nice to be around.", "description": "Compliment me. Preferably.",
-            "regex": "what\\s+(are|is) (.*)$"},
+            "regex": "what(\\s+are|'?re|\\s+is|'?s) (.*)$"},
+
+        {"name": "respondWhoIs", "regexParams": "i", "help": "You're so nice to be around.", "description": "Compliment me. Preferably.",
+            "regex": "who(\\s+are|'?re|\\s+is|'?s) (.*)$"},
 
         {"name": "ignoreAuthor", "regexParams": "i", "help": "Ignore me.", "description": "I will stop interacting with you.",
             "regex": "ignore\\s+me[,.?!\\s]{0,3}\\s*$|don'?t\\s+(?:talk|react|respond)\\s+to\\s+me(?:\\s+or\\s+my\\s+(?:son|daughter))?(?:\\s+ever(?:\\s+again))?[,.?!\\s]{0,3}\\s*$"},
