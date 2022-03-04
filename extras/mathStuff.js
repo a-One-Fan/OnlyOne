@@ -10,4 +10,7 @@ module.exports = {
 		if (val > max) return max;
 		return val;
 	},
+	pickRandom(arr) {
+		return arr[Math.floor(Math.random() * arr.length)];
+	},
 };
