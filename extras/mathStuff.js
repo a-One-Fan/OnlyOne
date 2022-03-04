@@ -10,4 +10,4 @@ module.exports = {
 		if (val > max) return max;
 		return val;
 	},
-}
+};
