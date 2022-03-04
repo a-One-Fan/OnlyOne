@@ -14,6 +14,9 @@
         {"name": "respondYoure", "regexParams": "i", "help": "You're so nice to be around.", "description": "Compliment me. Preferably.",
             "regex": "you'?re (.*)$"},
 
+        {"name": "respondWhaAre", "regexParams": "i", "help": "You're so nice to be around.", "description": "Compliment me. Preferably.",
+            "regex": "what\\s+(are|is) (.*)$"},
+
         {"name": "ignoreAuthor", "regexParams": "i", "help": "Ignore me.", "description": "I will stop interacting with you.",
             "regex": "ignore\\s+me[,.?!\\s]{0,3}\\s*$|don'?t\\s+(?:talk|react|respond)\\s+to\\s+me(?:\\s+or\\s+my\\s+(?:son|daughter))?(?:\\s+ever(?:\\s+again))?[,.?!\\s]{0,3}\\s*$"},
 
