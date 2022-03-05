@@ -136,12 +136,14 @@ module.exports = {
 		if (numRegex) {
 			return { isNumber: true, value: parseFloat(chunk), unit: module.exports.units.untyped };
 		} else {
-			for (const u in module.exports.units) {
+			for (let u in module.exports.units) {
+				u = module.exports.units[u];
 				if (module.exports.find(u.names, chunk) > -1) {
 					return { isNumber: false, args: 1, op: (val) => { return module.exports.convertUnit(val, u); } };
 				}
 			}
-			for (const o in module.exports.operators) {
+			for (let o in module.exports.operators) {
+				o = module.exports.operators[o];
 				if (module.exports.find(o.names, chunk) > -1) {
 					// TODO: see line 120
 					if (o.args == 1) return { isNumber: false, args: o.args, op: module.exports.makeOp1Arg(o.op) };
@@ -149,6 +151,6 @@ module.exports = {
 				}
 			}
 		}
-		throw Error(`Unrecognized chunk ${chunk}`);
+		throw Error(`Unrecognized chunk [${chunk}]`);
 	},
 };
