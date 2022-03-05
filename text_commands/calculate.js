@@ -34,6 +34,7 @@ module.exports = {
 				stack.push(val);
 			}
 		}
+
 		if (stack.length > 1) {
 			let remains = "";
 			for (let i = 0; i < (stack.length - 1); i++) {
