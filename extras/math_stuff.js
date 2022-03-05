@@ -69,7 +69,7 @@ module.exports = {
 		not: { args: 1, names: ["~", "not"], op: (val) => { return !val; } },
 		floor: { args: 1, names: ["floor"], op: Math.floor },
 		ceil: { args: 1, names: ["ceil", "ceiling"], op: Math.ceil },
-		fract: { args: 1, names: ["fract", "fraction", "fractpart", "fractionpart"], op: Math.fract },
+		fract: { args: 1, names: ["fract", "fraction", "fractpart", "fractionpart"], op: (val) => { return Math.ceil(val) - val; } },
 	},
 	converters: {
 		"metric heat": { "imperial heat": (val, from, to) => {return (val * 1.8) + 32; } },
