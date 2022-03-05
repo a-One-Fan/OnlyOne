@@ -132,7 +132,7 @@ module.exports = {
 		};
 	},
 	translateChunk(chunk) {
-		const numRegex = RegExp("^-?\\d*\\.?\\d*$").exec(chunk);
+		const numRegex = /^-?(?:(?:\d*\.\d*)|\d+)$/.exec(chunk);
 		if (numRegex) {
 			return { isNumber: true, value: parseFloat(chunk), unit: module.exports.units.untyped };
 		} else {

@@ -53,10 +53,10 @@
         {"name": "renderSnap", "regexParams": "i", "help": "Snap this out of existence: https://only.one.com/zero.png", "description": "I will snap that image or video out of existence.",
             "regex": "(Thanos\\s+)?snap\\s+this\\s*(?:.*):\\s*[`'\"<|]*(https?:.*[\\w\\\\/])(?:[`'\">|\\s]*)$",
             "extraRegex": [
-                "rotated\\s+(-?\\d*\\.?\\d*)(r|rad|radians)?(?:d|deg|degrees)?",
+                "rotated\\s+(-?(?:\\d+|\\d*\\.\\d*))(r|rad|radians)?(?:d|deg|degrees)?",
                 "(?:using|shaped?(?:\\s+like)?)\\s+(\\w+)",
-                "(?:min\\s+|minimum\\s+)?distance\\s+(-?\\d*\\.?\\d*)",
-                "size\\s+(-?\\d*\\.?\\d*)",
+                "(?:min\\s+|minimum\\s+)?distance\\s+(-?(?:\\d+|\\d*\\.\\d*))",
+                "size\\s+(-?(?:\\d+|\\d*\\.\\d*))",
                 "(?:bgcolor|background(?:\\s*color)?)\\s+#?([A-Fa-f0-9]{6})"
             ],
             "extraHelp": "Optional parameters are:\nShape - Circle, Hexagon, Octagon, One, Tile, Triangle\nMinimum distance (between each particle) - [1.0, 25.0]\nSize (of each particle) - [0.1, 20.0]\nBackground color - hexadecimal color\nLong example:\nOne, snap this rotated 3.14rad shaped like Hexagon with distance 4.0 and size 0.3 and background color #FF0000: https://only.one.com/zero.png"
