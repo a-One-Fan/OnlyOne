@@ -28,7 +28,10 @@ module.exports = {
 				stack.push(polish[i].op(stack.pop()));
 			} else {
 				if (stack.length < 2) return { text: "You used too many operators and not enough numbers." };
-				stack.push(polish[i].op(stack.pop(), stack.pop()));
+				const top1 = stack.pop();
+				const top2 = stack.pop();
+				const val = polish[i].op(top2, top1);
+				stack.push(val);
 			}
 		}
 		if (stack.length > 1) {
