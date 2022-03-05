@@ -69,6 +69,7 @@ module.exports = {
 
 						if (error.message == "Bad URL") textContent += "It's because I didn't like your URL.\n";
 						if (error.message.startsWith("Request failed with status code: ")) textContent += `It's because the link returned a ${error.message.substr(33, 3)} error code.\n`;
+						if (error.message.startsWith("Unrecognized chunk")) textContent += `I don't know what "${error.message.substr(20, error.message.length - 21)}"`;
 
 						console.log(error);
 					}
