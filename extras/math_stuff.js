@@ -90,7 +90,7 @@ module.exports = {
 	},
 	find(arr, thing) {
 		for (let i = 0; i < arr.length; i++) {
-			if (arr[i] == thing) return thing;
+			if (arr[i] == thing) return i;
 		}
 		return -1;
 	},
