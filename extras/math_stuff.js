@@ -48,7 +48,7 @@ module.exports = {
 		rad: { value: 1, type: "angle", names: ["r", "rad", "rads", "radians"] },
 		deg: { value: 180 / Math.PI, type: "angle", names: ["d", "deg", "degrees"] },
 
-		untype: { type: "untype", names: ["un", "untype", "typeless"] },
+		untyped: { type: "untyped", names: ["un", "untype", "typeless", "untyped"] },
 	},
 	// TODO: how tf do you refer to default functions like + as a function? To assign to a variable?
 	// TODO: trig functions
@@ -70,9 +70,84 @@ module.exports = {
 		floor: { args: 1, names: ["floor"], op: Math.floor },
 		ceil: { args: 1, names: ["ceil", "ceiling"], op: Math.ceil },
 		fract: { args: 1, names: ["fract", "fraction", "fractpart", "fractionpart"], op: (val) => { return Math.ceil(val) - val; } },
+
+		nop: { args: 1, names: ["nop", "noop", "pass"], op: (val) => { return val; } },
 	},
 	converters: {
 		"metric heat": { "imperial heat": (val, from, to) => {return (val * 1.8) + 32; } },
 		"imperial heat": { "metric heat": (val, from, to) => {return (val - 32) / 1.8; } },
+	},
+	getConverter(oldunit, newunit) {
+		if (!oldunit.subtype || !newunit.subtype) return false;
+
+		if (oldunit.subtype == newunit.subtype) return false;
+
+		if (module.exports.converters[oldunit.subtype] && module.exports.converters[oldunit.subtype][newunit.subtype]) {
+			return module.exports.converters[oldunit.subtype][newunit.subtype];
+		}
+
+		return false;
+	},
+	find(arr, thing) {
+		for (let i = 0; i < arr.length; i++) {
+			if (arr[i] == thing) return thing;
+		}
+		return -1;
+	},
+	convertUnit(val, newunit) {
+		if (!val.isNumber) throw Error(`Trying to convert operator ${val} to units ${newunit}`);
+
+		if (val.unit == newunit) return val;
+
+		if (val.unit.type != newunit.type) {
+			val.unit = newunit;
+			return val;
+		}
+
+		if (val.unit.type == newunit.type) {
+			const converter = module.exports.getConverter(val.unit, newunit);
+			if (!converter) {
+				val.value *= val.unit.value / newunit.value;
+				val.unit = newunit;
+				return val;
+			} else {
+				val.value = converter(val.value, val.unit, newunit);
+				val.unit = newunit;
+				return val;
+			}
+		}
+	},
+	// TODO: do this better?
+	makeOp1Arg(op) {
+		return (val) => {
+			val.value = op(val.value);
+			return val;
+		};
+	},
+	makeOp2Arg(op) {
+		return (val1, val2) => {
+			if (val1.unit != val2.unit) val2 = module.exports.convertUnit(val2, val1.unit);
+			val1.value = op(val1.value, val2.value);
+			return val1;
+		};
+	},
+	translateChunk(chunk) {
+		if (RegExp("^-?\\d*\\.?\\d*$").exec(chunk)[0]) {
+			return { isNumber: true, value: parseFloat(chunk), unit: module.exports.units.untyped };
+		} else {
+			for (const u in module.exports.units) {
+				if (module.exports.find(u.names, chunk) > -1) {
+					return { isNumber: false, args: 1, op: (val) => { return module.exports.convertUnit(val, u); } };
+				}
+			}
+			for (const o in module.exports.operators) {
+				if (module.exports.find(o.names, chunk) > -1) {
+					// TODO: see line 120
+					if (o.args == 1) return { isNumber: false, args: o.args, op: module.exports.makeOp1Arg(o.op) };
+					else return { isNumber: false, args: o.args, op: module.exports.makeOp2Arg(o.op) };
+				}
+			}
+		}
+		throw Error(`Unrecognized chunk ${chunk}`);
 	},
 };
