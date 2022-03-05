@@ -66,7 +66,10 @@ module.exports = {
 						commandError = true;
 						// TODO: DM the error to me? :)
 						textContent += `Looks like something when wrong when executing "${command.name}".\n`;
+
 						if (error.message == "Bad URL") textContent += "It's because I didn't like your URL.\n";
+						if (error.message.startsWith("Request failed with status code: ")) textContent += `It's because the link returned a ${error.message.substr(33, 3)} error code.\n`;
+
 						console.log(error);
 					}
 					break;
