@@ -9,6 +9,10 @@ module.exports = {
 				padded += ` ${c} `;
 				continue;
 			}
+			if (c == "\n") {
+				padded += " ";
+				continue;
+			}
 			if (isNumeric(c) != prevCharNumeric) padded += " ";
 			prevCharNumeric = isNumeric(c);
 			padded += c;
