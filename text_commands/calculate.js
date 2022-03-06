@@ -12,7 +12,58 @@ module.exports = {
 		}
 
 		if (!regexResults[1]) {
-			return { text: "Sorry, infix calculations aren't implemented yet. Learn to use reverse polish notation (aka postfix) yourself!" };
+			const conversionStack = [];
+			for (const c of translated) {
+				if (c.chunkType == chunkTypes.number) {
+					polish.push(c);
+					continue;
+				}
+
+				if (c.chunkType == chunkTypes.operator && (conversionStack.length == 0 || conversionStack[conversionStack.length - 1].chunkType == chunkTypes.closingBracket)) {
+					conversionStack.push(c);
+					continue;
+				}
+
+				if (c.chunkType == chunkTypes.openingBracket) {
+					conversionStack.push(c);
+					continue;
+				}
+
+				if (c.chunkType == chunkTypes.closingBracket) {
+					while ((conversionStack.length > 0) && (conversionStack[conversionStack.length - 1].chunkType != chunkTypes.openingBracket)) {
+						polish.push(conversionStack.pop());
+					}
+					if (conversionStack.length == 0) return { text: "You have an unopened closing bracket." };
+					conversionStack.pop();
+					continue;
+				}
+
+
+				let tempPriorityChunk = 0;
+				if (c.priority) tempPriorityChunk = c.priority;
+				let tempPriorityStack = 0;
+				if (conversionStack[conversionStack.length - 1].priority) tempPriorityStack = conversionStack[conversionStack.length - 1].priority;
+
+				while ((conversionStack.length > 0) && (tempPriorityChunk < tempPriorityStack)) {
+					polish.push(conversionStack.pop());
+					if (conversionStack.length > 0) {
+						if (conversionStack[conversionStack.length - 1].priority) tempPriorityStack = conversionStack[conversionStack.length - 1].priority;
+						else tempPriorityStack = 0;
+					}
+				}
+
+				if (conversionStack.length == 0 || tempPriorityChunk > tempPriorityStack) {
+					conversionStack.push(c);
+					continue;
+				}
+
+				// TODO? Some associativity check here?
+				conversionStack.push(c);
+
+			}
+
+			while (conversionStack) polish.push(conversionStack.pop());
+
 		} else {
 			polish = translated;
 		}
