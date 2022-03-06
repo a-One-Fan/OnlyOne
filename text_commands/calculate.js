@@ -74,7 +74,10 @@ module.exports = {
 					continue;
 				}
 
-				// TODO? Some associativity check here?
+				if (c.righty) {
+					polish.push(conversionStack.pop());
+				}
+
 				conversionStack.push(c);
 
 			}

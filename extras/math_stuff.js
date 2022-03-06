@@ -188,7 +188,7 @@ module.exports = {
 			for (let u in module.exports.units) {
 				u = module.exports.units[u];
 				if (module.exports.find(u.names, chunk) > -1) {
-					return { chunkType: module.exports.chunkTypes.operator, args: 1, op: (val) => { return module.exports.convertUnit(val, u); } };
+					return { chunkType: module.exports.chunkTypes.operator, args: 1, op: (val) => { return module.exports.convertUnit(val, u); }, righty: true };
 				}
 			}
 			for (let o in module.exports.operators) {
