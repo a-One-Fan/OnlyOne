@@ -48,6 +48,30 @@ module.exports = {
 		rad: { value: 1, type: "angle", names: ["r", "rad", "rads", "radians"] },
 		deg: { value: 180 / Math.PI, type: "angle", names: ["d", "deg", "degrees"] },
 
+		bit: { value: 1.0 / 8.0, type: "bits", names: ["b", "bit", "bits"] },
+		byte: { value: 1, type: "bits", names: ["B", "byte", "bytes"] },
+
+		kb: { value: 1000, type: "bits", names: ["KB", "kB", "kilobyte", "kilobytes"] },
+		kbit: { value: 125, type: "bits", names: ["Kb", "kb", "kbit", "kilobit", "kilobits"] },
+		kibib: { value: 1024, type: "bits", names: ["KiB", "kiB", "kibibyte", "kibibytes"] },
+		kibibit: { value: 128, type: "bits", names: ["Kib", "kib", "kibit", "kibibit", "kibibits"] },
+
+		mb: { value: 1000000, type: "bits", names: ["MB", "mB", "megabyte", "megabytes"] },
+		mbit: { value: 125000, type: "bits", names: ["Mb", "mb", "mbit", "megabit", "megabits"] },
+		mebib: { value: 1048576, type: "bits", names: ["MeB", "meB", "mebibyte", "mebibytes"] },
+		mebibit: { value: 131072, type: "bits", names: ["Meb", "meb", "mebit", "mebibit", "mebibits"] },
+
+		gb: { value: 1000000000, type: "bits", names: ["GB", "gB", "gigabyte", "gigabytes"] },
+		gbit: { value: 125000000, type: "bits", names: ["Gb", "gb", "gbit", "gigabit", "gigabits"] },
+		gibib: { value: 8589934592, type: "bits", names: ["GiB", "giB", "gibibyte", "gibibytes"] },
+		gibibit: { value: 134217728, type: "bits", names: ["Gib", "gib", "gibit", "gibibit", "gibibits"] },
+
+		tb: { value: 1000000000000, type: "bits", names: ["TB", "tB", "terabyte", "terabytes"] },
+		tbit: { value: 125000000000, type: "bits", names: ["Tb", "tb", "tbit", "terabit", "terabits"] },
+		tebib: { value: 1099511627776, type: "bits", names: ["TeB", "teB", "tebibyte", "tebibytes"] },
+		tebibit: { value: 137438953472, type: "bits", names: ["Teb", "teb", "tebit", "tebibit", "tebibits"] },
+
+
 		untyped: { type: "untyped", names: ["un", "untype", "typeless", "untyped"] },
 	},
 	// TODO: how tf do you refer to default functions like + as a function? To assign to a variable?
