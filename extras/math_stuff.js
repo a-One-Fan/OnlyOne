@@ -206,6 +206,20 @@ module.exports = {
 			}
 			if (chunk == "(") return { chunkType: module.exports.chunkTypes.openingBracket };
 			if (chunk == ")") return { chunkType: module.exports.chunkTypes.closingBracket };
+			try {
+				const { currencies } = require("./currencies.json");
+				for (let cur in currencies) {
+					if (chunk == cur) {
+						const name = cur;
+						cur = currencies[cur];
+						return { chunkType: module.exports.chunkTypes.operator, args: 1, op: (val) => {
+							return module.exports.convertUnit(val, { value: cur.value, type: "currency", names: [name] });
+						} };
+					}
+				}
+			} catch (error) {
+				console.log("Likely couldn't access currencies.\n", error);
+			}
 		}
 		throw Error(`Unrecognized chunk [${chunk}]`);
 	},
