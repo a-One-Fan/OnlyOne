@@ -10,7 +10,10 @@
 	"ffmpegLocation": "",
 	"blenderLocation": "",
 	"permittedUrls": "^https:\\/\\/(?:(?:media\\.discordapp\\.net|cdn\\.discordapp\\.com)\\/|i\\.imgur\\.com\\/).*\\.(png|jpg|jpeg|jfif|tiff|exr|hdr|mp4|mkv|webm|gif|mov)$",
-	"downloadFilepath": "./download"
+	"downloadFilepath": "./download",
+	"exchangerateApiKey": "",
+	"baseCurrency": "USD",
+	"currencyUpdateInterval": 86400000
 }
 
 
@@ -27,5 +30,8 @@ Example values:
 	"blenderLocation": "C:/blender-3.0/blender.exe", // Points to the blender exe (not the folder)
 	// Feel free to put them in a folder here if it's your first time using them. I just have existing Blender and ffmpeg versions and I'll point it to those.
 	"permittedUrls": "https:\/\/my.site.gov\/%d*\/poopfart.jpg", // Regex for whitelisted URLs.
-	"downloadFilepath": "./download" // Filename for saving a file.
+	"downloadFilepath": "./download", // Filename for saving a file.
+	"exchangerateApiKey": "j3k1hjdg123kjlhyuyi", // key for https://www.exchangerate-api.com
+	"baseCurrency": "USD",
+	"currencyUpdateInterval": 86400000 // How frequently currencies are allowed to be updated, in miliseconds
 }

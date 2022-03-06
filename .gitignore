@@ -8,3 +8,4 @@ database.sqlite
 *.gif
 *.jpeg
 *.mov
+extras/currencies.json
