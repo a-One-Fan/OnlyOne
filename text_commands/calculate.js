@@ -5,7 +5,10 @@ module.exports = {
 		let padded = "";
 		let prevCharNumeric = false;
 		for (const c of regexResults[2]) {
-			if (c == "(" || c == ")") padded += ` ${c} `;
+			if (c == "(" || c == ")") {
+				padded += ` ${c} `;
+				continue;
+			}
 			if (isNumeric(c) != prevCharNumeric) padded += " ";
 			prevCharNumeric = isNumeric(c);
 			padded += c;
