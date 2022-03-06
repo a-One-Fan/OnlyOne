@@ -1,5 +1,6 @@
 const { access } = require("fs");
 const { ffmpegFolderLocation, blenderLocation } = require("../config.json");
+const { updateCurrencies } = require("../extras/currency.js");
 
 module.exports = {
 	name: "ready",
@@ -24,6 +25,17 @@ module.exports = {
 			if (err) console.log(`Error when trying to open Blender exe at "${blenderLocation}":\n${err}`);
 			else console.log("Blender exe can be opened successfully.");
 		});
+
+		try {
+			const updateRes = updateCurrencies();
+			if (updateRes > 0) {
+				console.log(`Did not update currencies. Last updated ${updateRes / 1000} seconds ago.`);
+			} else {
+				console.log("Currencies updated.");
+			}
+		} catch (error) {
+			console.log("Could not update currencies.\n", error);
+		}
 
 		console.log(`Ready! Logged in as ${client.user.tag}`);
 	},
