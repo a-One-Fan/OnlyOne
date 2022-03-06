@@ -1,4 +1,4 @@
-const { units, translateChunk } = require("../extras/math_stuff.js");
+const { units, translateChunk, chunkTypes } = require("../extras/math_stuff.js");
 
 module.exports = {
 	async execute(message, regexResults) {
@@ -20,7 +20,8 @@ module.exports = {
 		const stack = [];
 
 		for (let i = 0; i < polish.length; i++) {
-			if (polish[i].isNumber) {
+			if (polish[i].chunkType == chunkTypes.openingBracket || polish[i].chunkType == chunkTypes.closingBracket) return { text: "You can't use brackets in polish notation." };
+			if (polish[i].chunkType == chunkTypes.number) {
 				stack.push(polish[i]);
 				// TODO: do this better?
 			} else if (polish[i].args == 1) {

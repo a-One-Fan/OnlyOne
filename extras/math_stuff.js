@@ -77,6 +77,12 @@ module.exports = {
 		"metric heat": { "imperial heat": (val, from, to) => {return (val * 1.8) + 32; } },
 		"imperial heat": { "metric heat": (val, from, to) => {return (val - 32) / 1.8; } },
 	},
+	chunkTypes: {
+		number: 0,
+		operator: 1,
+		openingBracket: 2,
+		closingBracket: 3,
+	},
 	getConverter(oldunit, newunit) {
 		if (!oldunit.subtype || !newunit.subtype) return false;
 
@@ -95,7 +101,7 @@ module.exports = {
 		return -1;
 	},
 	convertUnit(val, newunit) {
-		if (!val.isNumber) throw Error(`Trying to convert operator ${val} to units ${newunit}`);
+		if (!val.chunkType == module.exports.chunkTypes.number) throw Error(`Trying to convert not-number ${val} to units ${newunit}`);
 
 		if (val.unit == newunit) return val;
 
@@ -134,22 +140,24 @@ module.exports = {
 	translateChunk(chunk) {
 		const numRegex = /^-?(?:(?:\d*\.\d*)|\d+)$/.exec(chunk);
 		if (numRegex) {
-			return { isNumber: true, value: parseFloat(chunk), unit: module.exports.units.untyped };
+			return { chunkType: module.exports.chunkTypes.number, value: parseFloat(chunk), unit: module.exports.units.untyped };
 		} else {
 			for (let u in module.exports.units) {
 				u = module.exports.units[u];
 				if (module.exports.find(u.names, chunk) > -1) {
-					return { isNumber: false, args: 1, op: (val) => { return module.exports.convertUnit(val, u); } };
+					return { chunkType: module.exports.chunkTypes.operator, args: 1, op: (val) => { return module.exports.convertUnit(val, u); } };
 				}
 			}
 			for (let o in module.exports.operators) {
 				o = module.exports.operators[o];
 				if (module.exports.find(o.names, chunk) > -1) {
 					// TODO: see line 120
-					if (o.args == 1) return { isNumber: false, args: o.args, op: module.exports.makeOp1Arg(o.op) };
-					else return { isNumber: false, args: o.args, op: module.exports.makeOp2Arg(o.op) };
+					if (o.args == 1) return { chunkType: module.exports.chunkTypes.operator, args: o.args, op: module.exports.makeOp1Arg(o.op) };
+					else return { chunkType: module.exports.chunkTypes.operator, args: o.args, op: module.exports.makeOp2Arg(o.op) };
 				}
 			}
+			if (chunk == "(") return { chunkType: module.exports.chunkTypes.openingBracket };
+			if (chunk == ")") return { chunkType: module.exports.chunkTypes.closingBracket };
 		}
 		throw Error(`Unrecognized chunk [${chunk}]`);
 	},
