@@ -27,6 +27,7 @@ module.exports = {
 		fs.writeFileSync("./extras/currencies.json", JSON.stringify(currencyData, null, 2));
 	},
 	updateCurrencies() {
+		delete require.cache[require.resolve("./currencies.json")];
 		const { lastUpdated } = require("./currencies.json");
 		const now = new Date();
 		const lastUpdatedDate = new Date(lastUpdated);
