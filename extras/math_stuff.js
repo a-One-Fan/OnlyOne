@@ -100,6 +100,13 @@ module.exports = {
 		}
 		return -1;
 	},
+	remove(arr, thing) {
+		const arr2 = [];
+		for (let i = 0; i < arr.length; i++) {
+			if (arr[i] != thing) arr2.push(arr[i]);
+		}
+		return arr2;
+	},
 	isDigit(char) {
 		return char >= "0" && char <= "9";
 	},
