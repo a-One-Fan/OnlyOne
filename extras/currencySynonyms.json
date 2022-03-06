@@ -1,0 +1,14 @@
+{
+    "currencySynonyms": {
+        "USD": ["dollar", "dollars", "$", "United States Dollars"],
+        "BRL": ["real", "reals", "reais", "R$", "Brazillian Real"],
+        "BGN": ["lev", "leva", "levs", "лв", "лв.", "Bulgarian Lev"],
+        "GBP": ["£", "Great British Pounds"],
+        "MYR": ["ringgit", "ringgits", "RM", "Malaysian Ringgit"],
+        "EUR": ["euro", "€", "euros", "Euros"],
+        "RUB": ["rub", "ruble", "rubles", "рубль", "руб", "₽", "Russian Rubles"],
+        "INR": ["rup", "rupee", "rupees", "₹", "Indian Rupees"],
+        "CNY": ["yuan", "元", "圓", "Chinese Yuan"],
+        "JPY": ["yen", "¥", "円", "Japanese Yen"]
+    }
+}
