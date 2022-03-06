@@ -1,4 +1,4 @@
-const { units, translateChunk, chunkTypes, isNumeric } = require("../extras/math_stuff.js");
+const { units, translateChunk, chunkTypes, isNumeric, remove } = require("../extras/math_stuff.js");
 
 module.exports = {
 	async execute(message, regexResults) {
@@ -14,7 +14,8 @@ module.exports = {
 			padded += c;
 		}
 
-		const split = padded.split(RegExp("\\s+"));
+		let split = padded.split(RegExp("\\s+"));
+		split = remove(split, "");
 
 		const translated = [];
 		let polish = [];
