@@ -209,11 +209,15 @@ module.exports = {
 			if (chunk == ")") return { chunkType: module.exports.chunkTypes.closingBracket };
 			try {
 				const { currencies } = require("./currencies.json");
+				const { currencySynonyms } = require("./currencySynonyms.json");
 				for (const cur in currencies) {
-					if (chunk == cur) {
+					if (chunk.toUpperCase() == cur || (module.exports.find(currencySynonyms[cur], chunk) > -1)) {
+						let _names = [cur];
+						if (currencySynonyms[cur]) _names = _names.concat(currencySynonyms[cur]);
+						console.log(_names);
 						return { chunkType: module.exports.chunkTypes.operator, args: 1, op: (val) => {
-							return module.exports.convertUnit(val, { value: currencies[cur], type: "currency", names: [cur], righty: true });
-						} };
+							return module.exports.convertUnit(val, { value: 1.0 / currencies[cur], type: "currency", names: _names })
+						}, righty: true };
 					}
 				}
 			} catch (error) {
