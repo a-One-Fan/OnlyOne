@@ -100,6 +100,12 @@ module.exports = {
 		}
 		return -1;
 	},
+	isDigit(char) {
+		return char >= "0" && char <= "9";
+	},
+	isNumeric(char) {
+		return module.exports.isDigit(char) || char == "-" || char == ".";
+	},
 	convertUnit(val, newunit) {
 		if (!val.chunkType == module.exports.chunkTypes.number) throw Error(`Trying to convert not-number ${val} to units ${newunit}`);
 
