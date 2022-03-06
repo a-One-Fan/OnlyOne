@@ -30,6 +30,7 @@ module.exports = {
 		km: { value: 1000, type: "distance", subtype: "metric distance", names: ["km", "kilometer", "kilometre", "kilometers", "kilometres"] },
 		in: { value: 0.0254, type: "distance", subtype: "imperial distance", names: ["in", "inch", "inches"] },
 		ft: { value: 0.3048, type: "distance", subtype: "imperial distance", names: ["ft", "foot", "feet", "footfetish"] },
+		yd: { value: 0.9144, type: "distance", subtype: "imperial distance", names: ["yd", "yard", "yards"] },
 		mil: { value: 1609.344, type: "distance", subtype: "imperial distance", names: ["mil", "mile", "miles"] },
 
 		c: { type: "heat", subtype: "metric heat", names: ["c", "celsius", "centigrade"] },
