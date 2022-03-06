@@ -68,6 +68,6 @@
         },
 
         {"name": "updateCurrencies", "regexParams": "i", "help": "Update currency conversion rates.", "descriptiont": "I will update my currency conversion rates if enough time has passed.",
-            "regex": "update\\s+(?:currency\\s+)?(?:conversion\\s+)?rates[,.?!\\s]{0,3}\\s*$"}
+            "regex": "update\\s+(?:your\\s+)?(?:currency\\s+)?(?:conversion\\s+|exchange\\s+)?rates[,.?!\\s]{0,3}\\s*$"}
     ]
 }
