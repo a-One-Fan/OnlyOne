@@ -9,6 +9,12 @@
         "RUB": ["rub", "ruble", "rubles", "рубль", "руб", "₽", "Russian Rubles"],
         "INR": ["rup", "rupee", "rupees", "₹", "Indian Rupees"],
         "CNY": ["yuan", "元", "圓", "Chinese Yuan"],
-        "JPY": ["yen", "¥", "円", "Japanese Yen"]
+        "JPY": ["yen", "¥", "円", "Japanese Yen"],
+        "CAD": ["CA$", "C$", "Canadian Dollars"],
+        "AUS": ["AU$", "A$", "kangaroos", "didgeridoos", "Australian Dollars"],
+        "MXN": ["peso", "pesos", "Mexican Pesos"],
+        "PLN": ["zloty", "złoty", "zł", "zl", "Polish Zloty"],
+        "NOK": ["krone", "kroner", "kr", "Norwegian Kroner"]
+        
     }
 }
