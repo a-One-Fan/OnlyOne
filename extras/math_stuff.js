@@ -216,7 +216,7 @@ module.exports = {
 						if (currencySynonyms[cur]) _names = _names.concat(currencySynonyms[cur]);
 						console.log(_names);
 						return { chunkType: module.exports.chunkTypes.operator, args: 1, op: (val) => {
-							return module.exports.convertUnit(val, { value: 1.0 / currencies[cur], type: "currency", names: _names })
+							return module.exports.convertUnit(val, { value: 1.0 / currencies[cur], type: "currency", names: _names });
 						}, righty: true };
 					}
 				}
