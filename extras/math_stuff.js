@@ -208,12 +208,10 @@ module.exports = {
 			if (chunk == ")") return { chunkType: module.exports.chunkTypes.closingBracket };
 			try {
 				const { currencies } = require("./currencies.json");
-				for (let cur in currencies) {
+				for (const cur in currencies) {
 					if (chunk == cur) {
-						const name = cur;
-						cur = currencies[cur];
 						return { chunkType: module.exports.chunkTypes.operator, args: 1, op: (val) => {
-							return module.exports.convertUnit(val, { value: cur.value, type: "currency", names: [name] });
+							return module.exports.convertUnit(val, { value: currencies[cur], type: "currency", names: [cur], righty: true });
 						} };
 					}
 				}
