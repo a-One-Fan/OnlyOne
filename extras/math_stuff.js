@@ -124,6 +124,7 @@ module.exports = {
 		return false;
 	},
 	find(arr, thing) {
+		if (!arr) return -1;
 		for (let i = 0; i < arr.length; i++) {
 			if (arr[i] == thing) return i;
 		}
