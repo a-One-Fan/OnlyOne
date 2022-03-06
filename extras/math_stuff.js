@@ -169,7 +169,13 @@ module.exports = {
 	},
 	makeOp2Arg(op) {
 		return (val1, val2) => {
-			if (val1.unit != val2.unit) val2 = module.exports.convertUnit(val2, val1.unit);
+			if (val1.unit != val2.unit) {
+				if (val1.unit != module.exports.units.untyped) {
+					val2 = module.exports.convertUnit(val2, val1.unit);
+				} else {
+					val1 = module.exports.convertUnit(val1, val2.unit);
+				}
+			}
 			val1.value = op(val1.value, val2.value);
 			return val1;
 		};
