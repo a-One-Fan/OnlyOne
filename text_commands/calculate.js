@@ -114,6 +114,6 @@ module.exports = {
 		}
 		if (stack.length == 0) return { text: "How did you leave an empty stack?!" };
 
-		return { text: `${stack[0].value}${stack[0].unit == units.untyped ? "" : ` ${stack[0].unit.names[stack[0].unit.names.length - 1]}.` }` };
+		return { text: `${stack[0].value}${stack[0].unit == units.untyped ? "" : ` ${stack[0].unit.names[stack[0].unit.names.length - 1]}` }.` };
 	},
 };
