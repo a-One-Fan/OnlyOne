@@ -1,8 +1,17 @@
-const { units, translateChunk, chunkTypes } = require("../extras/math_stuff.js");
+const { units, translateChunk, chunkTypes, isNumeric } = require("../extras/math_stuff.js");
 
 module.exports = {
 	async execute(message, regexResults) {
-		const split = regexResults[2].split(RegExp("\\s+"));
+		let padded = "";
+		let prevCharNumeric = false;
+		for (const c of regexResults[2]) {
+			if (c == "(" || c == ")") padded += ` ${c} `;
+			if (isNumeric(c) != prevCharNumeric) padded += " ";
+			prevCharNumeric = isNumeric(c);
+			padded += c;
+		}
+
+		const split = padded.split(RegExp("\\s+"));
 
 		const translated = [];
 		let polish = [];
