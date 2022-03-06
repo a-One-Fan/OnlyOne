@@ -1,7 +1,6 @@
 const https = require("https");
 const { exchangerateApiKey, baseCurrency, currencyUpdateInterval } = require("../config.json");
 const fs = require("fs");
-const { stringify } = require("querystring");
 
 module.exports = {
 	async forceUpdateCurrencies() {
