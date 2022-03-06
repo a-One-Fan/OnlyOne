@@ -79,7 +79,7 @@ module.exports = {
 
 			}
 
-			while (conversionStack) polish.push(conversionStack.pop());
+			while (conversionStack.length > 0) polish.push(conversionStack.pop());
 
 		} else {
 			polish = translated;
