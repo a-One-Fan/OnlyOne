@@ -1,5 +1,5 @@
 const commandData = require("./commands.json");
-const { clamp } = require("../extras/image_manip.js");
+const { clamp } = require("../extras/math_stuff.js");
 
 const commandsPerPage = 8;
 
