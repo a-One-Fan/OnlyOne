@@ -94,6 +94,10 @@ module.exports = {
 		floor: { args: 1, names: ["floor"], op: Math.floor },
 		ceil: { args: 1, names: ["ceil", "ceiling"], op: Math.ceil },
 		fract: { args: 1, names: ["fract", "fraction", "fractpart", "fractionpart"], op: (val) => { return Math.ceil(val) - val; } },
+		sin: { args: 1, names: ["sin", "sine"], op: Math.sin },
+		cos: { args: 1, names: ["cos", "cosine"], op: Math.cos },
+		tan: { args: 1, names: ["tg", "tan", "tangent"], op: Math.tan },
+		cotan: { args: 1, names: ["cotg", "cotan", "cot", "cotangent"], op: (val) => { return 1.0 / Math.tan(val); } },
 
 		nop: { args: 1, names: ["nop", "noop", "pass", "id", "identity", "to"], op: (val) => { return val; } },
 	},
