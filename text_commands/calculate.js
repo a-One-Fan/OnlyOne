@@ -20,6 +20,7 @@ module.exports = {
 
 		let split = padded.split(RegExp("\\s+"));
 		split = remove(split, "");
+		split = remove(split, "to");
 
 		const translated = [];
 		let polish = [];
