@@ -1,4 +1,4 @@
-const { units, translateChunk, chunkTypes, isNumeric, remove } = require("../extras/math_stuff.js");
+const { units, translateChunk, chunkTypes, isNumeric, remove, stringifyChunk } = require("../extras/math_stuff.js");
 
 module.exports = {
 	async execute(message, regexResults) {
@@ -123,13 +123,13 @@ module.exports = {
 		if (stack.length > 1) {
 			let remains = "";
 			for (let i = 0; i < (stack.length - 1); i++) {
-				remains += `${stack[i].value} ${stack[i].unit.names[stack[i].unit.names.length - 1]}, `;
+				remains += stringifyChunk(stack[i]) + ", ";
 			}
-			remains += `${stack[stack.length - 1].value} ${stack[stack.length - 1].unit.names[stack[stack.length - 1].unit.names.length - 1]}\n`;
+			remains += stringifyChunk(stack[stack.length - 1]) + "\n";
 			return { text: resText + `You didn't use enough operators. What remains is:\n${remains}` };
 		}
 		if (stack.length == 0) return { text: resText + "How did you leave an empty stack?!" };
 
-		return { text: resText + `${stack[0].value}${stack[0].unit == units.untyped ? "" : ` ${stack[0].unit.names[stack[0].unit.names.length - 1]}` }.` };
+		return { text: resText + stringifyChunk(stack[0]) };
 	},
 };
