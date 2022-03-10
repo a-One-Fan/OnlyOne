@@ -38,7 +38,7 @@ module.exports = {
 					continue;
 				}
 
-				if (c.chunkType == chunkTypes.operator && ((conversionStack.length == 0) || (conversionStack[conversionStack.length - 1].chunkType == chunkTypes.openingBracket))) {
+				if (c.chunkType == chunkTypes.operator && ((conversionStack.length == 0) || (conversionStack.at(-1).chunkType == chunkTypes.openingBracket))) {
 					conversionStack.push(c);
 					continue;
 				}
@@ -49,7 +49,7 @@ module.exports = {
 				}
 
 				if (c.chunkType == chunkTypes.closingBracket) {
-					while ((conversionStack.length > 0) && (conversionStack[conversionStack.length - 1].chunkType != chunkTypes.openingBracket)) {
+					while ((conversionStack.length > 0) && (conversionStack.at(-1).chunkType != chunkTypes.openingBracket)) {
 						polish.push(conversionStack.pop());
 					}
 					if (conversionStack.length == 0) return { text: "You have an unopened closing bracket." };
@@ -61,12 +61,12 @@ module.exports = {
 				let tempPriorityChunk = 0;
 				if (c.priority) tempPriorityChunk = c.priority;
 				let tempPriorityStack = 0;
-				if (conversionStack[conversionStack.length - 1].priority) tempPriorityStack = conversionStack[conversionStack.length - 1].priority;
+				if (conversionStack.at(-1).priority) tempPriorityStack = conversionStack.at(-1).priority;
 
 				while ((conversionStack.length > 0) && (tempPriorityChunk < tempPriorityStack)) {
 					polish.push(conversionStack.pop());
 					if (conversionStack.length > 0) {
-						if (conversionStack[conversionStack.length - 1].priority) tempPriorityStack = conversionStack[conversionStack.length - 1].priority;
+						if (conversionStack.at(-1).priority) tempPriorityStack = conversionStack.at(-1).priority;
 						else tempPriorityStack = 0;
 					}
 				}
