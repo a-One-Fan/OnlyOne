@@ -2,6 +2,7 @@ const { units, translateChunk, chunkTypes, isNumeric, remove } = require("../ext
 
 module.exports = {
 	async execute(message, regexResults) {
+		let resText = "";
 		let padded = "";
 		let prevCharNumeric = false;
 		for (const c of regexResults[2]) {
@@ -83,7 +84,18 @@ module.exports = {
 
 			}
 
-			while (conversionStack.length > 0) polish.push(conversionStack.pop());
+			let ignoredBrackets = 0;
+			while (conversionStack.length > 0) {
+				const stk = conversionStack.pop();
+				if (stk.chunkType == chunkTypes.openingBracket) {
+					ignoredBrackets++;
+				} else {
+					polish.push(stk);
+				}
+			}
+			if (ignoredBrackets > 0) {
+				resText += `You had ${ignoredBrackets} unclosed opening bracket${ignoredBrackets == 1 ? "" : "s"}, but I'll pretend I didn't see ${ignoredBrackets == 1 ? "it" : "them"}.\n`;
+			}
 
 		} else {
 			polish = translated;
@@ -97,10 +109,10 @@ module.exports = {
 				stack.push(polish[i]);
 				// TODO: do this better?
 			} else if (polish[i].args == 1) {
-				if (stack.length < 1) return { text: "You used too many operators and not enough numbers." };
+				if (stack.length < 1) return { text: resText + "You used too many operators and not enough numbers." };
 				stack.push(polish[i].op(stack.pop()));
 			} else {
-				if (stack.length < 2) return { text: "You used too many operators and not enough numbers." };
+				if (stack.length < 2) return { text: resText + "You used too many operators and not enough numbers." };
 				const top1 = stack.pop();
 				const top2 = stack.pop();
 				const val = polish[i].op(top2, top1);
@@ -114,10 +126,10 @@ module.exports = {
 				remains += `${stack[i].value} ${stack[i].unit.names[stack[i].unit.names.length - 1]}, `;
 			}
 			remains += `${stack[stack.length - 1].value} ${stack[stack.length - 1].unit.names[stack[stack.length - 1].unit.names.length - 1]}\n`;
-			return { text: `You didn't use enough operators. What remains is:\n${remains}` };
+			return { text: resText + `You didn't use enough operators. What remains is:\n${remains}` };
 		}
-		if (stack.length == 0) return { text: "How did you leave an empty stack?!" };
+		if (stack.length == 0) return { text: resText + "How did you leave an empty stack?!" };
 
-		return { text: `${stack[0].value}${stack[0].unit == units.untyped ? "" : ` ${stack[0].unit.names[stack[0].unit.names.length - 1]}` }.` };
+		return { text: resText + `${stack[0].value}${stack[0].unit == units.untyped ? "" : ` ${stack[0].unit.names[stack[0].unit.names.length - 1]}` }.` };
 	},
 };
