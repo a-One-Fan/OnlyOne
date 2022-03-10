@@ -229,6 +229,6 @@ module.exports = {
 		if (chunk.chunkType == module.exports.chunkTypes.openingBracket) return "(";
 		if (chunk.chunkType == module.exports.chunkTypes.closingBracket) return ")";
 		if (chunk.chunkType == module.exports.chunkTypes.operator) return "op";
-		if (chunk.chunkType == module.exports.chunkTypes.number) return `${chunk.value}${chunk.unit == module.exports.units.untyped ? "" : ` ${chunk.type.names[chunk.type.names.length - 1]}`}`;
+		if (chunk.chunkType == module.exports.chunkTypes.number) return `${chunk.value}${chunk.unit == module.exports.units.untyped ? "" : ` ${chunk.unit.names[chunk.unit.names.length - 1]}`}`;
 	},
 };
