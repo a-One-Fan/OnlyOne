@@ -130,6 +130,6 @@ module.exports = {
 		}
 		if (stack.length == 0) return { text: resText + "How did you leave an empty stack?!" };
 
-		return { text: resText + stringifyChunk(stack[0]) };
+		return { text: resText + stringifyChunk(stack[0]) + "." };
 	},
 };
