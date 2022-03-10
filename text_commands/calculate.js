@@ -84,17 +84,17 @@ module.exports = {
 
 			}
 
-			let ignoredBrackets = 0;
+			let ignoredOpenBrackets = 0;
 			while (conversionStack.length > 0) {
 				const stk = conversionStack.pop();
 				if (stk.chunkType == chunkTypes.openingBracket) {
-					ignoredBrackets++;
+					ignoredOpenBrackets++;
 				} else {
 					polish.push(stk);
 				}
 			}
-			if (ignoredBrackets > 0) {
-				resText += `You had ${ignoredBrackets} unclosed opening bracket${ignoredBrackets == 1 ? "" : "s"}, but I'll pretend I didn't see ${ignoredBrackets == 1 ? "it" : "them"}.\n`;
+			if (ignoredOpenBrackets > 0) {
+				resText += `You had ${ignoredOpenBrackets} unclosed opening bracket${ignoredOpenBrackets == 1 ? "" : "s"}, but I'll pretend I didn't see ${ignoredOpenBrackets == 1 ? "it" : "them"}.\n`;
 			}
 
 		} else {
