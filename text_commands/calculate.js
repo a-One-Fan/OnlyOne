@@ -37,7 +37,7 @@ module.exports = {
 					continue;
 				}
 
-				if (c.chunkType == chunkTypes.operator && (conversionStack.length == 0 || conversionStack[conversionStack.length - 1].chunkType == chunkTypes.closingBracket)) {
+				if (c.chunkType == chunkTypes.operator && ((conversionStack.length == 0) || (conversionStack[conversionStack.length - 1].chunkType == chunkTypes.openingBracket))) {
 					conversionStack.push(c);
 					continue;
 				}
