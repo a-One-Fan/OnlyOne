@@ -1,4 +1,4 @@
-const { units, translateChunk, chunkTypes, isNumeric, remove, stringifyChunk } = require("../extras/math_stuff.js");
+const { translateChunk, chunkTypes, isNumeric, remove, stringifyChunk } = require("../extras/math_stuff.js");
 
 module.exports = {
 	async execute(message, regexResults) {
