@@ -22,6 +22,7 @@ module.exports = {
 		g: { value: 0.001, type: "weight", subtype: "metric weight", names: ["g", "gram", "grams"] },
 		kg: { value: 1, type: "weight", subtype: "metric weight", names: ["kg", "kilogram", "kilograms", "kilos"] },
 		t: { value: 1000, type: "weight", subtype: "metric weight", names: ["t", "ton", "tons"] },
+		lb: { value: 2.204623, type: "weight", subtype: "imperial weight", names: ["lb", "pounds"] },
 
 		mm: { value: 0.001, type: "distance", subtype: "metric distance", names: ["mm", "milimetre", "mmilimeter", "milimeters", "milimetres"] },
 		cm: { value: 0.01, type: "distance", subtype: "metric distance", names: ["cm", "centimetre", "centimeter", "centimeters", "centimetres"] },
