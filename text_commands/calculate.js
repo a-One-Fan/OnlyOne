@@ -31,6 +31,7 @@ module.exports = {
 		}
 
 		if (!regexResults[1]) {
+			let ignoredOpenBrackets = 0, ignoredClosingBrackets = 0;
 			const conversionStack = [];
 			for (const c of translated) {
 				if (c.chunkType == chunkTypes.number) {
@@ -52,8 +53,8 @@ module.exports = {
 					while ((conversionStack.length > 0) && (conversionStack.at(-1).chunkType != chunkTypes.openingBracket)) {
 						polish.push(conversionStack.pop());
 					}
-					if (conversionStack.length == 0) return { text: "You have an unopened closing bracket." };
-					conversionStack.pop();
+					if (conversionStack.length == 0) ignoredClosingBrackets++;
+					else conversionStack.pop();
 					continue;
 				}
 
@@ -84,7 +85,6 @@ module.exports = {
 
 			}
 
-			let ignoredOpenBrackets = 0;
 			while (conversionStack.length > 0) {
 				const stk = conversionStack.pop();
 				if (stk.chunkType == chunkTypes.openingBracket) {
@@ -93,8 +93,13 @@ module.exports = {
 					polish.push(stk);
 				}
 			}
-			if (ignoredOpenBrackets > 0) {
-				resText += `You had ${ignoredOpenBrackets} unclosed opening bracket${ignoredOpenBrackets == 1 ? "" : "s"}, but I'll pretend I didn't see ${ignoredOpenBrackets == 1 ? "it" : "them"}.\n`;
+			if (ignoredOpenBrackets > 0 || ignoredClosingBrackets > 0) {
+				resText += "You had ";
+				if (ignoredOpenBrackets > 0) resText += `${ignoredOpenBrackets} unclosed opening bracket${ignoredOpenBrackets == 1 ? "" : "s"}`;
+				if (ignoredClosingBrackets > 0 && ignoredOpenBrackets > 0) resText += " and ";
+				if (ignoredClosingBrackets > 0) resText += `${ignoredClosingBrackets} unopened closing bracket${ignoredClosingBrackets == 1 ? "" : "s"}`;
+				resText += `, but I'll pretend I didn't see ${ignoredClosingBrackets + ignoredOpenBrackets == 1 ? "it" : "them"}.\n`;
+				if (ignoredClosingBrackets > 0) resText += "Unopened closing brackets may result in further, 'incorrect' errors down the line.\n";
 			}
 
 		} else {
