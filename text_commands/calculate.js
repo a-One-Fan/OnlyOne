@@ -1,4 +1,4 @@
-const { translateChunk, chunkTypes, isNumeric, remove, stringifyChunk } = require("../extras/math_stuff.js");
+const { translateChunk, chunkTypes, isNumeric, remove, stringifyChunk, convertInfix } = require("../extras/math_stuff.js");
 
 module.exports = {
 	async execute(message, regexResults) {
@@ -31,68 +31,9 @@ module.exports = {
 		}
 
 		if (!regexResults[1]) {
-			let ignoredOpenBrackets = 0, ignoredClosingBrackets = 0;
-			const conversionStack = [];
-			for (const c of translated) {
-				if (c.chunkType == chunkTypes.number) {
-					polish.push(c);
-					continue;
-				}
+			let ignoredOpenBrackets, ignoredClosingBrackets;
+			[polish, ignoredOpenBrackets, ignoredClosingBrackets] = convertInfix(translated);
 
-				if (c.chunkType == chunkTypes.operator && ((conversionStack.length == 0) || (conversionStack.at(-1).chunkType == chunkTypes.openingBracket))) {
-					conversionStack.push(c);
-					continue;
-				}
-
-				if (c.chunkType == chunkTypes.openingBracket) {
-					conversionStack.push(c);
-					continue;
-				}
-
-				if (c.chunkType == chunkTypes.closingBracket) {
-					while ((conversionStack.length > 0) && (conversionStack.at(-1).chunkType != chunkTypes.openingBracket)) {
-						polish.push(conversionStack.pop());
-					}
-					if (conversionStack.length == 0) ignoredClosingBrackets++;
-					else conversionStack.pop();
-					continue;
-				}
-
-
-				let tempPriorityChunk = 0;
-				if (c.priority) tempPriorityChunk = c.priority;
-				let tempPriorityStack = 0;
-				if (conversionStack.at(-1).priority) tempPriorityStack = conversionStack.at(-1).priority;
-
-				while ((conversionStack.length > 0) && (tempPriorityChunk < tempPriorityStack)) {
-					polish.push(conversionStack.pop());
-					if (conversionStack.length > 0) {
-						if (conversionStack.at(-1).priority) tempPriorityStack = conversionStack.at(-1).priority;
-						else tempPriorityStack = 0;
-					}
-				}
-
-				if (conversionStack.length == 0 || tempPriorityChunk > tempPriorityStack) {
-					conversionStack.push(c);
-					continue;
-				}
-
-				if (c.righty) {
-					polish.push(conversionStack.pop());
-				}
-
-				conversionStack.push(c);
-
-			}
-
-			while (conversionStack.length > 0) {
-				const stk = conversionStack.pop();
-				if (stk.chunkType == chunkTypes.openingBracket) {
-					ignoredOpenBrackets++;
-				} else {
-					polish.push(stk);
-				}
-			}
 			if (ignoredOpenBrackets > 0 || ignoredClosingBrackets > 0) {
 				resText += "You had ";
 				if (ignoredOpenBrackets > 0) resText += `${ignoredOpenBrackets} unclosed opening bracket${ignoredOpenBrackets == 1 ? "" : "s"}`;
