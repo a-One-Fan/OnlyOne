@@ -94,6 +94,7 @@ module.exports = {
 		not: { args: 1, names: ["~", "not"], op: (val) => { return !val; } },
 		floor: { args: 1, names: ["floor"], op: Math.floor },
 		ceil: { args: 1, names: ["ceil", "ceiling"], op: Math.ceil },
+		round: { args: 1, names: ["round"], op: Math.round },
 		fract: { args: 1, names: ["fract", "fraction", "fractpart", "fractionpart"], op: (val) => { return Math.ceil(val) - val; } },
 		sin: { args: 1, names: ["sin", "sine"], op: Math.sin },
 		cos: { args: 1, names: ["cos", "cosine"], op: Math.cos },
