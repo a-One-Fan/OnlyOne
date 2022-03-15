@@ -37,6 +37,10 @@ module.exports = {
 		c: { type: "heat", subtype: "metric heat", names: ["c", "celsius", "centigrade"] },
 		f: { type: "heat", subtype: "imperial heat", names: ["f", "farenheit"] },
 
+		ml: { value: 0.001, type: "liquid", subtype: "metric liquid", names: ["ml", "mililiter", "mililitre", "mililiters", "mililitres"] },
+		l: { value: 1.0, type: "liquid", subtype: "metric liquid", names: ["l", "litre", "liter", "liters", "litres"] },
+		gl: { value: 0.2199692, type: "liquid", subtype: "imperial liquid", names: ["gl", "gallon", "gallons"] },
+
 		ms: { value: 0.001, type: "time", names: ["ms", "millisecond", "milliseconds"] },
 		s: { value: 1, type: "time", names: ["s", "second", "seconds"] },
 		min: { value: 60, type: "time", names: ["min", "minute", "minutes"] },
@@ -73,6 +77,11 @@ module.exports = {
 		tebib: { value: 1099511627776, type: "bits", names: ["TeB", "teB", "tebibyte", "tebibytes"] },
 		tebibit: { value: 137438953472, type: "bits", names: ["Teb", "teb", "tebit", "tebibit", "tebibits"] },
 
+		utc: { value: 0, type: "timezone", names: ["utc", "UTC", "gmt", "GMT", "Coordinated Universal Time"] },
+		pst: { value: -8, type: "timezone", names: ["pst", "PST", "Pacific Standard Time"] },
+		jst: { value: -10, type: "timezone", names: ["jst", "JST", "Japan Standard Time"] },
+		est: { value: -5, type: "timezone", names: ["est", "EST", "Eastern Standard Time"] },
+		
 
 		untyped: { type: "untyped", names: ["un", "untype", "typeless", "untyped"] },
 	},
