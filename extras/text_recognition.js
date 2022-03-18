@@ -36,7 +36,6 @@ module.exports = {
 	validStart(text) {
 		const newOpeners = [];
 		const openers = [module.exports.makeOpenerRegex()];
-		console.log(openers);
 		for (const opener of openers) {
 			newOpeners.push("^\\s*" + opener + "\\s*");
 		}
