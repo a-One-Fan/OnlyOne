@@ -1,4 +1,4 @@
-const { openers, oneRegexes } = require("../config.json");
+const { openersBase, openersPunctuation, openersAdjectives, oneRegexes } = require("../config.json");
 
 module.exports = {
 	// Whether 'text' matches any regex of "customOpeners"
@@ -13,11 +13,41 @@ module.exports = {
 		return null;
 	},
 
+	flattenArraySeparate(arr, separator) {
+		res = "";
+		for(i=0; i<arr.length-1; i++) {
+			res+=arr[i];
+			res+=separator;
+		}
+		res+=arr.at(-1);
+		return res;
+	},
+
+	makeOpenerRegex() {
+		const flatn = module.exports.flattenArraySeparate;
+		puncts = flatn(openersPunctuation, "");
+		puncts += "\\s";
+		adjs = flatn(openersAdjectives, "|");
+		base = flatn(openersBase, "|");
+		return `(?:(?:${adjs})[${puncts}]{1,5})*\\s*(?:(?:${base})[${puncts}]{1,5})\\s*(?:(?:${adjs})[${puncts}]{1,5})*\\s*`
+	},
+
 	// Whether 'text' starts with a regex from the config (a One-related opener).
 	validStart(text) {
 		const newOpeners = [];
+		const openers = [module.exports.makeOpenerRegex()];
+		console.log(openers);
 		for (const opener of openers) {
 			newOpeners.push("^\\s*" + opener + "\\s*");
+		}
+		return module.exports.testAnyRegex(text, newOpeners, "i");
+	},
+
+	validEnd(text) {
+		const newOpeners = [];
+		const openers = [module.exports.makeOpenerRegex()];
+		for (const opener of openers) {
+			newOpeners.push("\\s*" + opener + "\\s*$");
 		}
 		return module.exports.testAnyRegex(text, newOpeners, "i");
 	},
