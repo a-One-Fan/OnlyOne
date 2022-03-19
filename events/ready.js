@@ -10,7 +10,7 @@ module.exports = {
 		const db = await client.db.sync();
 		console.log(`Loaded db "${db}"`);
 
-		console.log("Migrate db.\n", migrate(db), "\n\n\n");
+		console.log("Migrating database...\n", await migrate(db), "\n\nMigrated database. 3 example entries above.\n");
 
 		const ffmpegLocation = ffmpegFolderLocation + "ffmpeg.exe";
 		access(ffmpegLocation, (err) => {
