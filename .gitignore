@@ -9,3 +9,5 @@ database.sqlite
 *.jpeg
 *.mov
 extras/currencies.json
+database/*
+backup/*
