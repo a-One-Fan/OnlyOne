@@ -1,6 +1,7 @@
 const { access } = require("fs");
 const { ffmpegFolderLocation, blenderLocation } = require("../config.json");
 const { updateCurrencies } = require("../extras/currency.js");
+const { migrate } = require("../extras/database_stuff.js");
 
 module.exports = {
 	name: "ready",
@@ -8,6 +9,8 @@ module.exports = {
 	async execute(client) {
 		const db = await client.db.sync();
 		console.log(`Loaded db "${db}"`);
+
+		console.log("Migrate db.\n", migrate(db), "\n\n\n");
 
 		const ffmpegLocation = ffmpegFolderLocation + "ffmpeg.exe";
 		access(ffmpegLocation, (err) => {
