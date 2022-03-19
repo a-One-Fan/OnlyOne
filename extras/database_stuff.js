@@ -1,5 +1,6 @@
 const Sequelize = require("sequelize");
 const { findDict } = require("./math_stuff.js");
+const { lt } = Sequelize.Op;
 
 module.exports = {
 	currentStorage: "database.sqlite",
