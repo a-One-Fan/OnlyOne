@@ -141,6 +141,15 @@ module.exports = {
 		}
 		return -1;
 	},
+	findDict(dict, thing) {
+		if(!dict) return -1;
+		let i = 0;
+		for(item of dict){
+			if(item == thing) return i;
+			i++;
+		}
+		return -1;
+	},
 	remove(arr, thing) {
 		const arr2 = [];
 		for (let i = 0; i < arr.length; i++) {
