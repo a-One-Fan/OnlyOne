@@ -1,5 +1,5 @@
 const Sequelize = require("sequelize");
-const { findDict, find } = require("./math_stuff.js");
+const { findDict } = require("./math_stuff.js");
 
 module.exports = {
     currentStorage: "database.sqlite",
@@ -29,5 +29,36 @@ module.exports = {
         errorType: { type: Sequelize.INTEGER, defaultValue: 0, allowNull: false },
         parseType: { type: Sequelize.INTEGER, defaultValue: 0, allowNull: false },
     },
-
+    async migrateAny(oldTable, oldCols, newCols) {
+        const newdbconnection = new Sequelize("database", "user", "password", {
+            host: "localhost",
+            dialect: "sqlite",
+            logging: false,
+            storage: module.exports.newStorage,
+        });
+        let ignoreCols = newCols;
+        for (col in ignoreCols) {
+            if(findDict(oldCols, col) != -1) ignoreCols[col] = {doType: 1};
+            else ignoreCols[col] = {doType: 0, val: ignoreCols[col].defaultValue};
+        }
+        const newdb = newdbconnection.define("db", newCols);
+        let threeEntries = [];
+        let i = 0;
+        for(row of oldTable) {
+            let newRow = ignoreCols;
+            for(col in newRow) {
+                if(newRow[col].doType == 1) {
+                    newRow[col] = row[col];
+                }else{
+                    newRow[col] = newRow[col].defaultValue;
+                }
+            }
+            newdb.create(newRow);
+            i++;
+        }
+        return {count: i, sample: await newdb.findAll({where: {id: {[lt]: 3}}})};
+    },
+    async migrate(db) {
+        return module.exports.migrateAny(await db.findAll(), module.exports.currentCols, module.exports.newCols)
+    }
 }
