@@ -9,7 +9,6 @@ Node.js >=16.6.0
 ```
 npm install discord.js @discordjs/rest @discordjs/builders discord-api-types sequelize sqlite3
 npm install --save-dev eslint
-npm install --save-dev sequelize-cli
 ```
 
 
