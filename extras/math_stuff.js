@@ -144,7 +144,7 @@ module.exports = {
 	findDict(dict, thing) {
 		if(!dict) return -1;
 		let i = 0;
-		for(item of dict){
+		for(item in dict) {
 			if(item == thing) return i;
 			i++;
 		}
