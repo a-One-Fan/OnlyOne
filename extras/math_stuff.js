@@ -81,7 +81,7 @@ module.exports = {
 		pst: { value: -8, type: "timezone", names: ["pst", "PST", "Pacific Standard Time"] },
 		jst: { value: -10, type: "timezone", names: ["jst", "JST", "Japan Standard Time"] },
 		est: { value: -5, type: "timezone", names: ["est", "EST", "Eastern Standard Time"] },
-		
+
 
 		untyped: { type: "untyped", names: ["un", "untype", "typeless", "untyped"] },
 	},
@@ -142,10 +142,10 @@ module.exports = {
 		return -1;
 	},
 	findDict(dict, thing) {
-		if(!dict) return -1;
+		if (!dict) return -1;
 		let i = 0;
-		for(item in dict) {
-			if(item == thing) return i;
+		for (const item in dict) {
+			if (item == thing) return i;
 			i++;
 		}
 		return -1;
