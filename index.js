@@ -3,6 +3,7 @@ const fs = require("fs");
 const Sequelize = require("sequelize");
 const { Client, Collection, Intents } = require("discord.js");
 const { token } = require("./config.json");
+const { currentStorage, currentCols } = require("./extras/database_stuff.js")
 
 // Create a new client instance
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.DIRECT_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MESSAGE_TYPING] });
@@ -11,22 +12,11 @@ const sequelize = new Sequelize("database", "user", "password", {
 	host: "localhost",
 	dialect: "sqlite",
 	logging: false,
-	storage: "database.sqlite",
+	storage: currentStorage
 });
 
 //	TODO: Use ENUM for reactType instead of INTEGER? Unless, potentially, javascript can't have proper enums?
-client.db = sequelize.define("db", {
-	userID: { type: Sequelize.STRING, unique: true, allowNull: false },
-	reputation: { type: Sequelize.FLOAT, defaultValue: 0, allowNull: false },
-	upperOne: { type: Sequelize.INTEGER, defaultValue: 0, allowNull: false },
-	lowerOne: { type: Sequelize.INTEGER, defaultValue: 0, allowNull: false },
-	digitOne: { type: Sequelize.INTEGER, defaultValue: 0, allowNull: false },
-	ignore: { type: Sequelize.BOOLEAN, defaultValue: false, allowNull: false },
-	reactType: { type: Sequelize.INTEGER, defaultValue: 0, allowNull: false },
-	reactChance: { type: Sequelize.FLOAT, defaultValue: 1.0, allowNull: false },
-	addendum: Sequelize.TEXT,
-});
-
+client.db = sequelize.define("db", currentCols);
 
 client.commands = new Collection();
 const commandFiles = fs.readdirSync("./commands").filter(file => file.endsWith(".js"));
