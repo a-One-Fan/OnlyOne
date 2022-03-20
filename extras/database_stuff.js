@@ -1,5 +1,5 @@
 const Sequelize = require("sequelize");
-const { access } = require("fs");
+const { existsSync } = require("fs");
 const { findDict } = require("./math_stuff.js");
 const { lte } = Sequelize.Op;
 
@@ -33,9 +33,9 @@ module.exports = {
 	},
 	async migrateAny(oldTable, oldCols, newCols) {
 
-		await access(module.exports.newStorage, (err) => {
-			if (!err) throw Error(`Database "${module.exports.newStorage}" exists!\n`);
-		});
+		if (existsSync(module.exports.newStorage)) {
+			throw Error(`Database "${module.exports.newStorage}" exists!\n`);
+		}
 
 		const newdbconnection = new Sequelize("database", "user", "password", {
 			host: "localhost",
