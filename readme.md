@@ -19,3 +19,10 @@ Launch a command prompt inside this folder, and:
 node deploy-commands.js   
 node .
 ```     
+
+Instructions for migrating the database:
+Go to database_stuff.js and set your new columns in the newColumns.
+Uncomment the migrate line in ready.js.
+Observe whether the 3 sample entries, hopefully good, are what you would expect.
+Turn the bot off, stash the old database away, or delete it, and use the new one, and then replace the currentColumns in database_stuff with the newColumns.
+Don't forget to uncomment the migrate line.
