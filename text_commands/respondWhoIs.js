@@ -1,4 +1,4 @@
-const { pickRandom } = require("../extras/math_stuff");
+const { pickRandom } = require("../extras/math_stuff.js");
 
 module.exports = {
 	async execute(message, regexResults) {

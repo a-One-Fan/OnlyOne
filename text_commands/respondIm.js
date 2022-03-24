@@ -1,3 +1,5 @@
+const { pickRandom } = require("../extras/math_stuff.js");
+
 module.exports = {
 	async execute(message, regexResults) {
 		const responses = ["I'm glad that you are.", "Alright.", "Good for you.",
@@ -5,6 +7,6 @@ module.exports = {
 			"Please ask me another time.", "That you are.", `Are you hoping for a "Hello [${regexResults[1].substring(0, 8)}...], I'm One!" ?\nYou're not going to get that from me.`,
 			"I regret reading your message.", "I'm happy I read that." ];
 
-		return { text: responses[Math.floor(Math.random() * responses.length)] };
+		return { text: pickRandom(responses) };
 	},
 };
