@@ -8,17 +8,12 @@
         {"name": "ignoreAuthor", "regexParams": "i", "help": "Ignore me.", "description": "I will stop interacting with you.",
             "regex": "ignore\\s+me[,.?!\\s]{0,3}\\s*$|don'?t\\s+(?:talk|react|respond)\\s+to\\s+me(?:\\s+or\\s+my\\s+(?:son|daughter))?(?:\\s+ever(?:\\s+again))?[,.?!\\s]{0,3}\\s*$"},
 
-        {"name": "setAuthorReactType", "regexParams": "i", "help": "Set my reaction type to 4.", "description": "Change how/when I react to your messages.",
-            "regex": "set\\s+my\\s+react(?:ion)?\\s*type\\s+(?:to\\s+)?(\\d+)[,.?!\\s]{0,3}\\s*$"},
+        {"name": "setAuthorAnyEnum", "regexParams": "i", "help": "'Set my reaction type to 4.' or 'Set my error type to 2.'", "description": "Set the option for reactions, valid commands or errors.",
+            "regex": "set\\s+my\\s+(?:(react(?:ion)?)|(parse|(?:valid\\s+)commands?)|(errors?(?:\\s+response)?)\\s*type\\s+(?:to\\s+)?(\\d+)[,.?!\\s]{0,3}\\s*$",
+            "extraHelp": ""},
             
         {"name": "setAuthorReactChance", "regexParams": "i", "help": "Set my reaction chance to 50%.", "description": "The chance that I will react to you.",
             "regex": "set\\s+my\\s+react(?:ion)?\\s*chance\\s+(?:to\\s+)?(-?\\d*.?\\d*%?)[,.?!\\s]{0,3}\\s*$"},
-
-        {"name": "setAuthorParseType", "regexParams": "i", "help": "Set my parse type to 1.", "description": "Change which messages I will recognize as valid commands.",
-            "regex": "set\\s+my\\s+parse\\s*type\\s+(?:to\\s+)?(\\d+)[,.?!\\s]{0,3}\\s*$"},
-
-        {"name": "setAuthorErrorType", "regexParams": "i", "help": "Set my error type to 2.", "description": "Change how I will inform you of errors.",
-            "regex": "set\\s+my\\s+error\\s*type\\s+(?:to\\s+)?(\\d+)[,.?!\\s]{0,3}\\s*$"},
 
         {"name": "listCommands", "regexParams": "i", "help": "'Help!' or 'What are the commands, page 3?'", "description": "I will list available text-based commands.",
             "regex": "(?:what\\s+(?:are\\s+)?(?:the\\s+)?commands|what\\s+(?:can\\s+)?you\\s+do|help|list(?:\\s+the)?(?:\\s+commands?)?)(?:,?\\s+page\\s+(\\d+))?[,.?!\\s]{0,3}\\s*$"},
@@ -26,14 +21,9 @@
         {"name": "infoCommand", "regexParams": "i", "help": "'Help for renderSnap!' or 'Info about renderSnap!'", "description": "I will tell you info about a specific text-based command.",
             "regex": "(?:help|info)(?:\\s+about|\\s+for)?\\s+(?:command\\s+)?(\\w+)[,.?!\\s]{0,3}\\s*$"},
 
-        {"name": "listReactTypes", "regexParams": "i", "help": "List reaction types.", "description": "I will list available options for reacting to your messages.",
-            "regex": "(?:what\\s+(?:are\\s+)?|list)(?:choices\\s+for)?(?:the\\s+)?react(?:ion)?\\s*types?[,.?!\\s]{0,3}\\s*$|how\\s+(?:can\\s+)?(?:you\\s+)?react[,.?!\\s]{0,3}\\s*$"},
-        
-        {"name": "listParseTypes", "regexParams": "i", "help": "List choices for valid command messages.", "description": "I will tell you what options there are for what messages I will consider as valid commands.",
-            "regex": "(?:what\\s+(?:are\\s+)?|list)(?:choices\\s+for)?(?:the\\s+)?(?:parse(?:\\s+types)?|(?:valid\\s+)?(?:commands?|messages?)(?:\\s+options)?)[,.?!\\s]{0,3}"},
-
-        {"name": "listErrorTypes", "regexParams": "i", "help": "List error response types.", "description": "I will list options for what I'll do when an error occurs.",
-            "regex": "(?:what\\s+(?:are\\s+)?|list)(?:choices\\s+for)?(?:the\\s+)?error(?:\\s+responses?)?(?:\\s+types)?[,.?!\\s]{0,3}"},
+        {"name": "listAnyEnum", "regexParams": "i", "help": "'List the reaction types.' or 'List chocies for valid command messages.`", "description": "I will list available options for reacting, valid commands or errors.",
+            "regex": "(?:(?:what\\s+(?:are\\s+)?|list)(?:(?:choices|variants|options)\\s+for)?(?:the\\s+)?|how\\s+can\\s+you)(?:(react(?:ion)?s?\\s*(?:types?)?)|((?:pars(?:es?|ing)(?:\\s*types?)?)|(?:valid\\s+)?(?:commands?|messages?))|(error(?:\\s*types?|\\s+responses?)?))[,.?!\\s]{0,3}\\s*$",
+            "extraHelp": ""},
         
         {"name": "IMShower", "regexParams": "i", "help": "Shower!", "description": "\\*showering\\*",
             "regex": "shower[,.?!\\s]{0,3}\\s*$"},
