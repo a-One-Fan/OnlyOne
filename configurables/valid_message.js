@@ -46,4 +46,5 @@ module.exports = {
 			},
 		},
 	],
+	unknownParseType: "Unknown parse type",
 };
