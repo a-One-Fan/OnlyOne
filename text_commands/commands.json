@@ -5,21 +5,6 @@
         {"name": "printAuthor", "regexParams": "i", "help": "What are my stats?", "description": "I will reply with info about you.",
             "regex": "what\\s+(?:do\\s+)?you\\s+know\\s+about\\s+me[,.?!\\s]{0,3}\\s*$|what\\s+(?:are\\s+)?my\\s+stats[,.?!\\s]{0,3}\\s*$|what\\s+(?:do\\s+)?you\\s+think\\s+(?:of\\s+)?me[,.?!\\s]{0,3}\\s*$"},
 
-        {"name": "respondHowAreYou", "regexParams": "i", "help": "How are you?", "description": "I will tell you how I'm feeling.",
-            "regex": "how\\s*(?:are|'?re)\\s+you[,.?!\\s]{0,3}\\s*$"},
-
-        {"name": "respondIm", "regexParams": "i", "help": "I'm glad to be with you.", "description": "I will note your feelings.",
-            "regex": "I\\s*(?:am|'?m) (.*)$"},
-
-        {"name": "respondYoure", "regexParams": "i", "help": "You're so nice to be around.", "description": "Compliment me. Preferably.",
-            "regex": "you\\s*(?:are|'?re) (.*)$"},
-
-        {"name": "respondWhatIs", "regexParams": "i", "help": "You're so nice to be around.", "description": "Compliment me. Preferably.",
-            "regex": "what\\s*(are|'?re|is|'?s) (.*)$"},
-
-        {"name": "respondWhoIs", "regexParams": "i", "help": "You're so nice to be around.", "description": "Compliment me. Preferably.",
-            "regex": "who\\s*(are|'?re|is|'?s) (.*)$"},
-
         {"name": "ignoreAuthor", "regexParams": "i", "help": "Ignore me.", "description": "I will stop interacting with you.",
             "regex": "ignore\\s+me[,.?!\\s]{0,3}\\s*$|don'?t\\s+(?:talk|react|respond)\\s+to\\s+me(?:\\s+or\\s+my\\s+(?:son|daughter))?(?:\\s+ever(?:\\s+again))?[,.?!\\s]{0,3}\\s*$"},
 
@@ -33,7 +18,13 @@
             "regex": "(?:help|info)(?:\\s+about|\\s+for)?\\s+(?:command\\s+)?(\\w+)[,.?!\\s]{0,3}\\s*$"},
 
         {"name": "listReactTypes", "regexParams": "i", "help": "List reaction types.", "description": "I will list available options for reacting to your messages.",
-            "regex": "what\\s+(?:are\\s+)?(?:the\\s+)?react(?:ion)?\\s*types?[,.?!\\s]{0,3}\\s*$|how\\s+(?:can\\s+)?(?:you\\s+)?react[,.?!\\s]{0,3}\\s*$|list\\s+(?:the\\s+)?react(?:ion)?\\s*types?[,.?!\\s]{0,3}\\s*$"},
+            "regex": "(?:what\\s+(?:are\\s+)?|list)(?:the\\s+)?react(?:ion)?\\s*types?[,.?!\\s]{0,3}\\s*$|how\\s+(?:can\\s+)?(?:you\\s+)?react[,.?!\\s]{0,3}\\s*$"},
+        
+        {"name": "listParseTypes", "regexParams": "i", "help": "List choices for valid command messages.", "description": "I will tell you what options there are for what messages I will consider as valid commands.",
+            "regex": "(?:what\\s+(?:are\\s+)?|list)(?:the\\s+)?(?:parse(?:\\s+types)?|(?:valid\\s+)?(?:commands?|messages?)(?:\\s+options)?)[,.?!\\s]{0,3}"},
+
+        {"name": "listErrorTypes", "regexParams": "i", "help": "List what I can do when an error occurs.", "description": "I will list options for what I'll do when an error occurs.",
+            "regex": "(?:what\\s+(?:are\\s+)?|list)(?:the\\s+)?error(?:\\s+response)?(?:\\s+types)?[,.?!\\s]{0,3}"},
         
         {"name": "setAuthorReactChance", "regexParams": "i", "help": "Set my reaction chance to 50%.", "description": "The chance that I will react to you.",
             "regex": "set\\s+my\\s+react(?:ion)?\\s*chance\\s+(?:to\\s+)?(-?\\d*.?\\d*%?)[,.?!\\s]{0,3}\\s*$"},
@@ -71,6 +62,21 @@
         },
 
         {"name": "updateCurrencies", "regexParams": "i", "help": "Update currency conversion rates.", "descriptiont": "I will update my currency conversion rates if enough time has passed.",
-            "regex": "update\\s+(?:your\\s+)?(?:currency\\s+)?(?:conversion\\s+|exchange\\s+)?rates[,.?!\\s]{0,3}\\s*$"}
+            "regex": "update\\s+(?:your\\s+)?(?:currency\\s+)?(?:conversion\\s+|exchange\\s+)?rates[,.?!\\s]{0,3}\\s*$"},
+
+        {"name": "respondHowAreYou", "regexParams": "i", "help": "How are you?", "description": "I will tell you how I'm feeling.",
+            "regex": "how\\s*(?:are|'?re)\\s+you[,.?!\\s]{0,3}\\s*$"},
+
+        {"name": "respondIm", "regexParams": "i", "help": "I'm glad to be with you.", "description": "I will note your feelings.",
+            "regex": "I\\s*(?:am|'?m) (.*)$"},
+
+        {"name": "respondYoure", "regexParams": "i", "help": "You're so nice to be around.", "description": "Compliment me. Preferably.",
+            "regex": "you\\s*(?:are|'?re) (.*)$"},
+
+        {"name": "respondWhatIs", "regexParams": "i", "help": "You're so nice to be around.", "description": "Compliment me. Preferably.",
+            "regex": "what\\s*(are|'?re|is|'?s) (.*)$"},
+
+        {"name": "respondWhoIs", "regexParams": "i", "help": "You're so nice to be around.", "description": "Compliment me. Preferably.",
+            "regex": "who\\s*(are|'?re|is|'?s) (.*)$"}
     ]
 }
