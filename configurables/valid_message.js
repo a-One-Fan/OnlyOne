@@ -47,4 +47,5 @@ module.exports = {
 		},
 	],
 	unknownParseType: "Unknown parse type",
+	listText: "I will consider as a valid command",
 };

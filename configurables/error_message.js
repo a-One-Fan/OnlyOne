@@ -41,4 +41,5 @@ module.exports = {
 		},
 	],
 	unknownErrorType: "Unknown error type",
+	listText: "Whenever an error occurs, I can send the following",
 };

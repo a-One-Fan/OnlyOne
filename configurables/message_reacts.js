@@ -46,4 +46,5 @@ module.exports = {
 		return [];
 	},
 	unknownReact: "Unknown reaction type",
+	listText: "I can react to you in the following ways",
 };
