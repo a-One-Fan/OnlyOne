@@ -2,7 +2,7 @@ module.exports = {
 	async execute(message, regexResults) {
 		const row = await message.client.db.findOne({ where: { userID: message.author.id } });
 		let reactTypeText = "";
-		const reacts = require("../message_reacts.js");
+		const reacts = require("../configurables/message_reacts.js");
 		if (row.reactType < 0 || row.reactType >= reacts.reactTypes.length)	{
 			reactTypeText = reacts.unknownReact;
 		} else {

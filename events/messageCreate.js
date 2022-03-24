@@ -1,6 +1,6 @@
 const { validStart, countOnes } = require("../extras/text_recognition.js");
 const commandData = require("../text_commands/commands.json");
-const { reactChoose } = require("../message_reacts.js");
+const { reactChoose } = require("../configurables/message_reacts.js");
 
 module.exports = {
 	name: "messageCreate",
