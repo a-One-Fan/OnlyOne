@@ -1,4 +1,4 @@
-const { reactTypes } = require("../message_reacts.js");
+const { reactTypes } = require("../configurables/message_reacts.js");
 
 module.exports = {
 	async execute(message, regexResults) {
