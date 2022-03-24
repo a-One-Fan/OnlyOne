@@ -14,22 +14,22 @@ module.exports = {
 	},
 
 	flattenArraySeparate(arr, separator) {
-		res = "";
-		for(i=0; i<arr.length-1; i++) {
-			res+=arr[i];
-			res+=separator;
+		let res = "";
+		for (let i = 0; i < arr.length - 1; i++) {
+			res += arr[i];
+			res += separator;
 		}
-		res+=arr.at(-1);
+		res += arr.at(-1);
 		return res;
 	},
 
 	makeOpenerRegex() {
 		const flatn = module.exports.flattenArraySeparate;
-		puncts = flatn(openersPunctuation, "");
+		let puncts = flatn(openersPunctuation, "");
 		puncts += "\\s";
-		adjs = flatn(openersAdjectives, "|");
-		base = flatn(openersBase, "|");
-		return `(?:(?:${adjs})[${puncts}]{1,5})*\\s*(?:(?:${base})[${puncts}]{1,5})\\s*(?:(?:${adjs})[${puncts}]{1,5})*\\s*`
+		const adjs = flatn(openersAdjectives, "|");
+		const base = flatn(openersBase, "|");
+		return `(?:(?:${adjs})[${puncts}]{1,5})*\\s*(?:(?:${base})[${puncts}]{1,5})\\s*(?:(?:${adjs})[${puncts}]{1,5})*\\s*`;
 	},
 
 	// Whether 'text' starts with a regex from the config (a One-related opener).
