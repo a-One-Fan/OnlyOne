@@ -9,7 +9,7 @@ const enumPrintNames = ["reaction", "valid command messages", "error handling"];
 module.exports = {
 	async execute(message, regexResults) {
 		let enumID = 0;
-		for (let i = 0; i < enums.length(); i++) {
+		for (let i = 0; i < enums.length; i++) {
 			if (regexResults[i + 1]) {
 				enumID = i;
 				break;

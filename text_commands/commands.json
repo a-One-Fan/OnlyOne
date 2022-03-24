@@ -9,7 +9,7 @@
             "regex": "ignore\\s+me[,.?!\\s]{0,3}\\s*$|don'?t\\s+(?:talk|react|respond)\\s+to\\s+me(?:\\s+or\\s+my\\s+(?:son|daughter))?(?:\\s+ever(?:\\s+again))?[,.?!\\s]{0,3}\\s*$"},
 
         {"name": "setAuthorAnyEnum", "regexParams": "i", "help": "'Set my reaction type to 4.' or 'Set my error type to 2.'", "description": "Set the option for reactions, valid commands or errors.",
-            "regex": "set\\s+my\\s+(?:(react(?:ion)?)|(parse|(?:valid\\s+)commands?)|(errors?(?:\\s+response)?)\\s*type\\s+(?:to\\s+)?(\\d+)[,.?!\\s]{0,3}\\s*$",
+            "regex": "set\\s+my\\s+(?:(react(?:ion)?)|(parse|(?:valid\\s+)commands?)|(errors?(?:\\s+response)?))\\s*type\\s+(?:to\\s+)?(\\d+)[,.?!\\s]{0,3}\\s*$",
             "extraHelp": ""},
             
         {"name": "setAuthorReactChance", "regexParams": "i", "help": "Set my reaction chance to 50%.", "description": "The chance that I will react to you.",
@@ -22,7 +22,7 @@
             "regex": "(?:help|info)(?:\\s+about|\\s+for)?\\s+(?:command\\s+)?(\\w+)[,.?!\\s]{0,3}\\s*$"},
 
         {"name": "listAnyEnum", "regexParams": "i", "help": "'List the reaction types.' or 'List chocies for valid command messages.`", "description": "I will list available options for reacting, valid commands or errors.",
-            "regex": "(?:(?:what\\s+(?:are\\s+)?|list)(?:(?:choices|variants|options)\\s+for)?(?:the\\s+)?|how\\s+can\\s+you)(?:(react(?:ion)?s?\\s*(?:types?)?)|((?:pars(?:es?|ing)(?:\\s*types?)?)|(?:valid\\s+)?(?:commands?|messages?))|(error(?:\\s*types?|\\s+responses?)?))[,.?!\\s]{0,3}\\s*$",
+            "regex": "(?:(?:what\\s+(?:are\\s+)?|list\\s+)(?:(?:choices|variants|options)\\s+for)?(?:the\\s+)?|how\\s+can\\s+you)(?:(react(?:ion)?s?\\s*(?:types?)?)|((?:pars(?:es?|ing)(?:\\s*types?)?)|(?:valid\\s+)?(?:commands?|messages?))|(error(?:\\s*types?|\\s+responses?)?))[,.?!\\s]{0,3}\\s*$",
             "extraHelp": ""},
         
         {"name": "IMShower", "regexParams": "i", "help": "Shower!", "description": "\\*showering\\*",
