@@ -3,6 +3,8 @@ const { ffmpegFolderLocation, blenderLocation } = require("../config.json");
 const { updateCurrencies } = require("../extras/currency.js");
 const { migrate } = require("../extras/database_stuff.js");
 
+const doMigrate = false;
+
 module.exports = {
 	name: "ready",
 	once: true,
@@ -10,11 +12,13 @@ module.exports = {
 		const db = await client.db.sync();
 		console.log(`Loaded db "${db}"`);
 
-		try {
-			const migration = await migrate(db);
-			console.log("Migrating database...\n", migration, "\n\nMigrated database. 3 example entries above.\n");
-		} catch (error) {
-			console.log("Couldn't migrate to new database:\n", error);
+		if (doMigrate) {
+			try {
+				const migration = await migrate(db);
+				console.log("Migrating database...\n", migration, "\n\nMigrated database. 3 example entries above.\n");
+			} catch (error) {
+				console.log("Couldn't migrate to new database:\n", error);
+			}
 		}
 
 		const ffmpegLocation = ffmpegFolderLocation + "ffmpeg.exe";

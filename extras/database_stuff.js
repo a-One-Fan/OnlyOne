@@ -9,13 +9,17 @@ module.exports = {
 	currentCols: {
 		userID: { type: Sequelize.STRING, unique: true, allowNull: false },
 		reputation: { type: Sequelize.FLOAT, defaultValue: 0, allowNull: false },
+		rank: { type: Sequelize.INTEGER, defaultValue: 0, allowNull: false },
 		upperOne: { type: Sequelize.INTEGER, defaultValue: 0, allowNull: false },
 		lowerOne: { type: Sequelize.INTEGER, defaultValue: 0, allowNull: false },
 		digitOne: { type: Sequelize.INTEGER, defaultValue: 0, allowNull: false },
+		otherOne: { type: Sequelize.INTEGER, defaultValue: 0, allowNull: false },
 		ignore: { type: Sequelize.BOOLEAN, defaultValue: false, allowNull: false },
 		reactType: { type: Sequelize.INTEGER, defaultValue: 0, allowNull: false },
 		reactChance: { type: Sequelize.FLOAT, defaultValue: 1.0, allowNull: false },
-		addendum: Sequelize.TEXT,
+		errorType: { type: Sequelize.INTEGER, defaultValue: 0, allowNull: false },
+		parseType: { type: Sequelize.INTEGER, defaultValue: 0, allowNull: false },
+		customReact: { type: Sequelize.STRING(32) },
 	},
 	newCols: {
 		userID: { type: Sequelize.STRING, unique: true, allowNull: false },
@@ -30,6 +34,7 @@ module.exports = {
 		reactChance: { type: Sequelize.FLOAT, defaultValue: 1.0, allowNull: false },
 		errorType: { type: Sequelize.INTEGER, defaultValue: 0, allowNull: false },
 		parseType: { type: Sequelize.INTEGER, defaultValue: 0, allowNull: false },
+		customReact: { type: Sequelize.STRING(32) },
 	},
 	async migrateAny(oldTable, oldCols, newCols) {
 
