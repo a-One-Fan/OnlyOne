@@ -16,7 +16,7 @@
             "regex": "set\\s+my\\s+react(?:ion)?\\s*chance\\s+(?:to\\s+)?(-?\\d*.?\\d*%?)[,.?!\\s]{0,3}\\s*$"},
 
         {"name": "setAuthorReactEmote", "regexParams": "i", "help": "Set my reaction emote to 944199066911395840!", "description": "Set what emote I will react to your messages with when you mention me.",
-            "regex": "(re)?set\\s+my\\s+(?:custom\\s+)?react(?:ion)?\\s+emote\\s+(?:to\\s+)?([^,.?!\\s]+)?[,.?!\\s]{0,3}\\s*$"},
+            "regex": "(re)?set\\s+my\\s+(?:custom\\s+)?react(?:ion)?\\s+emote(?:\\s+to)?(\\s+[^,.?!\\s]+)?[,.?!\\s]{0,3}\\s*$"},
 
         {"name": "listCommands", "regexParams": "i", "help": "'Help!' or 'What are the commands, page 3?'", "description": "I will list available text-based commands.",
             "regex": "(?:what\\s+(?:are\\s+)?(?:the\\s+)?commands|what\\s+(?:can\\s+)?you\\s+do|help|list(?:\\s+the)?(?:\\s+commands?)?)(?:,?\\s+page\\s+(\\d+))?[,.?!\\s]{0,3}\\s*$"},
