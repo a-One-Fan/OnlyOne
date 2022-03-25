@@ -40,8 +40,9 @@ module.exports = {
 		if (row.reactType < 0 || row.reactType >= module.exports.reactTypes.length) return [];
 
 		const res = module.exports.reactTypes[row.reactType].testReact(message, row, oneCount);
-
-		if (res && (Math.random() <= row.reactChance)) return [oneReactID];
+		let reactID = oneReactID;
+		if(row.customReact) reactID = row.customReact;
+		if (res && (Math.random() <= row.reactChance)) return [reactID];
 
 		return [];
 	},
