@@ -50,16 +50,16 @@ module.exports = {
 		let commandRes = null;
 		// TODO: Is there a better way to do this without this flag? Or is this good enough
 		let commandError = false;
-		if (split && !firstCommand) {
+		if (split.valid && !firstCommand) {
 			// TODO: better names
 			for (const command of commandData.commands) {
-				const reactRes = RegExp(command.regex, command.regexParams).exec(split);
+				const reactRes = RegExp(command.regex, command.regexParams).exec(split.culledText);
 				if (reactRes) {
 					try {
 						const extraRes = [];
 						if	(command.extraRegex) {
 							for (const extraRegex of command.extraRegex) {
-								extraRes.push(RegExp(extraRegex, command.regexParams).exec(split));
+								extraRes.push(RegExp(extraRegex, command.regexParams).exec(split.culledText));
 							}
 						}
 						const func = require("../text_commands/" + command.name + ".js");
