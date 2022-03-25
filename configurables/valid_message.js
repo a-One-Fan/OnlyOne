@@ -47,7 +47,7 @@ module.exports = {
 		},
 	],
 	parseChoose(text, id) {
-		return module.exports.parseTypes[id](text);
+		return module.exports.parseTypes[id].testParse(text);
 	},
 	unknownParseType: "Unknown parse type",
 	listText: "I will consider as a valid command",
