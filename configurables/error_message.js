@@ -27,7 +27,7 @@ module.exports = {
 				return { emotes: [errorEmote] };
 			},
 		},
-		{ name: "if possible only, a more descriptive message",
+		{ name: "a more descriptive message, if possible",
 			transformError(error, command) {
 				let descriptiveText = module.exports.userFriendifyError(error);
 				if (descriptiveText) descriptiveText = `Looks like something when wrong when executing "${command.name}".\n` + descriptiveText;
