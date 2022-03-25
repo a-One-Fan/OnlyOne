@@ -16,7 +16,7 @@ module.exports = {
 			}
 		}
 
-		const type = parseInt(regexResults[1 + enums.length()]);
+		const type = parseInt(regexResults[1 + enums.length]);
 
 
 		if (type < 0 || type >= enums[enumID].length) {
