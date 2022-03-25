@@ -4,7 +4,9 @@ module.exports = {
 			await message.client.db.update({ customReact: null }, { where: { userID: message.author.id } });
 			return { text: "I've reset your react emote." };
 		}
-
+		if (!regexResults[2]) {
+			return { text: "You need to specify an ID." };
+		}
 		try {
 			await message.react(regexResults[2]);
 		} catch (error) {
