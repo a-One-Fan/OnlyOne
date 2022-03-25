@@ -21,11 +21,12 @@ module.exports = {
 			testParse(text) {
 				const startCut = validStart(text);
 				let bothCut = "";
+				let endCut = "";
 				if (!startCut) {
-					const endCut = validEnd(text);
+					endCut = validEnd(text);
 					if (endCut) bothCut = endCut[1];
 				} else {
-					const endCut = validEnd(startCut[1]);
+					endCut = validEnd(startCut[1]);
 					if (endCut) bothCut = endCut[1];
 					else bothCut = startCut[1];
 				}
