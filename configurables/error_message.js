@@ -40,6 +40,9 @@ module.exports = {
 			},
 		},
 	],
+	errorChoose(error, command, id) {
+		return module.exports.errorTypes[id](error, command);
+	},
 	unknownErrorType: "Unknown error type",
 	listText: "Whenever an error occurs, I can send the following",
 };

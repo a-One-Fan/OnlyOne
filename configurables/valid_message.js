@@ -46,6 +46,9 @@ module.exports = {
 			},
 		},
 	],
+	parseChoose(text, id) {
+		return module.exports.parseTypes[id](text);
+	},
 	unknownParseType: "Unknown parse type",
 	listText: "I will consider as a valid command",
 };

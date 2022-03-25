@@ -1,6 +1,8 @@
-const { validStart, countOnes } = require("../extras/text_recognition.js");
+const { countOnes } = require("../extras/text_recognition.js");
 const commandData = require("../text_commands/commands.json");
 const { reactChoose } = require("../configurables/message_reacts.js");
+const { errorChoose } = require("../configurables/error_message.js");
+const { parseChoose } = require("../configurables/valid_message.js");
 
 module.exports = {
 	name: "messageCreate",
@@ -43,7 +45,7 @@ module.exports = {
 		const emotes = reactChoose(message, row, oneCount);
 
 		row = await message.client.db.findOne({ where: { userID: message.author.id } });
-		const split = validStart(message.content);
+		const split = parseChoose(message.content, row.parseType);
 
 		let commandRes = null;
 		// TODO: Is there a better way to do this without this flag? Or is this good enough
@@ -51,13 +53,13 @@ module.exports = {
 		if (split && !firstCommand) {
 			// TODO: better names
 			for (const command of commandData.commands) {
-				const reactRes = RegExp(command.regex, command.regexParams).exec(split[1]);
+				const reactRes = RegExp(command.regex, command.regexParams).exec(split);
 				if (reactRes) {
 					try {
 						const extraRes = [];
 						if	(command.extraRegex) {
 							for (const extraRegex of command.extraRegex) {
-								extraRes.push(RegExp(extraRegex, command.regexParams).exec(split[1]));
+								extraRes.push(RegExp(extraRegex, command.regexParams).exec(split));
 							}
 						}
 						const func = require("../text_commands/" + command.name + ".js");
@@ -65,12 +67,10 @@ module.exports = {
 					} catch (error) {
 						commandError = true;
 						// TODO: DM the error to me? :)
-						textContent += `Looks like something when wrong when executing "${command.name}".\n`;
-
-						if (error.message == "Bad URL") textContent += "It's because I didn't like your URL.\n";
-						if (error.message.startsWith("Request failed with status code: ")) textContent += `It's because the link returned a ${error.message.substr(33, 3)} error code.\n`;
-						if (error.message.startsWith("Unrecognized chunk")) textContent += `I don't know what "${error.message.substr(20, error.message.length - 21)}" is.\n`;
-
+						// TODO: make function that merges to-be message things like emotes, files, text, etc.
+						const res = errorChoose(error, command, row.errorType);
+						if (res.text) textContent += res.text;
+						if (res.emotes) emotes.concat(res.emotes);
 						console.log(error);
 					}
 					break;
