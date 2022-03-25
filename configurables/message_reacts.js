@@ -41,7 +41,7 @@ module.exports = {
 
 		const res = module.exports.reactTypes[row.reactType].testReact(message, row, oneCount);
 		let reactID = oneReactID;
-		if(row.customReact) reactID = row.customReact;
+		if (row.customReact) reactID = row.customReact;
 		if (res && (Math.random() <= row.reactChance)) return [reactID];
 
 		return [];
