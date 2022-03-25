@@ -2,7 +2,7 @@ module.exports = {
 	async execute(message, regexResults, extraRegex) {
 		if (regexResults[1]) {
 			await message.client.db.update({ customReact: null }, { where: { userID: message.author.id } });
-			return { text: "I've reset your react emote." };
+			return { text: "I've reset your react emote. I might use the old one one last time." };
 		}
 		if (!regexResults[2]) {
 			return { text: "You need to specify an ID." };
