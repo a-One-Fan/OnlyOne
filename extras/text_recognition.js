@@ -1,4 +1,5 @@
 const { openersBase, openersPunctuation, openersAdjectives, oneRegexes } = require("../config.json");
+const { remove } = require("./math_stuff.js");
 
 module.exports = {
 	// Whether 'text' matches any regex of "customOpeners"
@@ -8,7 +9,9 @@ module.exports = {
 		if (text == null) return null;
 		for (const [i, opener] of customOpeners.entries()) {
 			const split = text.split(RegExp(opener, regexParams));
-			if (split.length > 1) return [i, split[1]];
+			if (split.length > 1) {
+				return [i, remove(split, "")[0]];
+			}
 		}
 		return null;
 	},
@@ -29,7 +32,7 @@ module.exports = {
 		puncts += "\\s";
 		const adjs = flatn(openersAdjectives, "|");
 		const base = flatn(openersBase, "|");
-		return `(?:(?:${adjs})[${puncts}]{1,5})*\\s*(?:(?:${base})[${puncts}]{1,5})\\s*(?:(?:${adjs})[${puncts}]{1,5})*\\s*`;
+		return `(?:[${puncts}\\s]{1,5})?(?:(?:${adjs})[${puncts}]{1,5})*\\s*(?:(?:${base})[${puncts}]{1,5})\\s*(?:(?:${adjs})[${puncts}]{1,5})*(?:[${puncts}\\s]{1,5})?`;
 	},
 
 	// Whether 'text' starts with a regex from the config (a One-related opener).
