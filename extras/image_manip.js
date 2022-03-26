@@ -25,6 +25,7 @@ module.exports = {
 		});
 	},
 	// TODO: no .on("error") if we already have if (error) ?
+	// Automatically renders borderless.
 	renderBlend(filepath, args, pythonics = "pass") {
 		return new Promise((resolve, reject) => {
 			const args_combined = ["-b", filepath, "--python-expr", pythonics].concat(args);
