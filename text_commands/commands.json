@@ -56,7 +56,7 @@
         },
 
         {"name": "renderBarrel", "regexParams": "i", "help": "Do a barrel roll using me!", "description": "I'll roll the specifid person as a barrel.",
-            "regex": "do\\s+(?:a\\s+)?barrel\\s+roll\\s(?:(?:using|with)?\\s+(?:(<@[^>@]+>)|([^,.?!]+)|(me))?[,.?!\\s]{0,3}\\s*$"},
+            "regex": "do\\s+(?:a\\s+)?barrel\\s+roll(?:\\s+(?:using|with)?)?(?:\\s+(<@[^>@]+>)|([^,.?!]+)|(me))?[,.?!\\s]{0,3}\\s*$"},
 
         {"name": "calculate", "regexParams": "i", "help": "'Calculate 1+1 - 1', or 'Calculate using RPN 1 1 1 + -'", "description": "I will calculate your expression - please don't use punctuation!",
             "regex": "calculate\\s+((?:using\\s+|with\\s+)?(?:reverse\\s+polish(?:\\s+notation)|RPN)\\s+)?(.+)$",
