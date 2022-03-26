@@ -10,6 +10,7 @@ module.exports = {
 			if (!targetUser) throw Error("Printable error: Sorry, I couldn't find a user by that ID.");
 		}
 		if (regexResults[3]) {
+			await message.guild.members.fetch();
 			targetUser = await message.client.users.cache.find((u) => (u.tag.search(regexResults[3]) != -1));
 			if (!targetUser) throw Error("Printable error: Sorry, I couldn't find a user by that name.");
 		}
