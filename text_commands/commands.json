@@ -55,6 +55,9 @@
             "extraHelp": "Optional parameters are:\nShape - Circle, Hexagon, Octagon, One, Tile, Triangle\nMinimum distance (between each particle) - [1.0, 25.0]\nSize (of each particle) - [0.1, 20.0]\nBackground color - hexadecimal color\nLong example:\nOne, snap this rotated 3.14rad shaped like Hexagon with distance 4.0 and size 0.3 and background color #FF0000: https://only.one.com/zero.png"
         },
 
+        {"name": "renderBarrel", "regexParams": "i", "help": "Do a barrel roll using me!", "description": "I'll roll the specifid person as a barrel.",
+            "regex": "do\\s+(?:a\\s+)?barrel\\s+roll\\s(?:(?:using|with)?\\s+(?:(<@[^>@]+>)|([^,.?!]+)|(me))?[,.?!\\s]{0,3}\\s*$"},
+
         {"name": "calculate", "regexParams": "i", "help": "'Calculate 1+1 - 1', or 'Calculate using RPN 1 1 1 + -'", "description": "I will calculate your expression - please don't use punctuation!",
             "regex": "calculate\\s+((?:using\\s+|with\\s+)?(?:reverse\\s+polish(?:\\s+notation)|RPN)\\s+)?(.+)$",
             "extraHelp": "Subtraction should have spaces around it! To write a negative number, make the - a part of the number (e.g. -2 and not - 2).\nSupported operators are:\n+ - * / ^ | || & && % mod log sin cos tan cotan\nabs floor ceil fract round (rounds up) ~ (boolean negation, aka not)\nkg g t lb\nm cm dm km mile ft yd in\nrad deg\nc f\ns ms min h day month year decade century\nl ml\nb B kb kB kib kiB and other byte units, up to and including tera\nuntype\nUnit unary operators will assign a kind of unit to your value, and attempt to convert to other kinds you specify.\nIf they're mismatched types, e.g. seconds (time) then celsius (heat), the type will simply be overridden preserving the value.\nKnowing this, use 'untype' to directly change the type of convertible units without converting."
