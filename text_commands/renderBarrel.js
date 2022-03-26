@@ -6,18 +6,14 @@ module.exports = {
 		let targetUser = message.client.user;
 		if (regexResults[1]) targetUser = message.author;
 		if (regexResults[2]) {
-			const found = message.client.users.cache.find(u => u.id == regexResults[2]);
-			if (!found) throw Error("Printable error: Sorry, I couldn't find a user by that ID.");
-			targetUser = found;
+			targetUser = await message.client.users.fetch(regexResults[2]);
+			if (!targetUser) throw Error("Printable error: Sorry, I couldn't find a user by that ID.");
 		}
 		if (regexResults[3]) {
-			const lower = regexResults[1].toLowerCase();
-			const found = message.client.users.cache.find(u => u.username.toLowerCase().search(lower) != -1);
-			if (!found) throw Error("Printable error: Sorry, I couldn't find a user by that name.");
-			targetUser = found;
+			targetUser = await message.client.users.cache.find((u) => (u.tag.search(regexResults[3]) != -1));
+			if (!targetUser) throw Error("Printable error: Sorry, I couldn't find a user by that name.");
 		}
 		const [ impath, extension ] = await downloadImage(targetUser.displayAvatarURL({ format: "png" }));
-		console.log("impath, extension:", impath, extension);
 		await doFfmpeg(["-i", impath + "." + extension, "-y", "./tmp/barrelPicture.png"]);
 		await renderBlend("./extras/barrel.blend", ["-a"]);
 		await doFfmpeg(["-i", "./tmp/barrelResult.mkv", "-lavfi", "[0:v]palettegen[pal]; [0:v][pal]paletteuse", "-y", "./tmp/barrelRoll.gif"]);
