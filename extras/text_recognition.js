@@ -89,4 +89,19 @@ module.exports = {
 	countOnes(text) {
 		return module.exports.countOcurrences(text, oneRegexes);
 	},
+
+	// TODO: Should this be in this file?
+	mergeMessagePayload(obj1, obj2) {
+		const newObj = { text: "", files: [], reacts: [], embeds: [] };
+		for (const prop in newObj) {
+			if (obj1[prop]) newObj[prop].concat(obj1[prop]);
+			if (obj2[prop]) newObj[prop].concat(obj2[prop]);
+		}
+		return newObj;
+	},
+
+	decoupleMessageReacts(obj) {
+		const newObj = { text: obj.text, files: obj.files, embeds:obj.embeds };
+		return [obj.reacts, newObj];
+	},
 };
