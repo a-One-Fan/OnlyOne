@@ -42,20 +42,20 @@ module.exports = {
 		const oneCount = countOnes(message.content);
 
 		message.client.db.update({ upperOne: row.upperOne + oneCount[1], lowerOne: row.lowerOne + oneCount[2], digitOne: row.digitOne + oneCount[3] }, { where: { userID: message.author.id } });
-		const emotes = reactChoose(message, row, oneCount);
+		let emotes = reactChoose(message, row, oneCount);
 
 		row = await message.client.db.findOne({ where: { userID: message.author.id } });
 		const split = parseChoose(message.content, row.parseType);
 
-		let commandRes = null;
-		// TODO: Is there a better way to do this without this flag? Or is this good enough
-		let commandError = false;
+		let commandRes = null, foundCommand = null;
+		let err = null;
 		if (split.valid && !firstCommand) {
 			// TODO: better names
-			for (const command of commandData.commands) {
-				const reactRes = RegExp(command.regex, command.regexParams).exec(split.culledText);
-				if (reactRes) {
-					try {
+			try {
+				for (const command of commandData.commands) {
+					const reactRes = RegExp(command.regex, command.regexParams).exec(split.culledText);
+					if (reactRes) {
+						foundCommand = command;
 						const extraRes = [];
 						if	(command.extraRegex) {
 							for (const extraRegex of command.extraRegex) {
@@ -64,21 +64,18 @@ module.exports = {
 						}
 						const func = require("../text_commands/" + command.name + ".js");
 						commandRes = await func.execute(message, reactRes, extraRes);
-					} catch (error) {
-						commandError = true;
-						// TODO: DM the error to me? :)
-						// TODO: make function that merges to-be message things like emotes, files, text, etc.
-						const res = errorChoose(error, command, row.errorType);
-						if (res.text) textContent += res.text;
-						if (res.emotes) emotes.concat(res.emotes);
-						console.log(error);
+						break;
 					}
-					break;
 				}
-			}
-			if (!commandRes) {
-				if (!commandError) textContent += commandData.unknown[Math.floor(Math.random() * commandData.unknown.length)];
-				else textContent += "Now try again.\n";
+			} catch (error) {
+				err = error;
+			} finally {
+				// TODO: DM the error to me? :)
+				// TODO: make function that merges to-be message things like emotes, files, text, etc.
+				const res = errorChoose(err, foundCommand, commandRes, row.errorType);
+				if (res.text) textContent += res.text;
+				if (res.emotes) emotes = emotes.concat(res.emotes);
+				if (err) console.log(err);
 			}
 		}
 
