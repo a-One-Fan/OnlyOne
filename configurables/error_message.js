@@ -4,7 +4,7 @@ const { pickRandom } = require("../extras/math_stuff.js");
 
 module.exports = {
 	userFriendifyError(error) {
-		if (!error) return "";
+		if (!error || !error.message) return "";
 		let text = "";
 		if (error.message.startsWith("Printable error: ")) text += error.message.substr(17) + "\n";
 		if (error.message.startsWith("Bad URL")) text += "It's because I didn't like your URL.\n";
@@ -17,7 +17,7 @@ module.exports = {
 		{ name: "text, always",
 			transformError(error, command, commandRes) {
 				if (!command) return { text: pickRandom(unknown) };
-				return { text: `Looks like something when wrong when executing "${command.name}".\n` + module.exports.userFriendifyError(error) + "\nNow try again." };
+				return { text: `Looks like something when wrong when executing "${command.name}".\n` + module.exports.userFriendifyError(error) + "Now try again." };
 			},
 		},
 		{ name: "an emote and, if possible, a more descriptive message",
