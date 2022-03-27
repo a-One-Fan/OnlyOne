@@ -121,7 +121,7 @@ module.exports = {
 		if (text.search(/me|myself|my\s+(?:pfp|profile\s+pic(?:ture)?)/) > -1) return message.author.displayAvatarURL({ format: "png" });
 
 		if (text.startsWith("<@!") && text.endsWith(">")) {
-			const targetUser = await message.client.users.fetch(text.substring(3, text.length-1));
+			const targetUser = await message.client.users.fetch(text.substring(3, text.length - 1));
 			if (!targetUser) throw Error("Printable error: Sorry, I couldn't find a user by that ID.");
 			return targetUser.displayAvatarURL({ format: "png" });
 		}
