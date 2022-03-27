@@ -8,7 +8,7 @@ module.exports = {
 		return new Promise((resolve, reject) => {
 			const regexResult = RegExp(permittedUrls).exec(url);
 			if (!regexResult) {
-				return reject(new Error("Bad URL"));
+				return reject(new Error("Bad URL: " + url));
 			}
 			const extensionlessPath = filepath;
 			filepath = filepath + "." + regexResult[1];
