@@ -41,10 +41,10 @@
             "regex": "test\\s+(?:(?:your)|(?:the))?\\s+exception\\s+handling[.?!\\s]{0,3}\\s*$|\\s+try\\s+to\\s+die\\s+while\\s+running\\s+a?\\s+command[,.?!\\s]{0,3}\\s*$"},
         
         {"name": "renderMonkeys", "regexParams": "i", "help": "Do a test render of this: https://only.one.com/one.png", "description": "I will do a test render with that image.",
-            "regex": "(?:do\\s+a\\s+)?test\\s+render(?:\\s+of)?(?:\\s+this)?(?:\\s+image)?:\\s*[`'\"<|]*(.*[\\w\\\\/])[`'\">|\\s]*$"},
+            "regex": "(?:do\\s+a\\s+)?test\\s+render(?:\\s+of)?(?:\\s+this)?(?:\\s+image)?:\\s*(?:\\s+((?:[,.?!\\s]?[^,.?!\\s]+)+))?[,.?!\\s]{0,3}\\s*$"},
         
         {"name": "renderSnap", "regexParams": "i", "help": "Snap this out of existence: https://only.one.com/zero.png", "description": "I will snap that image or video out of existence.",
-            "regex": "(Thanos\\s+)?snap\\s+this\\s*(?:.*):\\s*[`'\"<|]*(https?:.*[\\w\\\\/])(?:[`'\">|\\s]*)$",
+            "regex": "(Thanos\\s+)?snap\\s+this\\s*(?:.*):\\s*(?:\\s+((?:[,.?!\\s]?[^,.?!\\s]+)+))?[,.?!\\s]{0,3}\\s*$",
             "extraRegex": [
                 "rotated\\s+(-?(?:\\d+|\\d*\\.\\d*))(r|rad|radians)?(?:d|deg|degrees)?",
                 "(?:using|shaped?(?:\\s+like)?)\\s+(\\w+)",
@@ -56,7 +56,7 @@
         },
 
         {"name": "renderBarrel", "regexParams": "i", "help": "Do a barrel roll using me!", "description": "I'll roll the specifid person as a barrel.",
-            "regex": "(?:do\\s+(?:a\\s+)?)?barrel\\s+roll(?:\\s+(?:using|with)?)?(?:\\s+(?:(me)|(?:<@!([^>@]+)>)|([^,.?!]+)))?[,.?!\\s]{0,3}\\s*$"},
+            "regex": "(?:do\\s+(?:a\\s+)?)?barrel\\s+roll(?:\\s+(?:using|with)?)?(?:\\s+((?:[,.?!\\s]?[^,.?!\\s]+)+))?[,.?!\\s]{0,3}\\s*$"},
 
         {"name": "calculate", "regexParams": "i", "help": "'Calculate 1+1 - 1', or 'Calculate using RPN 1 1 1 + -'", "description": "I will calculate your expression - please don't use punctuation!",
             "regex": "calculate\\s+((?:using\\s+|with\\s+)?(?:reverse\\s+polish(?:\\s+notation)|RPN)\\s+)?(.+)$",

@@ -1,10 +1,11 @@
 const { downloadImage, renderBlend, doFfmpeg, getResolution } = require("../extras/image_manip");
+const { getLinkFromText } = require("../extras/text_recognition.js");
 const { evenify, clamp } = require("../extras/math_stuff.js");
 const { MessageAttachment } = require("discord.js");
 
 module.exports = {
 	async execute(message, regexResults, extraRegex) {
-		const [ impath, extension ] = await downloadImage(regexResults[2]);
+		const [ impath, extension ] = await downloadImage(getLinkFromText(regexResults[2], message));
 		console.log("Downloaded file.");
 		let resolution = await getResolution(impath + "." + extension);
 		let vfscale = [];
