@@ -133,14 +133,14 @@ module.exports = {
 		}
 
 		if (text.search(/this:?/) > -1) {
-			if (!message.attachments) throw Error("Printable error: You need to attach a file.");
+			if (!message.attachments[0]) throw Error("Printable error: You need to attach a file.");
 			return message.attachments[0].proxyURL;
 		}
 
 		if (text.search(/that:?/) > -1) {
 			const reply = await message.fetchReference();
 			if (!reply) throw Error("Printable error: You need to reply to someone.");
-			if (!reply.attachments) throw Error("Printable error: Your replied-to message needs to have a file.");
+			if (!reply.attachments[0]) throw Error("Printable error: Your replied-to message needs to have a file.");
 			return reply.attachments[0].proxyURL;
 		}
 
