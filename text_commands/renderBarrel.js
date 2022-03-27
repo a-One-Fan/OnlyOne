@@ -4,7 +4,7 @@ const { MessageAttachment } = require("discord.js");
 
 module.exports = {
 	async execute(message, regexResults) {
-		const link = getLinkFromText(regexResults[1], message);
+		const link = await getLinkFromText(regexResults[1], message);
 		const [ impath, extension ] = await downloadImage(link);
 		await doFfmpeg(["-i", impath + "." + extension, "-y", "./tmp/barrelPicture.png"]);
 		await renderBlend("./extras/barrel.blend", ["-a"]);

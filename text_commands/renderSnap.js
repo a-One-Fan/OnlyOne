@@ -5,7 +5,8 @@ const { MessageAttachment } = require("discord.js");
 
 module.exports = {
 	async execute(message, regexResults, extraRegex) {
-		const [ impath, extension ] = await downloadImage(getLinkFromText(regexResults[2], message));
+		const link = await getLinkFromText(regexResults[2], message);
+		const [ impath, extension ] = await downloadImage(link);
 		console.log("Downloaded file.");
 		let resolution = await getResolution(impath + "." + extension);
 		let vfscale = [];
