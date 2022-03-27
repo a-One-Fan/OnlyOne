@@ -104,4 +104,50 @@ module.exports = {
 		const newObj = { text: obj.text, files: obj.files, embeds:obj.embeds };
 		return [obj.reacts, newObj];
 	},
+
+	async getLinkFromText(text, message) {
+		let whitespaceStart = 0;
+		let i = 0;
+		while (i < text.length && text[i] == " ") i++;
+		if (i != text.length) whitespaceStart = i;
+		i = text.length - 1;
+		while (i >= 0 && text[i] == " ") i--;
+		text = text.substring(whitespaceStart, i + 1);
+
+		if (text.startsWith("https://")) return text;
+
+		if (text.search(/yourself|you|u|urself|your\s+(?:pfp|profile\s+pic(?:ture)?)/) > -1) return message.client.user.displayAvatarURL({ format: "png" });
+
+		if (text.search(/me|myself|my\s+(?:pfp|profile\s+pic(?:ture)?)/) > -1) return message.author.displayAvatarURL({ format: "png" });
+
+		if (text.startsWith("<@!") && text.endsWith(">")) {
+			const targetUser = await message.client.users.fetch(text.substring(3, text.length-1));
+			if (!targetUser) throw Error("Printable error: Sorry, I couldn't find a user by that ID.");
+			return targetUser.displayAvatarURL({ format: "png" });
+		}
+
+		if (text.search(/(?:his|her|their)\\s+(?:pfp|profile(?:\\s+pic(?:ture)?)?)/) > -1) {
+			const reply = await message.fetchReference();
+			if (!reply) throw Error("Printable error: You need to reply to someone.");
+			return reply.author.displayAvatarURL({ format: "png" });
+		}
+
+		if (text.search(/this:?/) > -1) {
+			if (!message.attachments) throw Error("Printable error: You need to attach a file.");
+			return message.attachments[0].proxyURL;
+		}
+
+		if (text.search(/that:?/) > -1) {
+			const reply = await message.fetchReference();
+			if (!reply) throw Error("Printable error: You need to reply to someone.");
+			if (!reply.attachments) throw Error("Printable error: Your replied-to message needs to have a file.");
+			return reply.attachments[0].proxyURL;
+		}
+
+		await message.guild.members.fetch();
+		const targetUser = await message.client.users.cache.find((u) => (u.tag.search(text) != -1));
+		if (!targetUser) throw Error("Printable error: Sorry, I couldn't find a user by that name.");
+		return targetUser.displayAvatarURL();
+
+	},
 };
