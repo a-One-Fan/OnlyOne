@@ -44,7 +44,7 @@
             "regex": "(?:do\\s+a\\s+)?test\\s+render(?:\\s+of)?(?:\\s+this)?(?:\\s+image)?:\\s*(?:\\s+((?:[,.?!\\s]?[^,.?!\\s]+)+))?[,.?!\\s]{0,3}\\s*$"},
         
         {"name": "renderSnap", "regexParams": "i", "help": "Snap this out of existence: https://only.one.com/zero.png", "description": "I will snap that image or video out of existence.",
-            "regex": "(Thanos\\s+)?snap\\s+this\\s*(?:.*):\\s*(?:\\s+((?:[,.?!\\s]?[^,.?!\\s]+)+))?[,.?!\\s]{0,3}\\s*$",
+            "regex": "(Thanos\\s+)?snap\\s+this\\s*(?:[^:]*):\\s*(?:\\s+((?:[,.?!\\s]?[^,.?!\\s]+)+))?[,.?!\\s]{0,3}\\s*$",
             "extraRegex": [
                 "rotated\\s+(-?(?:\\d+|\\d*\\.\\d*))(r|rad|radians)?(?:d|deg|degrees)?",
                 "(?:using|shaped?(?:\\s+like)?)\\s+(\\w+)",
