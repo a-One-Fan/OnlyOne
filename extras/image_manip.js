@@ -59,9 +59,7 @@ module.exports = {
 		} else {
 			lavfi = `[0:v]scale=${resolution_x}:${resolution_y}[scaled], [scaled]fps=fps=${fps}`;
 		}
-		let args = ["-stream_loop", "-1", "-i", file, "-lavfi", lavfi, "-y"];
-		if (length) args = args.concat(["-t", length]);
-		args = args.concat(["-c:v", "ffv1", "./tmp/" + outname + ".mkv"]);
+		const args = ["-stream_loop", "-1", "-i", file, "-lavfi", lavfi, "-t", length, "-c:v", "ffv1", "-y", "./tmp/" + outname + ".mkv"];
 		await module.exports.doFfmpeg(args);
 	},
 	getResolution(filepath) {
