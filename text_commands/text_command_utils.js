@@ -23,8 +23,8 @@ module.exports = {
 	async executeCommand(message, errorType, parseType) {
 		if (errorType == undefined || parseType == undefined) {
 			const row = await message.client.db.findOne({ where: { userID: message.author.id } });
-			errorType = row.errorType;
-			parseType = row.parseType;
+			if (errorType == undefined) errorType = row.errorType;
+			if (parseType == undefined) parseType = row.parseType;
 		}
 
 		const parsed = parseChoose(message.content, parseType);
