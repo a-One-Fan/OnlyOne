@@ -50,6 +50,17 @@ module.exports = {
 				.once("close", (code) => resolve(code));
 		});
 	},
+	// Automatically saves converted video to tmp folder.
+	async toGoodVideo(file, fps, outname, length, resolution_x, resolution_y) {
+		let lavfi = "";
+		if (!resolution_x) {
+			lavfi = `[0:v]fps=fps=${fps}`;
+		} else {
+			lavfi = `[0:v]scale=${resolution_x}:${resolution_y}[scaled], [scaled]fps=fps=${fps}`;
+		}
+
+		await module.exports.doFfmpeg(["-stream_loop", "-1", "-i", file, "-lavfi", lavfi, "-y"].concat([length ? ["-t", length] : []]).concat([length, "-c:v", "ffv1", "/tmp/" + outname + ".mkv"]));
+	},
 	getResolution(filepath) {
 		const ffprobeLocation = ffmpegFolderLocation + "ffprobe.exe";
 		return new Promise((resolve, reject) => {
