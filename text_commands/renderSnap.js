@@ -6,12 +6,18 @@ const { MessageAttachment } = require("discord.js");
 module.exports = {
 	async execute(message, regexResults, extraRegex) {
 		const link = await getLinkFromText(regexResults[2], message);
+		console.log("Working on snap...");
+		let time = new Date();
+
 		const [ impath, extension ] = await downloadImage(link);
-		console.log("Downloaded file.");
+		console.log(`Snap took ${(new Date() - time) / 1000.0}s to download input.`);
+		time = new Date();
+
 		let resolution = await getResolution(impath + "." + extension);
 		resolution = evenify(resolution);
-		await toGoodVideo(impath + "." + extension, 30, "snapvid", undefined, resolution[0], resolution[1]);
-		console.log("Converted to good video.");
+		await toGoodVideo(impath + "." + extension, 30, "snapvid", 7, resolution[0], resolution[1]);
+		console.log(`Snap took ${(new Date() - time) / 1000.0}s to convert input.`);
+		time = new Date();
 
 		let aspectRatio = resolution[0] / resolution[1];
 		aspectRatio = clamp(0.1, 10.0, aspectRatio);
@@ -84,9 +90,13 @@ def tolin(c):
 bpy.data.materials["Plane background"].node_tree.nodes["Emission"].inputs[0].default_value = (r, g, b, 1)
 `;
 		await renderBlend("extras/snapped.blend", ["-a"], pythonics);
-		console.log("Rendered.");
+		console.log(`Snap took ${(new Date() - time) / 1000.0}s to render.`);
+		time = new Date();
+
 		await doFfmpeg(["-i", "./tmp/snaprender.mp4", "-i", "./tmp/snapvid.mp4", "-map", "0:v", "-map", "1:a?", "-af", "afade=t=out:st=4:d=3.5", "-y", "./tmp/snapped.mp4"]);
-		console.log("Audio merged.");
+		console.log(`Snap took ${(new Date() - time) / 1000.0}s to merge audio.`);
+		time = new Date();
+
 		const _file = new MessageAttachment("./tmp/snapped.mp4");
 		return { text: ["Bye bye.", "It's no more.", "There it goes...", "Watch it vanish."][(Math.floor(Math.random() * 4))], files: [_file] };
 	},
