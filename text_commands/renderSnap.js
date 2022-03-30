@@ -1,4 +1,4 @@
-const { downloadImage, renderBlend, doFfmpeg, getResolution } = require("../extras/image_manip");
+const { downloadImage, renderBlend, doFfmpeg, getResolution, toGoodVideo } = require("../extras/image_manip.js");
 const { getLinkFromText } = require("../extras/text_recognition.js");
 const { evenify, clamp } = require("../extras/math_stuff.js");
 const { MessageAttachment } = require("discord.js");
@@ -9,13 +9,8 @@ module.exports = {
 		const [ impath, extension ] = await downloadImage(link);
 		console.log("Downloaded file.");
 		let resolution = await getResolution(impath + "." + extension);
-		let vfscale = [];
-		// fuk ur syntactic sugar i want it readable
-		if (resolution != evenify(resolution)) {
-			resolution = evenify(resolution);
-			vfscale = ["-vf", `scale=${resolution[0]}:${resolution[1]}`];
-		}
-		await doFfmpeg(["-stream_loop", "-1", "-i", impath + "." + extension, "-vf", "fps=fps=30", "-t", "8"].concat(vfscale).concat(["-y", "./tmp/snapvid.mp4"]));
+		resolution = evenify(resolution);
+		await toGoodVideo(impath + "." + extension, 30, "snapvid", undefined, resolution[0], resolution[1]);
 		console.log("Converted to good video.");
 
 		let aspectRatio = resolution[0] / resolution[1];
