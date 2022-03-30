@@ -51,6 +51,7 @@ module.exports = {
 		});
 	},
 	// Automatically saves converted video to tmp folder.
+	// Converted video title should be extensionless!!!
 	async toGoodVideo(file, fps, outname, length, resolution_x, resolution_y) {
 		let lavfi = "";
 		if (!resolution_x) {
@@ -58,8 +59,10 @@ module.exports = {
 		} else {
 			lavfi = `[0:v]scale=${resolution_x}:${resolution_y}[scaled], [scaled]fps=fps=${fps}`;
 		}
-
-		await module.exports.doFfmpeg(["-stream_loop", "-1", "-i", file, "-lavfi", lavfi, "-y"].concat([length ? ["-t", length] : []]).concat([length, "-c:v", "ffv1", "/tmp/" + outname + ".mkv"]));
+		let args = ["-stream_loop", "-1", "-i", file, "-lavfi", lavfi, "-y"];
+		if (length) args = args.concat(["-t", length]);
+		args = args.concat(["-c:v", "ffv1", "./tmp/" + outname + ".mkv"]);
+		await module.exports.doFfmpeg(args);
 	},
 	getResolution(filepath) {
 		const ffprobeLocation = ffmpegFolderLocation + "ffprobe.exe";
