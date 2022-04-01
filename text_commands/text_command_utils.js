@@ -28,19 +28,22 @@ module.exports = {
 		}
 
 		const parsed = parseChoose(message.content, parseType);
-		if (!parsed) return {};
+		if (!parsed || !parsed.valid) return {};
 
-		const [func, regexRes, extraRes, foundCommand] = module.exports.findCommand(parsed);
-		let err = undefined, commandRes = undefined;
-		try {
-			commandRes = await func.execute(message, regexRes, extraRes);
-		} catch (error) {
-			err = error;
-			console.log(err);
+		let err = undefined, commandRes = undefined, foundCommand = undefined;
+		const res = module.exports.findCommand(parsed.culledText);
+		if (res) {
+			const [func, regexRes, extraRes, _foundCommand] = res;
+			foundCommand = _foundCommand;
+			try {
+				commandRes = await func.execute(message, regexRes, extraRes);
+			} catch (error) {
+				err = error;
+				console.log(err);
+			}
 		}
 		// TODO: DM the error to me? :)
 		const errorRes = errorChoose(err, foundCommand, errorType);
-
 		return commandRes ? commandRes : errorRes;
 	},
 

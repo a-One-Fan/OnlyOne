@@ -44,7 +44,7 @@ module.exports = {
 		let emotes = reactChoose(message, row, oneCount);
 
 		let commandRes = null;
-		if (firstCommand) commandRes = executeCommand(message);
+		if (!firstCommand) commandRes = await executeCommand(message);
 
 		if (commandRes && commandRes.emotes) emotes = emotes.concat(commandRes.emotes);
 

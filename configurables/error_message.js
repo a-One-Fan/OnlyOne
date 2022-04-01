@@ -46,7 +46,6 @@ module.exports = {
 		},
 	],
 	errorChoose(error, command, id) {
-		if (!error) return {};
 		return module.exports.errorTypes[id].transformError(error, command);
 	},
 	unknownErrorType: "Unknown error type",
