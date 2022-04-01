@@ -46,7 +46,7 @@ module.exports = {
 		let commandRes = null;
 		if (firstCommand) commandRes = executeCommand(message);
 
-		if (commandRes.emotes) emotes = emotes.concat(commandRes.emotes);
+		if (commandRes && commandRes.emotes) emotes = emotes.concat(commandRes.emotes);
 
 		if ((commandRes && !(commandRes.abortReact)) || !commandRes) {
 			for (const emot of emotes) {
