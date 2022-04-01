@@ -39,7 +39,7 @@ module.exports = {
 		}
 
 		// TODO: DM the error to me? :)
-		const errorRes = errorChoose(err, foundCommand, commandRes, errorType);
+		const errorRes = errorChoose(err, foundCommand, errorType);
 
 		return commandRes ? commandRes : errorRes;
 	},
