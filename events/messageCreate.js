@@ -1,8 +1,7 @@
 const { countOnes } = require("../extras/text_recognition.js");
 const commandData = require("../text_commands/commands.json");
 const { reactChoose } = require("../configurables/message_reacts.js");
-const { errorChoose } = require("../configurables/error_message.js");
-const { parseChoose } = require("../configurables/valid_message.js");
+const { executeCommand } = require("../text_commands/text_command_utils.js");
 
 module.exports = {
 	name: "messageCreate",
@@ -37,47 +36,17 @@ module.exports = {
 			}
 		}
 
-		let row = await message.client.db.findOne({ where: { userID: message.author.id } });
+		const row = await message.client.db.findOne({ where: { userID: message.author.id } });
 		if (!row || row.ignore) { return; }
 		const oneCount = countOnes(message.content);
 
 		message.client.db.update({ upperOne: row.upperOne + oneCount[1], lowerOne: row.lowerOne + oneCount[2], digitOne: row.digitOne + oneCount[3] }, { where: { userID: message.author.id } });
 		let emotes = reactChoose(message, row, oneCount);
 
-		row = await message.client.db.findOne({ where: { userID: message.author.id } });
-		const split = parseChoose(message.content, row.parseType);
+		let commandRes = null;
+		if (firstCommand) commandRes = executeCommand(message);
 
-		let commandRes = null, foundCommand = null;
-		let err = null;
-		if (split.valid && !firstCommand) {
-			// TODO: better names
-			try {
-				for (const command of commandData.commands) {
-					const reactRes = RegExp(command.regex, command.regexParams).exec(split.culledText);
-					if (reactRes) {
-						foundCommand = command;
-						const extraRes = [];
-						if	(command.extraRegex) {
-							for (const extraRegex of command.extraRegex) {
-								extraRes.push(RegExp(extraRegex, command.regexParams).exec(split.culledText));
-							}
-						}
-						const func = require("../text_commands/" + command.name + ".js");
-						commandRes = await func.execute(message, reactRes, extraRes);
-						break;
-					}
-				}
-			} catch (error) {
-				err = error;
-			} finally {
-				// TODO: DM the error to me? :)
-				// TODO: make function that merges to-be message things like emotes, files, text, etc.
-				const res = errorChoose(err, foundCommand, commandRes, row.errorType);
-				if (res.text) textContent += res.text;
-				if (res.emotes) emotes = emotes.concat(res.emotes);
-				if (err) console.log(err);
-			}
-		}
+		if (commandRes.emotes) emotes = emotes.concat(commandRes.emotes);
 
 		if ((commandRes && !(commandRes.abortReact)) || !commandRes) {
 			for (const emot of emotes) {
