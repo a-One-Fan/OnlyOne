@@ -36,8 +36,8 @@ module.exports = {
 			commandRes = await func.execute(message, regexRes, extraRes);
 		} catch (error) {
 			err = error;
+			console.log(err);
 		}
-
 		// TODO: DM the error to me? :)
 		const errorRes = errorChoose(err, foundCommand, errorType);
 
