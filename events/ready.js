@@ -50,7 +50,7 @@ module.exports = {
 			console.log("Could not update currencies.\n", error);
 		}
 
-		await doTests();
+		doTests();
 
 		console.log(`Ready! Logged in as ${client.user.tag}`);
 	},
