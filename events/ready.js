@@ -2,7 +2,7 @@ const { access } = require("fs");
 const { ffmpegFolderLocation, blenderLocation } = require("../config.json");
 const { updateCurrencies } = require("../extras/currency.js");
 const { migrate } = require("../extras/database_stuff.js");
-const { doTests } = require("../unit_tests.js");
+const { doTests } = require("../automatic_tests.js");
 
 const doMigrate = false;
 
