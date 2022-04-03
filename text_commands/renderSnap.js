@@ -98,7 +98,7 @@ bpy.data.materials["Plane background"].node_tree.nodes["Emission"].inputs[0].def
 		console.log(`Snap took ${(new Date() - time) / 1000.0}s to render.`);
 		time = new Date();
 
-		await doFfmpeg(["-i", `./tmp/${uuid}/snaprender.mp4`, "-i", `./tmp/${uuid}/snapvid.mkv`, "-map", "0:v", "-map", "1:a?", "-af", "afade=t=out:st=4:d=3.5", "-y", `./tmp/${uuid}snapped.mp4`]);
+		await doFfmpeg(["-i", `./tmp/${uuid}/snaprender.mp4`, "-i", `./tmp/${uuid}/snapvid.mkv`, "-map", "0:v", "-map", "1:a?", "-af", "afade=t=out:st=4:d=3.5", "-y", `./tmp/${uuid}/snapped.mp4`]);
 		console.log(`Snap took ${(new Date() - time) / 1000.0}s to merge audio.`);
 		time = new Date();
 
