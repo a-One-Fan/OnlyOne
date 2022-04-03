@@ -2,6 +2,7 @@ const { countOnes } = require("../extras/text_recognition.js");
 const commandData = require("../text_commands/commands.json");
 const { reactChoose } = require("../configurables/message_reacts.js");
 const { executeCommand } = require("../text_commands/text_command_utils.js");
+const { rm } = require("fs");
 
 module.exports = {
 	name: "messageCreate",
@@ -62,8 +63,10 @@ module.exports = {
 		if (commandRes && commandRes.files) _files = commandRes.files;
 
 		if (textContent != "" || _files != "") {
-			if (_files != "") message.reply({ content: textContent, allowedMentions: { repliedUser: false }, files: _files });
-			else message.reply({ content: textContent, allowedMentions: { repliedUser: false } });
+			if (_files != "") await message.reply({ content: textContent, allowedMentions: { repliedUser: false }, files: _files });
+			else await message.reply({ content: textContent, allowedMentions: { repliedUser: false } });
 		}
+
+		if (commandRes.cleanup) rm(commandRes.cleanup, { recursive: true, force: true }, (err) => { if (err) console.log("Got error while deleting:", err); });
 	},
 };
