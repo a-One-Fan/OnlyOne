@@ -1,9 +1,11 @@
 const { executeCommand } = require("./text_commands/text_command_utils.js");
+const { rm } = require("fs");
 
 // Some long string of stuff that you won't manually write.
 // If a test has this string in its out for one of its attributes, then it will consider as valid anything in that attribute.
 // This is to make testing for files doable.
-const ANY = "This represents the possibility for any input.";
+const ANY = "This represents the possibility for any non-false/undefined input.";
+const OPTIONAL = "This represents the possibility for completely optional input.";
 
 module.exports = {
 	text_command_basic_tests: [
@@ -23,9 +25,9 @@ module.exports = {
 		{ in: "One, calculate 1 m to cm", out: { text: "100 centimetres." } },
 
 		{ category: "Renders" },
-		{ in: "One, snap this: https://i.imgur.com/J4bT846.png", out: { text: ANY, files: ANY } },
-		{ in: "One, test render this: https://i.imgur.com/J4bT846.png", out: { text: "Here's your render.", files: ANY } },
-		{ in: "One, barrel roll https://i.imgur.com/J4bT846.png", out: { text: "Rolling...", files: ANY } },
+		{ in: "One, snap this: https://i.imgur.com/J4bT846.png", out: { text: ANY, files: ANY, cleanup: OPTIONAL } },
+		{ in: "One, test render this: https://i.imgur.com/J4bT846.png", out: { text: "Here's your render.", files: ANY, cleanup: OPTIONAL } },
+		{ in: "One, barrel roll https://i.imgur.com/J4bT846.png", out: { text: "Rolling...", files: ANY, cleanup: OPTIONAL } },
 
 		{ category: "Image Macros" },
 		{ in: "One, hello!", out: { text: "https://imgur.com/J4bT846.png" } },
@@ -84,6 +86,8 @@ module.exports = {
 
 				if (isEqual) {
 					for (const prop in test.out) {
+						if (test.out[prop] == OPTIONAL) continue;
+
 						if ((test.out[prop] == ANY) && (res[prop])) {
 							continue;
 						}
@@ -108,6 +112,9 @@ module.exports = {
 		}
 
 		console.log("\n");
+
+		for (const test of unsuccessful) if (test.result.cleanup) rm(test.result.cleanup, { recursive: true, force: true }, (err) => { if (err) console.log("Got error while deleting:", err); });
+		for (const test of successful) if (test.result.cleanup) rm(test.result.cleanup, { recursive: true, force: true }, (err) => { if (err) console.log("Got error while deleting:", err); });
 
 		if (!unsuccessful.length) {
 			// "\x1b[32m" is green
