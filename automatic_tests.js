@@ -87,6 +87,14 @@ module.exports = {
 						if ((test.out[prop] == ANY) && (res[prop])) {
 							continue;
 						}
+						if (test.out[prop] instanceof RegExp) {
+							if (test.out[prop].test(res[prop])) {
+								continue;
+							} else {
+								isEqual = false;
+								break;
+							}
+						}
 						if (test.out[prop] != res[prop]) {
 							isEqual = false;
 							break;
