@@ -68,7 +68,7 @@ module.exports = {
 			const copiedFakeMessage = {};
 			Object.assign(copiedFakeMessage, fakeMessage);
 			const res = executeCommand(copiedFakeMessage);
-			const entry = { test: test, result: res, category: currentCategory, successful: true };
+			const entry = { test: test, result: res, category: currentCategory, successful: false };
 			results.push(entry);
 		}
 
@@ -83,7 +83,7 @@ module.exports = {
 					console.log(err);
 				}
 				unsuccessful++;
-				res.successful = false;
+				continue;
 			} else {
 				let isEqual = true;
 				for (const prop in res.result) {
@@ -117,9 +117,10 @@ module.exports = {
 
 				if (!isEqual) {
 					unsuccessful++;
-					res.successful = false;
+					continue;
 				}
 			}
+			res.successful = true;
 		}
 
 		console.log("\n");
