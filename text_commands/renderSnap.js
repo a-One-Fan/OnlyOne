@@ -2,20 +2,24 @@ const { downloadImage, renderBlend, doFfmpeg, getResolution, toGoodVideo } = req
 const { getLinkFromText } = require("../extras/text_recognition.js");
 const { evenify, clamp } = require("../extras/math_stuff.js");
 const { MessageAttachment } = require("discord.js");
+const { mkdirSync } = require("fs");
 
 module.exports = {
 	async execute(message, regexResults, extraRegex) {
+		const uuid = Math.random().toString(36).substring(2, 7) + Math.random().toString(36).substring(2, 7);
+		mkdirSync(`./tmp/${uuid}`);
+
 		const link = await getLinkFromText(regexResults[2], message);
 		console.log("Working on snap...");
 		let time = new Date();
 
-		const [ impath, extension ] = await downloadImage(link);
+		const [ impath, extension ] = await downloadImage(link, `./tmp/${uuid}/snapDownload`);
 		console.log(`Snap took ${(new Date() - time) / 1000.0}s to download input.`);
 		time = new Date();
 
 		let resolution = await getResolution(impath + "." + extension);
 		resolution = evenify(resolution);
-		await toGoodVideo(impath + "." + extension, 30, "snapvid", 7, resolution[0], resolution[1]);
+		await toGoodVideo(impath + "." + extension, 30, `${uuid}/snapvid`, 7, resolution[0], resolution[1]);
 		console.log(`Snap took ${(new Date() - time) / 1000.0}s to convert input.`);
 		time = new Date();
 
@@ -73,6 +77,7 @@ module.exports = {
 
 		const pythonics = `
 import bpy
+bpy.data.images["snapvid"].filepath = "//../tmp/${uuid}/snapvid.mkv"
 bpy.data.scenes["Scene"].render.resolution_x = ${newHeight}
 bpy.data.scenes["Scene"].render.resolution_y = ${newWidth}
 bpy.data.node_groups["Tile fadeout"].nodes["Rotation input"].outputs[0].default_value = ${angle}
@@ -89,15 +94,15 @@ def tolin(c):
 (r, g, b) = map(tolin, bytes.fromhex("${color}"))
 bpy.data.materials["Plane background"].node_tree.nodes["Emission"].inputs[0].default_value = (r, g, b, 1)
 `;
-		await renderBlend("extras/snapped.blend", ["-a"], pythonics);
+		await renderBlend("extras/snapped.blend", ["-o", `//../tmp/${uuid}/snaprender.mp4`, "-a"], pythonics);
 		console.log(`Snap took ${(new Date() - time) / 1000.0}s to render.`);
 		time = new Date();
 
-		await doFfmpeg(["-i", "./tmp/snaprender.mp4", "-i", "./tmp/snapvid.mp4", "-map", "0:v", "-map", "1:a?", "-af", "afade=t=out:st=4:d=3.5", "-y", "./tmp/snapped.mp4"]);
+		await doFfmpeg(["-i", `./tmp/${uuid}/snaprender.mp4`, "-i", `./tmp/${uuid}/snapvid.mkv`, "-map", "0:v", "-map", "1:a?", "-af", "afade=t=out:st=4:d=3.5", "-y", `./tmp/${uuid}snapped.mp4`]);
 		console.log(`Snap took ${(new Date() - time) / 1000.0}s to merge audio.`);
 		time = new Date();
 
-		const _file = new MessageAttachment("./tmp/snapped.mp4");
-		return { text: ["Bye bye.", "It's no more.", "There it goes...", "Watch it vanish."][(Math.floor(Math.random() * 4))], files: [_file] };
+		const _file = new MessageAttachment(`./tmp/${uuid}/snapped.mp4`);
+		return { text: ["Bye bye.", "It's no more.", "There it goes...", "Watch it vanish."][(Math.floor(Math.random() * 4))], files: [_file], cleanup: `./tmp/${uuid}` };
 	},
 };
