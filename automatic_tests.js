@@ -39,8 +39,8 @@ module.exports = {
 	// message.client.db.findOne({ where: { userID: message.author.id } });
 	async doTests() {
 		const tests = module.exports.text_command_basic_tests;
-		const unsuccessful = [];
-		const successful = [];
+		let unsuccessful = 0;
+		const results = [];
 
 		const fakeRow = { userID: 1, reputation: 0, rank: 0, upperOne: 1, lowerOne: 10,
 			digitOne: 11, otherOne: 100, ignore: false, reactType: 0, reactChance: 1, errorType: 0, parseType: 0, customReact: undefined };
@@ -57,6 +57,7 @@ module.exports = {
 			},
 		};
 		let currentCategory = "";
+
 		for (const test of tests) {
 			if (test.category) currentCategory = test.category;
 			if (test.parseType) fakeRow.parseType = test.parseType;
@@ -64,69 +65,79 @@ module.exports = {
 			if (!test.in) continue;
 
 			fakeMessage.content = test.in;
-			let err = undefined, res = undefined;
+			const copiedFakeMessage = {};
+			Object.assign(copiedFakeMessage, fakeMessage);
+			const res = executeCommand(copiedFakeMessage);
+			const entry = { test: test, result: res, category: currentCategory, successful: true };
+			results.push(entry);
+		}
+
+		for (const res of results) {
+			let err = undefined;
 			try {
-				res = await executeCommand(fakeMessage);
+				res.result = await res.result;
 			} catch (error) { err = error; }
-			const entry = { test: test, result: res, category: currentCategory };
 			if (err) {
 				if (err) {
 					console.log("Error when testing:\n");
 					console.log(err);
 				}
-				unsuccessful.push(entry);
+				unsuccessful++;
+				res.successful = false;
 			} else {
 				let isEqual = true;
-				for (const prop in res) {
-					if (!test.out[prop]) {
+				for (const prop in res.result) {
+					if (!res.test.out[prop]) {
 						isEqual = false;
 						break;
 					}
 				}
 
 				if (isEqual) {
-					for (const prop in test.out) {
-						if (test.out[prop] == OPTIONAL) continue;
+					for (const prop in res.test.out) {
+						if (res.test.out[prop] == OPTIONAL) continue;
 
-						if ((test.out[prop] == ANY) && (res[prop])) {
+						if ((res.test.out[prop] == ANY) && (res.result[prop])) {
 							continue;
 						}
-						if (test.out[prop] instanceof RegExp) {
-							if (test.out[prop].test(res[prop])) {
+						if (res.test.out[prop] instanceof RegExp) {
+							if (res.test.out[prop].test(res.result[prop])) {
 								continue;
 							} else {
 								isEqual = false;
 								break;
 							}
 						}
-						if (test.out[prop] != res[prop]) {
+						if (res.test.out[prop] != res.result[prop]) {
 							isEqual = false;
 							break;
 						}
 					}
 				}
 
-				if (isEqual) successful.push(entry);
-				else unsuccessful.push(entry);
+				if (!isEqual) {
+					unsuccessful++;
+					res.successful = false;
+				}
 			}
 		}
 
 		console.log("\n");
 
-		for (const test of unsuccessful) if (test.result.cleanup) rm(test.result.cleanup, { recursive: true, force: true }, (err) => { if (err) console.log("Got error while deleting:", err); });
-		for (const test of successful) if (test.result.cleanup) rm(test.result.cleanup, { recursive: true, force: true }, (err) => { if (err) console.log("Got error while deleting:", err); });
+		for (const test of results) if (test.result.cleanup) rm(test.result.cleanup, { recursive: true, force: true }, (err) => { if (err) console.log("Got error while deleting:", err); });
 
-		if (!unsuccessful.length) {
+		if (!unsuccessful) {
 			// "\x1b[32m" is green
-			console.log("\x1b[32m%s\x1b[0m", `All ${successful.length}/${unsuccessful.length + successful.length} tests succesful!\n`);
+			console.log("\x1b[32m%s\x1b[0m", `All ${results.length - unsuccessful}/${results.length} tests succesful!\n`);
 			return;
 		}
 
-		console.log("\x1b[31m%s\x1b[0m", `\n${successful.length}/${unsuccessful.length + successful.length} tests succesful.\n`);
+		console.log("\x1b[31m%s\x1b[0m", `\n${results.length - unsuccessful}/${results.length} tests succesful.\n`);
 
 		let lastCategory = ANY;
 
-		for (const res of unsuccessful) {
+		for (const res of results) {
+			if (res.successful) continue;
 			if (res.category != lastCategory) {
 				lastCategory = res.category;
 				console.log(`\n    ${lastCategory}:\n`);
