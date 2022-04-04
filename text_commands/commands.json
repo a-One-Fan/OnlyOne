@@ -34,8 +34,8 @@
         {"name": "IMDance", "regexParams": "i", "help": "Dance!", "description": "\\*dancing\\*",
             "regex": "dance[,.?!\\s]{0,3}\\s*$"},
 
-        {"name": "IMHello", "regexParams": "i", "help": "'Hello!' or 'Goodbye!'", "description": "\\*dancing\\*",
-            "regex": "(?:hello|good\\s*morning|goodbye|good\\s*night|wave\\s*)(?:to\\s+(?:\\w+)?)?[,.?!\\s]{0,3}\\s*$"},
+        {"name": "IMHello", "regexParams": "i", "help": "'Hello!' or 'Goodbye!'", "description": "\\*waving\\*",
+            "regex": "(?:wave\\s+)?(?:hello|(?:good\\s*)?(?:morning|bye|night)(?:\\s+to(?:.*))?|see\\s+y(?:a|ou)(?:\\s+later)?\\s*)[,.?!\\s]{0,3}\\s*$"},
         
         {"name": "exceptionTest", "regexParams": "i", "help": "Test your exception handling!", "description": "I will cause an exception while executing a command.",
             "regex": "test\\s+(?:(?:your)|(?:the))?\\s+exception\\s+handling[.?!\\s]{0,3}\\s*$|\\s+try\\s+to\\s+die\\s+while\\s+running\\s+a?\\s+command[,.?!\\s]{0,3}\\s*$"},
