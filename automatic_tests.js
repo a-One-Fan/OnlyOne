@@ -71,8 +71,7 @@ module.exports = {
 		{ in: [[], 2], out: [] },
 		{ in: [[-1, -2], 2], out: [-1, -2] },
 	],
-	// The call:
-	// message.client.db.findOne({ where: { userID: message.author.id } });
+
 	async doTests() {
 		const tests = module.exports.auto_tests;
 		let unsuccessful = 0;
@@ -82,6 +81,8 @@ module.exports = {
 		const fakeRow = { userID: 1, reputation: 0, rank: 0, upperOne: 1, lowerOne: 10,
 			digitOne: 11, otherOne: 100, ignore: false, reactType: 0, reactChance: 1, errorType: 0, parseType: 0, customReact: undefined };
 
+		// The call:
+		// message.client.db.findOne({ where: { userID: message.author.id } });
 		const fakeMessage = { content: "",
 			client: { db: { findOne(query) {
 				if (query && query.where && query.where.userID == 1) return fakeRow;
