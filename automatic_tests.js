@@ -62,6 +62,9 @@ module.exports = {
 		{ in: [[-1, -2], 2], out: -1 },
 
 		{ category: "findDict", func: findDict },
+		{ in: [{ a: -1, b: -2, c: -3, d: -4 }, "c"], notOut: -1 },
+		{ in: [{ a: -1, b: -2, c: -3, d: -4 }, "a"], notOut: -1 },
+		{ in: [{ a: -1, b: -2, c: -3, d: -4 }, "bla"], out: -1 },
 
 		{ category: "remove", func: remove },
 		{ in: [[-1, -2, -3, -4], -3], out: [-1, -2, -4] },
