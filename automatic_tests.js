@@ -125,34 +125,45 @@ module.exports = {
 				unsuccessful++;
 				continue;
 			} else {
-				let isEqual = true;
-				for (const prop in res.result) {
-					if (!res.test.out[prop]) {
-						isEqual = false;
-						break;
+				const checkSingularOut = (obj) => {
+					for (const prop in res.result) {
+						if (!obj[prop]) {
+							return false;
+						}
 					}
-				}
+					for (const prop in obj) {
+						if (obj[prop] == OPTIONAL) continue;
 
-				if (isEqual) {
-					for (const prop in res.test.out) {
-						if (res.test.out[prop] == OPTIONAL) continue;
-
-						if ((res.test.out[prop] == ANY) && (res.result[prop])) {
+						if ((obj[prop] == ANY) && (res.result[prop])) {
 							continue;
 						}
-						if (res.test.out[prop] instanceof RegExp) {
-							if (res.test.out[prop].test(res.result[prop])) {
+						if (obj[prop] instanceof RegExp) {
+							if (obj[prop].test(res.result[prop])) {
 								continue;
 							} else {
-								isEqual = false;
-								break;
+								return false;
 							}
 						}
-						if (res.test.out[prop] != res.result[prop]) {
-							isEqual = false;
-							break;
+						if (obj[prop] != res.result[prop]) {
+							return false;
 						}
 					}
+					return true;
+				};
+				let isEqual = true;
+				if (res.test.out) isEqual = isEqual && checkSingularOut(res.test.out);
+				if (res.test.notOut) isEqual = isEqual && (!checkSingularOut(res.test.notOut));
+				if (res.test.notOutList) {
+					for (const singleNotOut of res.test.notOutList) {
+						isEqual = isEqual && (!checkSingularOut(singleNotOut));
+					}
+				}
+				if (res.test.outList) {
+					let isOneTrue = false;
+					for (const singleNotOut of res.test.notOutList) {
+						isOneTrue = isOneTrue || checkSingularOut(singleNotOut);
+					}
+					isEqual = isOneTrue && isEqual;
 				}
 
 				if (!isEqual) {
