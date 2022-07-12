@@ -57,7 +57,7 @@ module.exports = {
 		{ in: [-2.0, -1.0, -4.0], out: -2.0 },
 
 		{ category: "find()", func: find },
-		{ in: [[-1, -2, -3, -4], -3], out: 3 },
+		{ in: [[-1, -2, -3, -4], -3], out: 2 },
 		{ in: [[], 2], out: -1 },
 		{ in: [[-1, -2], 2], out: -1 },
 
@@ -125,26 +125,29 @@ module.exports = {
 				unsuccessful++;
 				continue;
 			} else {
-				const checkSingularOut = (obj) => {
+				const checkSingularOut = (out) => {
+					if (typeof (out) != "object") {
+						return res.result == out;
+					}
 					for (const prop in res.result) {
-						if (!obj[prop]) {
+						if (!out[prop]) {
 							return false;
 						}
 					}
-					for (const prop in obj) {
-						if (obj[prop] == OPTIONAL) continue;
+					for (const prop in out) {
+						if (out[prop] == OPTIONAL) continue;
 
-						if ((obj[prop] == ANY) && (res.result[prop])) {
+						if ((out[prop] == ANY) && (res.result[prop])) {
 							continue;
 						}
-						if (obj[prop] instanceof RegExp) {
-							if (obj[prop].test(res.result[prop])) {
+						if (out[prop] instanceof RegExp) {
+							if (out[prop].test(res.result[prop])) {
 								continue;
 							} else {
 								return false;
 							}
 						}
-						if (obj[prop] != res.result[prop]) {
+						if (out[prop] != res.result[prop]) {
 							return false;
 						}
 					}
@@ -160,8 +163,8 @@ module.exports = {
 				}
 				if (res.test.outList) {
 					let isOneTrue = false;
-					for (const singleNotOut of res.test.notOutList) {
-						isOneTrue = isOneTrue || checkSingularOut(singleNotOut);
+					for (const singleOut of res.test.notOutList) {
+						isOneTrue = isOneTrue || checkSingularOut(singleOut);
 					}
 					isEqual = isOneTrue && isEqual;
 				}
@@ -195,9 +198,28 @@ module.exports = {
 				console.log(`\n    ${lastCategory}:\n`);
 			}
 			console.log(
-				`In: "${res.test.in}"\n` +
+				`In: "${JSON.stringify(res.test.in)}"\n` +
 				"Expected:");
-			console.log(res.test.out);
+
+			if (res.test.out) {
+				console.log(res.test.out);
+			}
+
+			if (res.test.outList) {
+				console.log("one of ");
+				console.log(res.text.outList);
+			}
+
+			if (res.test.notOut) {
+				console.log("!= ");
+				console.log(res.test.notOut);
+			}
+
+			if (res.test.notOutList) {
+				console.log("NOT one of ");
+				console.log(res.text.notOutList);
+			}
+
 			if (!res.result) {
 				console.log("Got: An error (see above)");
 			} else {
