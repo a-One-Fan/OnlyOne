@@ -1,4 +1,5 @@
 const { executeCommand } = require("./text_commands/text_command_utils.js");
+const { evenify, clamp, find, findDict, remove } = require("./extras/math_stuff.js");
 const { rm } = require("fs");
 
 // Some long string of stuff that you won't manually write.
@@ -39,6 +40,12 @@ module.exports = {
 		{ in: "One, wave goodbye to Testperson the third!", out: { text: "https://imgur.com/J4bT846.png" } },
 		{ in: "One, shower!", out: { text: "https://imgur.com/dOujMWX.webm" } },
 		{ in: "One, dance!", out: { text: "https://imgur.com/KT7TTUk.webm" } },
+
+		{ category: "evenify()", func: evenify },
+		{ in: [1920, 1080], out: [1920, 1080] },
+		{ in: [1919, 1079], out: [1920, 1080] },
+		{ in: [1920, 1079], out: [1920, 1080] },
+		{ in: [1919, 1080], out: [1920, 1080] },
 	],
 	// The call:
 	// message.client.db.findOne({ where: { userID: message.author.id } });
