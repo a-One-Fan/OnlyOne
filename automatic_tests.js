@@ -42,10 +42,10 @@ module.exports = {
 		{ in: "One, dance!", out: { text: "https://imgur.com/KT7TTUk.webm" } },
 
 		{ category: "evenify()", func: evenify },
-		{ in: [1920, 1080], out: [1920, 1080] },
-		{ in: [1919, 1079], out: [1920, 1080] },
-		{ in: [1920, 1079], out: [1920, 1080] },
-		{ in: [1919, 1080], out: [1920, 1080] },
+		{ in: [[1920, 1080]], out: [1920, 1080] },
+		{ in: [[1919, 1079]], out: [1920, 1080] },
+		{ in: [[1920, 1079]], out: [1920, 1080] },
+		{ in: [[1919, 1080]], out: [1920, 1080] },
 	],
 	// The call:
 	// message.client.db.findOne({ where: { userID: message.author.id } });
@@ -85,7 +85,7 @@ module.exports = {
 				Object.assign(copiedFakeMessage, fakeMessage);
 				res = executeCommand(copiedFakeMessage);
 			} else {
-				res = func_to_test(test.in);
+				res = func_to_test(...test.in);
 			}
 			const entry = { test: test, result: res, category: currentCategory, successful: false };
 			results.push(entry);
@@ -163,7 +163,7 @@ module.exports = {
 				console.log(`\n    ${lastCategory}:\n`);
 			}
 			console.log(
-				`Sent: "${res.test.in}"\n` +
+				`In: "${res.test.in}"\n` +
 				"Expected:");
 			console.log(res.test.out);
 			if (!res.result) {
