@@ -112,7 +112,7 @@ module.exports = {
 			} else {
 				res = func_to_test(...test.in);
 			}
-			const entry = { test: test, result: res, category: currentCategory, successful: false };
+			const entry = { test: test, result: res, category: currentCategory, successful: false, func: func_to_test };
 			results.push(entry);
 		}
 
@@ -201,9 +201,13 @@ module.exports = {
 				lastCategory = res.category;
 				console.log(`\n    ${lastCategory}:\n`);
 			}
-			console.log(
-				`In: "${JSON.stringify(res.test.in)}"\n` +
-				"Expected:");
+
+			if (res.func == SIMULATE_MESSAGE) {
+				console.log(`Sent message: "${res.test.in}"`);
+			} else {
+				console.log(`In: ${JSON.stringify(res.test.in)}`);
+			}
+			console.log("Expected:");
 
 			if (res.test.out) {
 				console.log(res.test.out);
