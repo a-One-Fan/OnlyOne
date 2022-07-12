@@ -12,7 +12,7 @@ module.exports = {
 		console.log("Working on barrel...");
 		let time = new Date();
 
-		const [ impath, extension ] = await downloadImage(link, `./tmp/${uuid}/monkeyDownload`);
+		const [ impath, extension ] = await downloadImage(link, `./tmp/${uuid}/barrelDownload`);
 		console.log(`Barrel took ${(new Date() - time) / 1000.0}s to download input.`);
 		time = new Date();
 
