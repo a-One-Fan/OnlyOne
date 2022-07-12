@@ -6,11 +6,12 @@ const { rm } = require("fs");
 // This is to make testing for files doable.
 const ANY = "This represents the possibility for any non-false/undefined input.";
 const OPTIONAL = "This represents the possibility for completely optional input.";
+const SIMULATE_MESSAGE = "This represents that the function to test should be a simulated text message.";
 
 module.exports = {
-	text_command_basic_tests: [
+	auto_tests: [
 		{ parseType: 4, errorType: 4 },
-
+		{ func: SIMULATE_MESSAGE },
 		{ category: "Parsing" },
 		{ in: "One, hello!", out: { text: "https://imgur.com/J4bT846.png" } },
 		{ in: "One, Hello!", out: { text: "https://imgur.com/J4bT846.png" } },
@@ -42,8 +43,9 @@ module.exports = {
 	// The call:
 	// message.client.db.findOne({ where: { userID: message.author.id } });
 	async doTests() {
-		const tests = module.exports.text_command_basic_tests;
+		const tests = module.exports.auto_tests;
 		let unsuccessful = 0;
+		let func_to_test = SIMULATE_MESSAGE;
 		const results = [];
 
 		const fakeRow = { userID: 1, reputation: 0, rank: 0, upperOne: 1, lowerOne: 10,
@@ -66,12 +68,18 @@ module.exports = {
 			if (test.category) currentCategory = test.category;
 			if (test.parseType) fakeRow.parseType = test.parseType;
 			if (test.errorType) fakeRow.errorType = test.errorType;
+			if (test.func) func_to_test = test.func;
 			if (!test.in) continue;
 
-			fakeMessage.content = test.in;
-			const copiedFakeMessage = {};
-			Object.assign(copiedFakeMessage, fakeMessage);
-			const res = executeCommand(copiedFakeMessage);
+			let res;
+			if (func_to_test == SIMULATE_MESSAGE) {
+				fakeMessage.content = test.in;
+				const copiedFakeMessage = {};
+				Object.assign(copiedFakeMessage, fakeMessage);
+				res = executeCommand(copiedFakeMessage);
+			} else {
+				res = func_to_test(test.in);
+			}
 			const entry = { test: test, result: res, category: currentCategory, successful: false };
 			results.push(entry);
 		}
