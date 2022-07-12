@@ -46,6 +46,27 @@ module.exports = {
 		{ in: [[1919, 1079]], out: [1920, 1080] },
 		{ in: [[1920, 1079]], out: [1920, 1080] },
 		{ in: [[1919, 1080]], out: [1920, 1080] },
+
+		{ category: "clamp()", func: clamp },
+		{ in: [0.0, 1.0, 0.5], out: 0.5 },
+		{ in: [0.0, 1.0, 1.5], out: 1.0 },
+		{ in: [0.0, 1.0, 1.0], out: 1.0 },
+		{ in: [0.0, 1.0, 0.0], out: 0.0 },
+		{ in: [0.0, 1.0, -1.0], out: 0.0 },
+		{ in: [-2.0, -1.0, 0.0], out: -1.0 },
+		{ in: [-2.0, -1.0, -4.0], out: -2.0 },
+
+		{ category: "find()", func: find },
+		{ in: [[-1, -2, -3, -4], -3], out: 3 },
+		{ in: [[], 2], out: -1 },
+		{ in: [[-1, -2], 2], out: -1 },
+
+		{ category: "findDict", func: findDict },
+
+		{ category: "remove", func: remove },
+		{ in: [[-1, -2, -3, -4], -3], out: [-1, -2, -4] },
+		{ in: [[], 2], out: [] },
+		{ in: [[-1, -2], 2], out: [-1, -2] },
 	],
 	// The call:
 	// message.client.db.findOne({ where: { userID: message.author.id } });
