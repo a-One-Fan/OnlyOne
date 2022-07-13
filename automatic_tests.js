@@ -1,5 +1,6 @@
 const { executeCommand } = require("./text_commands/text_command_utils.js");
 const { evenify, clamp, find, findDict, remove } = require("./extras/math_stuff.js");
+const { getLinkFromText } = require("./extras/text_recognition.js");
 const { rm } = require("fs");
 
 // Some long string of stuff that you won't manually write.
@@ -8,6 +9,37 @@ const { rm } = require("fs");
 const ANY = "This represents the possibility for any non-false/undefined input.";
 const OPTIONAL = "This represents the possibility for completely optional input.";
 const SIMULATE_MESSAGE = "This represents that the function to test should be a simulated text message.";
+
+const MENTION_LINK = "https://www.mentionPfp.com/pfp.png";
+const AUTHOR_LINK = "https://www.authorpfp.com/pfp.png";
+const REPLIED_AUTHOR_LINK = "https://www.repliedpfp.com/pfp.png";
+const ONLYONE_LINK = "https://o.ne/pfp.png";
+const ATTACHMENT_LINK = "https://www.discord.com/attachment.png";
+const REPLIED_ATTACHMENT_LINK = "https://www.discord.com/other_attachment.png";
+const GUILD_USER_LINK = "https://www.who.com/pfp.png";
+const FAKE_MESSAGE_FOR_LINKS = {
+	client:	{
+		users: {
+			fetch(id) {
+				if (id == "111") {
+					return { displayAvatarURL() { return MENTION_LINK; } };
+				} else {
+					return null;
+				}
+			},
+			cache: { find(func) { return { displayAvatarURL() { GUILD_USER_LINK; } };} },
+		},
+		user: { displayAvatarURL() { return AUTHOR_LINK; } },
+	},
+	author: { displayAvatarURL() { return ONLYONE_LINK; } },
+	attachments: { at(val) { return val == 0 ? { attachment: ATTACHMENT_LINK } : {}; } },
+	fetchReference() {
+		return {
+			author: { displayAvatarURL() { return REPLIED_AUTHOR_LINK; } },
+			attachments: { at(val) { return val == 0 ? { attachment: REPLIED_ATTACHMENT_LINK } : {}; } },
+		};
+	},
+};
 
 module.exports = {
 	auto_tests: [
@@ -61,15 +93,37 @@ module.exports = {
 		{ in: [[], 2], out: -1 },
 		{ in: [[-1, -2], 2], out: -1 },
 
-		{ category: "findDict", func: findDict },
+		{ category: "findDict()", func: findDict },
 		{ in: [{ a: -1, b: -2, c: -3, d: -4 }, "c"], notOut: -1 },
 		{ in: [{ a: -1, b: -2, c: -3, d: -4 }, "a"], notOut: -1 },
 		{ in: [{ a: -1, b: -2, c: -3, d: -4 }, "bla"], out: -1 },
 
-		{ category: "remove", func: remove },
+		{ category: "remove()", func: remove },
 		{ in: [[-1, -2, -3, -4], -3], out: [-1, -2, -4] },
 		{ in: [[], 2], out: [] },
 		{ in: [[-1, -2], 2], out: [-1, -2] },
+
+		{ category: "getLinkFromText()", func: getLinkFromText },
+		{ in: ["aboobaahttps://www.test.com/a.png", FAKE_MESSAGE_FOR_LINKS], out: "https://www.test.com/a.png" },
+		{ in: ["https://testo.com/b.png", FAKE_MESSAGE_FOR_LINKS], out: "https://testo.com/b.png" },
+		{ in: ["https://testeee.com/woo.png    yay", FAKE_MESSAGE_FOR_LINKS], out: "https://testeee.com/woo.png" },
+		{ in: ["<@!111> its one", FAKE_MESSAGE_FOR_LINKS], out: MENTION_LINK },
+		{ in: ["<@!111>", FAKE_MESSAGE_FOR_LINKS], out: MENTION_LINK },
+		{ in: ["eyooo<@!111>", FAKE_MESSAGE_FOR_LINKS], out: MENTION_LINK },
+		{ in: ["this:", FAKE_MESSAGE_FOR_LINKS], out: ATTACHMENT_LINK },
+		{ in: ["this: https://www.first.this/link.png", FAKE_MESSAGE_FOR_LINKS], out: "https://www.first.this/link.png" },
+		{ in: ["this:   ", FAKE_MESSAGE_FOR_LINKS], out: ATTACHMENT_LINK },
+		{ in: ["this  ", FAKE_MESSAGE_FOR_LINKS], out: ATTACHMENT_LINK },
+		{ in: ["thiis  ", FAKE_MESSAGE_FOR_LINKS], out: GUILD_USER_LINK },
+		{ in: ["this:  blabloo", FAKE_MESSAGE_FOR_LINKS], out: GUILD_USER_LINK },
+		{ in: ["that", FAKE_MESSAGE_FOR_LINKS], out: REPLIED_ATTACHMENT_LINK },
+		{ in: ["that:     ", FAKE_MESSAGE_FOR_LINKS], out: REPLIED_ATTACHMENT_LINK },
+		{ in: ["tHAT:     ", FAKE_MESSAGE_FOR_LINKS], out: REPLIED_ATTACHMENT_LINK },
+		{ in: ["that:   eyooo", FAKE_MESSAGE_FOR_LINKS], out: GUILD_USER_LINK },
+		{ in: ["his pfp", FAKE_MESSAGE_FOR_LINKS], out: REPLIED_AUTHOR_LINK },
+		{ in: ["her", FAKE_MESSAGE_FOR_LINKS], out: REPLIED_AUTHOR_LINK },
+		{ in: ["HER", FAKE_MESSAGE_FOR_LINKS], out: REPLIED_AUTHOR_LINK },
+		{ in: ["Babooga the First"], out: GUILD_USER_LINK },
 	],
 
 	async doTests() {
