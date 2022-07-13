@@ -27,7 +27,7 @@ const FAKE_MESSAGE_FOR_LINKS = {
 					return null;
 				}
 			},
-			cache: { find(func) { return { displayAvatarURL() { GUILD_USER_LINK; } };} },
+			cache: { find(func) { return { displayAvatarURL() { return GUILD_USER_LINK; } };} },
 		},
 		user: { displayAvatarURL() { return AUTHOR_LINK; } },
 	},
@@ -39,6 +39,7 @@ const FAKE_MESSAGE_FOR_LINKS = {
 			attachments: { at(val) { return val == 0 ? { attachment: REPLIED_ATTACHMENT_LINK } : {}; } },
 		};
 	},
+	guild: { members: { fetch() {return; } } },
 };
 
 module.exports = {
@@ -123,7 +124,7 @@ module.exports = {
 		{ in: ["his pfp", FAKE_MESSAGE_FOR_LINKS], out: REPLIED_AUTHOR_LINK },
 		{ in: ["her", FAKE_MESSAGE_FOR_LINKS], out: REPLIED_AUTHOR_LINK },
 		{ in: ["HER", FAKE_MESSAGE_FOR_LINKS], out: REPLIED_AUTHOR_LINK },
-		{ in: ["Babooga the First"], out: GUILD_USER_LINK },
+		{ in: ["Babooga the First", FAKE_MESSAGE_FOR_LINKS], out: GUILD_USER_LINK },
 	],
 
 	async doTests() {
