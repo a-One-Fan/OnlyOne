@@ -267,6 +267,7 @@ module.exports = {
 				console.log(`\n    ${lastCategory}:\n`);
 			}
 
+			console.log("");
 			if (res.func == SIMULATE_MESSAGE) {
 				console.log(`Sent message: "${res.test.in}"`);
 			} else {
