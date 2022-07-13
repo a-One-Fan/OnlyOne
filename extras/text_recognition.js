@@ -99,34 +99,36 @@ module.exports = {
 		while (i >= 0 && text[i] == " ") i--;
 		text = text.substring(whitespaceStart, i + 1);
 
-		if (text.startsWith("https://")) return text;
+		let linkMatch = text.match(/(https:\/\/[^ \n]+)/);
+		if (linkMatch) return linkMatch[0];
 
-		if (text.search(/yourself|you|u|urself|your\s+(?:pfp|profile\s+pic(?:ture)?)/) > -1) return message.client.user.displayAvatarURL({ format: "png" });
-
-		if (text.search(/me|myself|my\s+(?:pfp|profile\s+pic(?:ture)?)/) > -1) return message.author.displayAvatarURL({ format: "png" });
-
-		if (text.startsWith("<@!") && text.endsWith(">")) {
-			const targetUser = await message.client.users.fetch(text.substring(3, text.length - 1));
+		linkMatch = text.match(/<@!([^>]*)>/);
+		if (linkMatch) {
+			const targetUser = await message.client.users.fetch(linkMatch[1]);
 			if (!targetUser) throw Error("Printable error: Sorry, I couldn't find a user by that ID.");
 			return targetUser.displayAvatarURL({ format: "png" });
 		}
 
-		if (text.search(/(?:his|her|their)\\s+(?:pfp|profile(?:\\s+pic(?:ture)?)?)/) > -1) {
-			const reply = await message.fetchReference();
-			if (!reply) throw Error("Printable error: You need to reply to someone.");
-			return reply.author.displayAvatarURL({ format: "png" });
-		}
-
-		if (text.search(/this:?/) > -1) {
+		if (text.search(/^this:?\s*$/mi) > -1) {
 			if (!message.attachments.at(0)) throw Error("Printable error: You need to attach a file.");
 			return message.attachments.at(0).attachment;
 		}
 
-		if (text.search(/that:?/) > -1) {
+		if (text.search(/^that:?\s*$/mi) > -1) {
 			const reply = await message.fetchReference();
 			if (!reply) throw Error("Printable error: You need to reply to someone.");
 			if (!reply.attachments.at(0)) throw Error("Printable error: Your replied-to message needs to have a file.");
 			return reply.attachments.at(0).attachment;
+		}
+
+		if (text.search(/yourself|you|u|urself|(?:your|ur)\s+(?:pfp|profile\s+pic(?:ture)?)/i) > -1) return message.client.user.displayAvatarURL({ format: "png" });
+
+		if (text.search(/me|myself|my\s+(?:pfp|profile\s+pic(?:ture)?)/i) > -1) return message.author.displayAvatarURL({ format: "png" });
+
+		if (text.search(/(?:his|her|their)\s+(?:pfp|profile(?:\s+pic(?:ture)?)?)|him|her/i) > -1) {
+			const reply = await message.fetchReference();
+			if (!reply) throw Error("Printable error: You need to reply to someone.");
+			return reply.author.displayAvatarURL({ format: "png" });
 		}
 
 		await message.guild.members.fetch();
