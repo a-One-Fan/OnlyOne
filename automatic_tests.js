@@ -164,7 +164,18 @@ module.exports = {
 				Object.assign(copiedFakeMessage, fakeMessage);
 				res = executeCommand(copiedFakeMessage);
 			} else {
-				res = func_to_test(...test.in);
+				// This is so that the program itself doesn't exit if an exception is thrown, because for some reason it doesn't get with just a promise/async???
+				const func = async () => {
+					let catchres = undefined;
+					try {
+						catchres = await func_to_test(...test.in);
+					} catch (err) {
+						console.log(err);
+					}
+					return catchres;
+				};
+				res = func();
+				// res = func_to_test(...test.in);
 			}
 			const entry = { test: test, result: res, category: currentCategory, successful: false, func: func_to_test };
 			results.push(entry);
@@ -237,7 +248,7 @@ module.exports = {
 
 		console.log("\n");
 
-		for (const test of results) if (test.result.cleanup) rm(test.result.cleanup, { recursive: true, force: true }, (err) => { if (err) console.log("Got error while deleting:", err); });
+		for (const test of results) if (test.result && test.result.cleanup) rm(test.result.cleanup, { recursive: true, force: true }, (err) => { if (err) console.log("Got error while deleting:", err); });
 
 		if (!unsuccessful) {
 			// "\x1b[32m" is green
