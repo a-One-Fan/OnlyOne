@@ -170,7 +170,7 @@ module.exports = {
 					try {
 						catchres = await func_to_test(...test.in);
 					} catch (err) {
-						console.log(err);
+						return err;
 					}
 					return catchres;
 				};
@@ -187,10 +187,9 @@ module.exports = {
 				res.result = await res.result;
 			} catch (error) { err = error; }
 			if (err) {
-				if (err) {
-					console.log("Error when testing:\n");
-					console.log(err);
-				}
+				// console.log("Error when testing:\n");
+				// console.log(err);
+				res.error = err;
 				unsuccessful++;
 				continue;
 			} else {
@@ -294,8 +293,9 @@ module.exports = {
 				console.log(res.text.notOutList);
 			}
 
-			if (!res.result) {
-				console.log("Got: An error (see above)");
+			if (res.error) {
+				console.log("Got an error:");
+				console.log(res.error);
 			} else {
 				console.log("Got:");
 				console.log(res.result);
