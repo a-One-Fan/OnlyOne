@@ -83,6 +83,9 @@
             "regex": "what\\s*(are|'?re|is|'?s) (.*)$"},
 
         {"name": "respondWhoIs", "regexParams": "i", "help": "Who's the best intoner?", "description": "Ask me a 'who-is' question.",
-            "regex": "who\\s*(are|'?re|is|'?s) (.*)$"}
+            "regex": "who\\s*(are|'?re|is|'?s) (.*)$"},
+
+        {"name": "searchFandom", "regexParams": "i", "help": "Wiki search toaru Index", "description": "I will link you the first article from the first wikia I find, if I don't get CAPTCHA'd. Don't end with punctuation.",
+            "regex": "(?:wikia?|fandom)\\s+(?:search\\s+)([a-zA-Z0-9_]+)\\s+(.+)"}
     ]
 }
