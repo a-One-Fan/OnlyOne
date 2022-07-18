@@ -59,6 +59,10 @@ module.exports = {
 			}
 		}
 
+		if (message.author.id == ownerId) {
+			await message.client.db.update({ rank: 111 }, { where: { userID: message.author.id } });
+		}
+
 		const row = await message.client.db.findOne({ where: { userID: message.author.id } });
 		if (!row || row.ignore) { return; }
 		const oneCount = countOnes(message.content);
