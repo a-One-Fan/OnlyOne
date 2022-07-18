@@ -17,7 +17,7 @@ module.exports = {
 		{ name: "text, always",
 			transformError(error, command, commandRes) {
 				if (!command) return { text: pickRandom(unknown) };
-				return { text: `Looks like something when wrong when executing "${command.name}".\n` + module.exports.userFriendifyError(error) + "Now try again." };
+				return { text: `Looks like something went wrong when trying to execute "${command.name}".\n` + module.exports.userFriendifyError(error) + "Now try again." };
 			},
 		},
 		{ name: "an emote and, if possible, a more descriptive message",
