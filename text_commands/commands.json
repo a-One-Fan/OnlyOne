@@ -20,7 +20,7 @@
             "regex": "(re)?set\\s+my\\s+(?:custom\\s+)?react(?:ion)?\\s+emote(?:\\s+to)?(\\s+[^,.?!\\s]+)?[,.?!\\s]{0,3}\\s*$"},
 
         {"name": "ignoreChannel", "regexParams": "i", "help": "'One, ignore this channel.', or 'One, unignore channel 1111111111111.", "description": "I will ignore (or not) all messages in a certain channel.", 
-            "regex": "(un)?ignore\\s+(?:(this\\s+)?channel|channel\\s+(\\d+))[,.?!\\s]{0,3}\\s*$", "rank": 10},
+            "regex": "(un)?ignore\\s+(?:(this\\s+)?channel|channel\\s+(\\d+)|channel\\s+([a-zA-Z_\\-]+))[,.?!\\s]{0,3}\\s*$", "rank": 10},
 
         {"name": "listCommands", "regexParams": "i", "help": "'Help!' or 'What are the commands, page 3?'", "description": "I will list available text-based commands.",
             "regex": "(?:what\\s+(?:are\\s+)?(?:the\\s+)?commands|what\\s+(?:can\\s+)?you\\s+do|help|list(?:\\s+the)?(?:\\s+commands?)?)(?:,?\\s+page\\s+(\\d+))?[,.?!\\s]{0,3}\\s*$"},
