@@ -89,6 +89,6 @@ module.exports = {
 			else await message.reply({ content: textContent, allowedMentions: { repliedUser: false } });
 		}
 
-		if (commandRes.cleanup) rm(commandRes.cleanup, { recursive: true, force: true }, (err) => { if (err) console.log("Got error while deleting:", err); });
+		if (commandRes && commandRes.cleanup) rm(commandRes.cleanup, { recursive: true, force: true }, (err) => { if (err) console.log("Got error while deleting:", err); });
 	},
 };
