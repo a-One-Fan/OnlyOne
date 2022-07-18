@@ -29,7 +29,6 @@ module.exports = {
 			}
 			ignored.channels.push(channelId);
 			writeFileSync(ignoredChannelsFilepath, JSON.stringify(ignored, null, 4));
-			const channelName = message.channel.guild.channels.cache.find((c) => c.id == channelId).name;
 			return { text: `Ignoring channel <#${channelId}>${regexResults[2] ? " (this channel)" : ""}.` };
 		}
 
