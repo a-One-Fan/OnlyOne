@@ -36,8 +36,8 @@ module.exports = {
 		if (res) {
 			const [func, regexRes, extraRes, _foundCommand] = res;
 			foundCommand = _foundCommand;
-			if (res.rank && row.rank < res.rank) {
-				err = { message: `Printable error: Your rank (${row.rank}) is too low to execute this command (${res.rank}).` };
+			if (foundCommand.rank && row.rank < foundCommand.rank) {
+				err = { message: `Printable error: Your rank (${row.rank}) is too low to execute this command (${foundCommand.rank}).` };
 			} else {
 				try {
 					commandRes = await func.execute(message, regexRes, extraRes);
