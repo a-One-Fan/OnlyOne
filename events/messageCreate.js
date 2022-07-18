@@ -1,12 +1,34 @@
 const { countOnes } = require("../extras/text_recognition.js");
 const commandData = require("../text_commands/commands.json");
+const { ownerId, ignoredChannelsFilepath } = require("../config.json");
 const { reactChoose } = require("../configurables/message_reacts.js");
 const { executeCommand } = require("../text_commands/text_command_utils.js");
-const { rm } = require("fs");
+const { find, remove } = require("../extras/math_stuff");
+const { rm, statSync, readFileSync, writeFileSync } = require("fs");
+
+let ignoredChannelsModified = "";
+let ignoredChannels = {};
 
 module.exports = {
 	name: "messageCreate",
 	async execute(message) {
+		const checkIgnoredModified = statSync(ignoredChannelsFilepath).mtime;
+		if (checkIgnoredModified != ignoredChannelsModified) {
+			ignoredChannels = JSON.parse(readFileSync(ignoredChannelsFilepath));
+			ignoredChannelsModified = checkIgnoredModified;
+		}
+		if (find(ignoredChannels.channels, message.channelId) >= 0) {
+			if ((message.author.id == ownerId) && (message.content == commandData.unignoreChannel)) {
+				ignoredChannels.channels = remove(ignoredChannels.channels, message.channel);
+				writeFileSync(ignoredChannelsFilepath, JSON.stringify(ignoredChannels, null, 4));
+				console.log("Unignoring channel \\/");
+				await message.reply({ content: "Alright, I'm unignoring this channel." });
+			}
+
+			console.log(`Message in ignored channel ${message.channelId}`);
+
+			return ;
+		}
 		console.log(`Got message! From: ${message.author.id}`);
 
 		if (message.author.bot) return;

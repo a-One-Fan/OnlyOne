@@ -2,6 +2,7 @@
 	"token": "",
 	"clientId": "",
 	"guildId": "",
+	"ownerId": "",
 	"openersBase": ["One", "Wann", "OnlyOne", "Bot\\s+#?1"],
 	"openersAdjectives": ["oh", "dear", "glorious", "lady", "please", "best", "great", "greatest"],
 	"openersPunctuation": [",.?!:"],
@@ -9,7 +10,8 @@
 	"ffmpegLocation": "",
 	"blenderLocation": "",
 	"permittedUrls": "^https:\\/\\/(?:(?:media\\.discordapp\\.net|cdn\\.discordapp\\.com)\\/|i\\.imgur\\.com\\/).*\\.(png|jpg|jpeg|jfif|tiff|exr|hdr|mp4|mkv|webm|webp|gif|mov)$",
-	"downloadFilepath": "./download",
+	"downloadFilepath": "./tmp/download",
+	"ignoredChannelsFilepath": "./database/ignoredChannels.json",
 	"exchangerateApiKey": "",
 	"baseCurrency": "USD",
 	"currencyUpdateInterval": 86400000
@@ -27,6 +29,9 @@ Example values:
 	
 	// The ID of the server to log in to.
 	"guildId": "1234567890", 
+	
+	// The ID of the bot's owner, who gets maximum permissions for all commands and has access to some emergency commands.
+	"ownerId": "111111111111111111",
 
 	// A word that will need to be used to refer to the bot.
 	"openersBase": ["One", "Wann", "OnlyOne", "Bot\\s+#?1"], 
@@ -51,8 +56,11 @@ Example values:
 	// Regex for whitelisted URLs.
 	"permittedUrls": "https:\/\/my.site.gov\/%d*\/poopfart.jpg", 
 
-	// Filename for saving a file.
+	// File path for saving a file.
 	"downloadFilepath": "./download", 
+
+	// File path for a json with the ignored channel IDs.
+	"ignoredChannelsFilepath": "./database/ignoredChannels.json",
 
 	// key for https://www.exchangerate-api.com
 	"exchangerateApiKey": "j3k1hjdg123kjlhyuyi", 

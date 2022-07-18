@@ -1,8 +1,9 @@
-const { access } = require("fs");
-const { ffmpegFolderLocation, blenderLocation } = require("../config.json");
+const { access, writeFileSync } = require("fs");
+const { ffmpegFolderLocation, blenderLocation, ignoredChannelsFilepath } = require("../config.json");
 const { updateCurrencies } = require("../extras/currency.js");
 const { migrate } = require("../extras/database_stuff.js");
 const { doTests } = require("../automatic_tests.js");
+const { exit } = require("process");
 
 const doMigrate = false;
 
@@ -37,6 +38,22 @@ module.exports = {
 		access(blenderLocation, (err) => {
 			if (err) console.log(`Error when trying to open Blender exe at "${blenderLocation}":\n${err}`);
 			else console.log("Blender exe can be opened successfully.");
+		});
+
+		access(ignoredChannelsFilepath, (err) => {
+			if (err) {
+				console.log(`Error when trying to open ignored channels file at "${ignoredChannelsFilepath}":\n${err}\nAttempting to create file...`);
+				const blankIgnoredChannels = { channels: [] };
+				try {
+					writeFileSync(ignoredChannelsFilepath, JSON.stringify(blankIgnoredChannels, null, 4));
+					console.log("Created ignored channels file.");
+				} catch (err) {
+					console.log(`Error\n${err}\nWhile trying to create ignored channels file! Please create the file yourself or ensure OnlyOne has sufficient permissions.`);
+					exit(1);
+				}
+			} else {
+				console.log("Ignored channels can be opened successfully.");
+			}
 		});
 
 		try {
