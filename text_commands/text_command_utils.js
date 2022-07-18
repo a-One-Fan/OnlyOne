@@ -32,14 +32,19 @@ module.exports = {
 
 		let err = undefined, commandRes = undefined, foundCommand = undefined;
 		const res = module.exports.findCommand(parsed.culledText);
+		const row = await message.client.db.findOne({ where: { userID: message.author.id } });
 		if (res) {
 			const [func, regexRes, extraRes, _foundCommand] = res;
 			foundCommand = _foundCommand;
-			try {
-				commandRes = await func.execute(message, regexRes, extraRes);
-			} catch (error) {
-				err = error;
-				console.log(err);
+			if (res.rank && row.rank < res.rank) {
+				err = { message: `Printable error: Your rank (${row.rank}) is too low to execute this command (${res.rank}).` };
+			} else {
+				try {
+					commandRes = await func.execute(message, regexRes, extraRes);
+				} catch (error) {
+					err = error;
+					console.log(err);
+				}
 			}
 		}
 		// TODO: DM the error to me? :)
