@@ -73,6 +73,9 @@
         {"name": "respondHowAreYou", "regexParams": "i", "help": "How are you?", "description": "I will tell you how I'm feeling.",
             "regex": "how\\s*(?:are|'?re)\\s+you[,.?!\\s]{0,3}\\s*$"},
 
+        {"name": "respondHowIs", "regexParams": "i", "help": "How's Two doing?", "description": "I will tell you how someone or something is.",
+            "regex": "how\\s*(?:'?s|is) (.*)$"},
+
         {"name": "respondIm", "regexParams": "i", "help": "I'm glad to be with you.", "description": "I will note your feelings.",
             "regex": "I\\s*(?:am|'?m) (.*)$"},
 
