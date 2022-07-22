@@ -4,6 +4,7 @@ const { execFile } = require("child_process");
 const { blenderLocation, ffmpegFolderLocation, permittedUrls, downloadFilepath } = require("../config.json");
 
 module.exports = {
+	// Returns [extensionlessPath, extension]
 	downloadImage(url, filepath = downloadFilepath) {
 		return new Promise((resolve, reject) => {
 			const regexResult = RegExp(permittedUrls).exec(url);
