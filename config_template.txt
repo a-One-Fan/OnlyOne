@@ -61,9 +61,23 @@ Example values:
 	"downloadFilepath": "./download", 
 
 	// File path for a json with the ignored channel IDs.
+	// Format:
+	// {
+	//	"channels": [
+	//   "123456",
+	//   "78910"
+	//	]
+	// }
 	"ignoredChannelsFilepath": "./database/ignoredChannels.json",
 
-	// File path for per-server channels for which to announce joined/left users.
+	// File path for a json with per-server channels for which to announce joined/left users.
+	// Format:
+	// {
+	//  "servers": {
+	//	 "123456": "78910",
+	//   "111213": "141516"
+	//  }
+	// }
 	"userJoinChannelsFilepath": "./database/userJoinChannels.json",
 
 	// key for https://www.exchangerate-api.com
