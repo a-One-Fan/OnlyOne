@@ -37,8 +37,9 @@ module.exports = {
 `
 import bpy
 bpy.data.images["PFP"].filepath = "//../tmp/${uuid}/welcomeDownload.${extension}"
+bpy.data.curves["UserMention"].body = "@${member.displayName}"
 `;
-		const SCENES = ["toaruWelcome", "toaruWelcome2", "utahimeWelcome"];
+		const SCENES = ["toaruWelcome", "toaruWelcome2", "utahimeWelcome", "utahimeWelcome2"];
 		const pickedScene = pickRandom(SCENES);
 		await renderBlend("./extras/welcome.blend", ["-S", pickedScene, "-o", `//../tmp/${uuid}/welcomeResult####`, "-f", "0"], python);
 		console.log(`Welcome took ${(new Date() - time) / 1000.0}s to render.`);
