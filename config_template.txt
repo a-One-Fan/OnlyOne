@@ -12,6 +12,7 @@
 	"permittedUrls": "^https:\\/\\/(?:(?:media\\.discordapp\\.net|cdn\\.discordapp\\.com)\\/|i\\.imgur\\.com\\/).*\\.(png|jpg|jpeg|jfif|tiff|exr|hdr|mp4|mkv|webm|webp|gif|mov)$",
 	"downloadFilepath": "./tmp/download",
 	"ignoredChannelsFilepath": "./database/ignoredChannels.json",
+	"userJoinChannelsFilepath": "./database/userJoinChannels.json",
 	"exchangerateApiKey": "",
 	"baseCurrency": "USD",
 	"currencyUpdateInterval": 86400000
@@ -61,6 +62,9 @@ Example values:
 
 	// File path for a json with the ignored channel IDs.
 	"ignoredChannelsFilepath": "./database/ignoredChannels.json",
+
+	// File path for per-server channels for which to announce joined/left users.
+	"userJoinChannelsFilepath": "./database/userJoinChannels.json",
 
 	// key for https://www.exchangerate-api.com
 	"exchangerateApiKey": "j3k1hjdg123kjlhyuyi", 

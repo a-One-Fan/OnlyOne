@@ -1,5 +1,5 @@
 const { access, writeFileSync } = require("fs");
-const { ffmpegFolderLocation, blenderLocation, ignoredChannelsFilepath } = require("../config.json");
+const { ffmpegFolderLocation, blenderLocation, ignoredChannelsFilepath, userJoinChannelsFilepath } = require("../config.json");
 const { updateCurrencies } = require("../extras/currency.js");
 const { migrate } = require("../extras/database_stuff.js");
 const { doTests } = require("../automatic_tests.js");
@@ -40,6 +40,7 @@ module.exports = {
 			else console.log("Blender exe can be opened successfully.");
 		});
 
+		// TODO: make function for automatically checking and setting up a config file like this
 		access(ignoredChannelsFilepath, (err) => {
 			if (err) {
 				console.log(`Error when trying to open ignored channels file at "${ignoredChannelsFilepath}":\n${err}\nAttempting to create file...`);
@@ -53,6 +54,22 @@ module.exports = {
 				}
 			} else {
 				console.log("Ignored channels can be opened successfully.");
+			}
+		});
+
+		access(userJoinChannelsFilepath, (err) => {
+			if (err) {
+				console.log(`Error when trying to open user join/leave channels file at "${userJoinChannelsFilepath}":\n${err}\nAttempting to create file...`);
+				const blankUserJoinChannels = { servers: {} };
+				try {
+					writeFileSync(userJoinChannelsFilepath, JSON.stringify(blankUserJoinChannels, null, 4));
+					console.log("Created user join/leave channels file.");
+				} catch (err) {
+					console.log(`Error\n${err}\nWhile trying to create user join/leave channels file! Please create the file yourself or ensure OnlyOne has sufficient permissions.`);
+					exit(1);
+				}
+			} else {
+				console.log("User join/leave channels can be opened successfully.");
 			}
 		});
 
