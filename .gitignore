@@ -9,6 +9,7 @@ node_modules
 *.jpeg
 *.mov
 extras/currencies.json
+extras/assets
 database/*
 backup/*
 tmp/*
