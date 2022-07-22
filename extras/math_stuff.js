@@ -13,6 +13,36 @@ module.exports = {
 	pickRandom(arr) {
 		return arr[Math.floor(Math.random() * arr.length)];
 	},
+	// test(i) - a function that returns true/false based on the index, suitable for logarithmic searching (i.e. no true after false)
+	binarySearchF(test, len) {
+		let lo, hi;
+		lo = 0;
+		hi = len;
+		while (lo < hi) {
+			const mid = lo + Math.floor((lo - hi) / 2.0);
+			if (test(lo)) {
+				lo = mid + 1;
+			} else {
+				hi = mid;
+			}
+		}
+		return lo;
+	},
+	binarySearch(arr, val) {
+		return module.exports.binarySearchF((i) => {return arr[i] < val;}, arr.length);
+	},
+	// Format: [ [thing, weight], [thing, weight], ...] e.g. [ ["a", 1.0], ["b", 2.0], ["c", 1.0] ]
+	pickRandomWeighted(arr) {
+		const summedWeights = [];
+		let sum = 0;
+		for (let i = 0; i < arr.length; i++) {
+			sum = sum + arr[i][1];
+			summedWeights.push(sum);
+		}
+		const rand = Math.random() * sum;
+		const resIndex = module.exports.binarySearchF((i) => {return summedWeights[i] < rand;}, arr.length);
+		return arr[resIndex][0];
+	},
 	// Mismatched types will override one another.
 	// Mismatched subtypes will attempt to use a special conversion function.
 	// If none present, will fallback to value conversion.
