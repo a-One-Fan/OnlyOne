@@ -91,7 +91,7 @@
         {"name": "searchFandom", "regexParams": "i", "help": "Wiki search toaru Index", "description": "I will link you the first article from the first wikia I find, if I don't get CAPTCHA'd. Don't end with punctuation.",
             "regex": "(?:wikia?|fandom)\\s+(?:search\\s+)([a-zA-Z0-9_]+)\\s+(.+)"},
 
-        {"name": "randomUncyclopedia", "regexParams": "i", "help": "Random uncyclopedia page!", "description": "I will link you a random uncyclopedia article.",
+        {"name": "searchUncyclopediaRandom", "regexParams": "i", "help": "Random uncyclopedia page!", "description": "I will link you a random uncyclopedia article.",
             "regex": "random\\s+uncyclopedia(?:\\s+(?:page|article))?[,.?!\\s]{0,3}\\s*$"}
     ]
 }
