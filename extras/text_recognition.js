@@ -102,10 +102,10 @@ module.exports = {
 		let linkMatch = text.match(/(https:\/\/[^ \n]+)/);
 		if (linkMatch) return linkMatch[0];
 
-		linkMatch = text.match(/<@!([^>]*)>/);
+		linkMatch = text.match(/<@!?([0-9]*)>/);
 		if (linkMatch) {
 			const targetUser = await message.client.users.fetch(linkMatch[1]);
-			if (!targetUser) throw Error("Printable error: Sorry, I couldn't find a user by that ID.");
+			if (!targetUser) throw Error(`Printable error: Sorry, I couldn't find a user by that ID ("${linkMatch[1]}").`);
 			return targetUser.displayAvatarURL({ format: "png" });
 		}
 
@@ -133,7 +133,7 @@ module.exports = {
 
 		await message.guild.members.fetch();
 		const targetUser = await message.client.users.cache.find((u) => (u.tag.search(text) != -1));
-		if (!targetUser) throw Error("Printable error: Sorry, I couldn't find a user by that name.");
+		if (!targetUser) throw Error(`Printable error: Sorry, I couldn't find a user by that name ("${text}").`);
 		return targetUser.displayAvatarURL();
 
 	},
