@@ -173,11 +173,14 @@ bpy.data.materials["Plane background"].node_tree.nodes["Emission"].inputs[0].def
 			time = new Date();
 		}
 
+		let userMention = "You forgot to add a mention!!!";
+		if (renderParams.userMention) userMention = renderParams.text;
+
 		const python =
 `
 import bpy
 bpy.data.images["PFP"].filepath = "//../tmp/${uuid}/welcomeDownload.${extension}"
-bpy.data.curves["UserMention"].body = "${renderParams.text}"
+bpy.data.curves["UserMention"].body = "${userMention}"
 `;
 		const SCENES = ["toaruWelcome", "toaruWelcome2", "utahimeWelcome", "utahimeWelcome2"];
 		if (!renderParams.scene || !find(SCENES, renderParams.scene)) {

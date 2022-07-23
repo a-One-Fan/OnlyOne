@@ -23,7 +23,7 @@ module.exports = {
 
 		const link = member.displayAvatarURL({ format: "png" });
 
-		const renderResult = await renderWelcome(link);
+		const renderResult = await renderWelcome(link, { userMention: `@${member.displayName}` });
 		const text = `Welcome to the ${pickRandom(["not-Toaru", "not-quite-Utahime", "One", "not-Railgun", "not-Raildex", "OnlyOne"])} server, <@${member.id}>!`;
 		await channel.send({ content: text, files: renderResult.files });
 
