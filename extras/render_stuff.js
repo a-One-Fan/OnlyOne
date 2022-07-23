@@ -174,7 +174,7 @@ bpy.data.materials["Plane background"].node_tree.nodes["Emission"].inputs[0].def
 		}
 
 		let userMention = "You forgot to add a mention!!!";
-		if (renderParams.userMention) userMention = renderParams.text;
+		if (renderParams.userMention) userMention = renderParams.userMention;
 
 		const python =
 `
