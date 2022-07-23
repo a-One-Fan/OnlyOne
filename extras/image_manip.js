@@ -1,30 +1,7 @@
-const fs = require("fs");
-const https = require("https");
 const { execFile } = require("child_process");
-const { blenderLocation, ffmpegFolderLocation, permittedUrls, downloadFilepath } = require("../config.json");
+const { blenderLocation, ffmpegFolderLocation } = require("../config.json");
 
 module.exports = {
-	// Returns [extensionlessPath, extension]
-	downloadImage(url, filepath = downloadFilepath) {
-		return new Promise((resolve, reject) => {
-			const regexResult = RegExp(permittedUrls).exec(url);
-			if (!regexResult) {
-				return reject(new Error("Bad URL: " + url));
-			}
-			const extensionlessPath = filepath;
-			filepath = filepath + "." + regexResult[1];
-			https.get(url, (msg) => {
-				if (msg.statusCode === 200) {
-					msg.pipe(fs.createWriteStream(filepath))
-						.on("error", reject)
-						.once("close", () => resolve([extensionlessPath, regexResult[1]]));
-				} else {
-					msg.resume();
-					reject(new Error(`Request failed with status code: ${msg.statusCode}`));
-				}
-			});
-		});
-	},
 	// TODO: no .on("error") if we already have if (error) ?
 	// Automatically renders borderless.
 	renderBlend(filepath, args, pythonics = "pass") {
