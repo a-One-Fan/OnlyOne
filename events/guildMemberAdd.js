@@ -1,8 +1,7 @@
 const { userJoinChannelsFilepath } = require("../config.json");
-const { downloadImage, renderBlend } = require("../extras/image_manip.js");
-const { MessageAttachment } = require("discord.js");
-const { mkdirSync, rm, readFileSync } = require("fs");
+const { renderWelcome } = require("../extras/render_stuff.js");
 const { pickRandom } = require("../extras/math_stuff");
+const { rm, readFileSync } = require("fs");
 
 module.exports = {
 	name: "guildMemberAdd",
@@ -22,33 +21,12 @@ module.exports = {
 			return;
 		}
 
-		const uuid = Math.random().toString(36).substring(2, 7) + Math.random().toString(36).substring(2, 7);
-		mkdirSync(`./tmp/${uuid}`);
-
 		const link = member.displayAvatarURL({ format: "png" });
-		console.log("Welcoming new user...");
-		let time = new Date();
 
-		const [ , extension ] = await downloadImage(link, `./tmp/${uuid}/welcomeDownload`);
-		console.log(`Welcome took ${(new Date() - time) / 1000.0}s to download input.`);
-		time = new Date();
+		const renderResult = await renderWelcome(link);
+		const text = `Welcome to the ${pickRandom(["not-Toaru", "not-quite-Utahime", "One", "not-Railgun", "not-Raildex", "OnlyOne"])} server, <@${member.id}>!`;
+		await channel.send({ content: text, files: renderResult.files });
 
-		const python =
-`
-import bpy
-bpy.data.images["PFP"].filepath = "//../tmp/${uuid}/welcomeDownload.${extension}"
-bpy.data.curves["UserMention"].body = "@${member.displayName}"
-`;
-		const SCENES = ["toaruWelcome", "toaruWelcome2", "utahimeWelcome", "utahimeWelcome2"];
-		const pickedScene = pickRandom(SCENES);
-		await renderBlend("./extras/welcome.blend", ["-S", pickedScene, "-o", `//../tmp/${uuid}/welcomeResult####`, "-f", "0"], python);
-		console.log(`Welcome took ${(new Date() - time) / 1000.0}s to render.`);
-		time = new Date();
-
-		const file = new MessageAttachment(`./tmp/${uuid}/welcomeResult0000.png`);
-		const text = `Welcome to the ${pickRandom(["not-Toaru", "not-Utahime", "One"])} server, <@${member.id}>!`;
-		await channel.send({ content: text, files: [file] });
-
-		rm(`./tmp/${uuid}`, { recursive: true, force: true }, (err) => { if (err) console.log("Got error while deleting:", err); });
+		rm(renderResult.cleanup, { recursive: true, force: true }, (err) => { if (err) console.log("Got error while deleting:", err); });
 	},
 };
