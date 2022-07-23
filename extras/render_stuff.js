@@ -183,7 +183,7 @@ bpy.data.images["PFP"].filepath = "//../tmp/${uuid}/welcomeDownload.${extension}
 bpy.data.curves["UserMention"].body = "${userMention}"
 `;
 		const SCENES = ["toaruWelcome", "toaruWelcome2", "utahimeWelcome", "utahimeWelcome2"];
-		if (!renderParams.scene || !find(SCENES, renderParams.scene)) {
+		if (!renderParams.scene || (find(SCENES, renderParams.scene) < 0)) {
 			renderParams.scene = pickRandom(SCENES);
 		}
 		await renderBlend("./extras/welcome.blend", ["-S", renderParams.scene, "-o", `//../tmp/${uuid}/welcomeResult####`, "-f", "0"], python);
