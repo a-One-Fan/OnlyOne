@@ -13,7 +13,11 @@ module.exports = {
 			renderParams.userMention = regexResults[2];
 		}
 
-		const link = await getLinkFromText(regexResults[3], message);
+		if (regexResults[3]) {
+			renderParams.hideText = true;
+		}
+
+		const link = await getLinkFromText(regexResults[4], message);
 
 		const renderResult = await renderWelcome(link, renderParams);
 

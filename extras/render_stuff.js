@@ -176,13 +176,20 @@ bpy.data.materials["Plane background"].node_tree.nodes["Emission"].inputs[0].def
 		let userMention = "You forgot to add a mention!!!";
 		if (renderParams.userMention) userMention = renderParams.userMention;
 
+		let hideText = false;
+		if (renderParams.hideText) hideText = true;
+
 		const python =
 `
 import bpy
 bpy.data.images["PFP"].filepath = "//../tmp/${uuid}/welcomeDownload.${extension}"
 bpy.data.curves["UserMention"].body = "${userMention}"
+if ${hideText ? "True" : "False"}:
+	for c in bpy.data.collections:
+		if "text" in c.name:
+			c.hide_render = True
 `;
-		const SCENES = ["toaruWelcome", "toaruWelcome2", "utahimeWelcome", "utahimeWelcome2"];
+		const SCENES = ["toaruWelcome", "toaruWelcome2", "toaruWelcome3", "utahimeWelcome", "utahimeWelcome2"];
 		if (!renderParams.scene || (find(SCENES, renderParams.scene) < 0)) {
 			renderParams.scene = pickRandom(SCENES);
 		}

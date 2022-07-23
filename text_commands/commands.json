@@ -63,7 +63,7 @@
             "regex": "(?:do\\s+(?:a\\s+)?)?barrel\\s+roll(?:\\s+(?:using|with)?)?(?:\\s+((?:[,.?!\\s]?[^,.?!\\s]+)+))?[,.?!\\s]{0,3}\\s*$"},
 
         {"name": "renderWelcome", "regexParams": "i", "help": "Welcome using utahimeWelcome2 and text '@Lovely Bot' @OnlyOne", "description": "I'll make a welcome picture for the specified person(/image) with the specified scene (or a random scene) and text.",
-            "regex": "welcome\\s+(?:using\\s+([a-zA-Z0-9]+)\\s+)?(?:(?:and\\s+)?(?:text\\s+)?'([^']+)'\\s+)?(.*)"},
+            "regex": "welcome\\s+(?:using\\s+([a-zA-Z0-9]+)\\s+)?(?:(?:and\\s+)?(?:text\\s+)?'([^']+)'\\s+|(?:and\\s+)?(without\\s+text))?(.*)"},
 
         {"name": "calculate", "regexParams": "i", "help": "'Calculate 1+1 - 1', or 'Calculate using RPN 1 1 1 + -'", "description": "I will calculate your expression - please don't use punctuation!",
             "regex": "calculate\\s+((?:(?:using|with)\\s+|with\\s+)?(?:reverse\\s+polish(?:\\s+notation)|RPN)\\s+)?(.+)$",
