@@ -90,7 +90,8 @@ module.exports = {
 		return module.exports.countOcurrences(text, oneRegexes);
 	},
 
-	async getLinkFromText(text, message) {
+	async getUserFromText(text, message) {
+
 		let whitespaceStart = 0;
 		let i = 0;
 		while (i < text.length && text[i] == " ") i++;
@@ -99,26 +100,11 @@ module.exports = {
 		while (i >= 0 && text[i] == " ") i--;
 		text = text.substring(whitespaceStart, i + 1);
 
-		let linkMatch = text.match(/(https:\/\/[^ \n]+)/);
-		if (linkMatch) return linkMatch[0];
-
-		linkMatch = text.match(/<@!?([0-9]*)>/);
+		const linkMatch = text.match(/<@!?([0-9]*)>/);
 		if (linkMatch) {
 			const targetUser = await message.client.users.fetch(linkMatch[1]);
 			if (!targetUser) throw Error(`Printable error: Sorry, I couldn't find a user by that ID ("${linkMatch[1]}").`);
 			return targetUser.displayAvatarURL({ format: "png" });
-		}
-
-		if (text.search(/^this:?\s*$/mi) > -1) {
-			if (!message.attachments.at(0)) throw Error("Printable error: You need to attach a file.");
-			return message.attachments.at(0).attachment;
-		}
-
-		if (text.search(/^that:?\s*$/mi) > -1) {
-			const reply = await message.fetchReference();
-			if (!reply) throw Error("Printable error: You need to reply to someone.");
-			if (!reply.attachments.at(0)) throw Error("Printable error: Your replied-to message needs to have a file.");
-			return reply.attachments.at(0).attachment;
 		}
 
 		if (text.search(/yourself|you|u|urself|(?:your|ur)\s+(?:pfp|profile\s+pic(?:ture)?)/i) > -1) return message.client.user.displayAvatarURL({ format: "png" });
@@ -135,6 +121,34 @@ module.exports = {
 		const targetUser = await message.client.users.cache.find((u) => (u.tag.search(text) != -1));
 		if (!targetUser) throw Error(`Printable error: Sorry, I couldn't find a user by that name ("${text}").`);
 		return targetUser.displayAvatarURL();
+
+	},
+
+	async getLinkFromText(text, message) {
+		let whitespaceStart = 0;
+		let i = 0;
+		while (i < text.length && text[i] == " ") i++;
+		if (i != text.length) whitespaceStart = i;
+		i = text.length - 1;
+		while (i >= 0 && text[i] == " ") i--;
+		text = text.substring(whitespaceStart, i + 1);
+
+		const linkMatch = text.match(/(https:\/\/[^ \n]+)/);
+		if (linkMatch) return linkMatch[0];
+
+		if (text.search(/^this:?\s*$/mi) > -1) {
+			if (!message.attachments.at(0)) throw Error("Printable error: You need to attach a file.");
+			return message.attachments.at(0).attachment;
+		}
+
+		if (text.search(/^that:?\s*$/mi) > -1) {
+			const reply = await message.fetchReference();
+			if (!reply) throw Error("Printable error: You need to reply to someone.");
+			if (!reply.attachments.at(0)) throw Error("Printable error: Your replied-to message needs to have a file.");
+			return reply.attachments.at(0).attachment;
+		}
+
+		return await module.exports.getUserFromText(text, message);
 
 	},
 };
