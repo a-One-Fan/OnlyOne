@@ -104,23 +104,23 @@ module.exports = {
 		if (linkMatch) {
 			const targetUser = await message.client.users.fetch(linkMatch[1]);
 			if (!targetUser) throw Error(`Printable error: Sorry, I couldn't find a user by that ID ("${linkMatch[1]}").`);
-			return targetUser.displayAvatarURL({ format: "png" });
+			return targetUser;
 		}
 
-		if (text.search(/yourself|you|u|urself|(?:your|ur)\s+(?:pfp|profile\s+pic(?:ture)?)/i) > -1) return message.client.user.displayAvatarURL({ format: "png" });
+		if (text.search(/yourself|you|u|urself|(?:your|ur)\s+(?:pfp|profile\s+pic(?:ture)?)/i) > -1) return message.client.user;
 
-		if (text.search(/me|myself|my\s+(?:pfp|profile\s+pic(?:ture)?)/i) > -1) return message.author.displayAvatarURL({ format: "png" });
+		if (text.search(/me|myself|my\s+(?:pfp|profile\s+pic(?:ture)?)/i) > -1) return message.author;
 
 		if (text.search(/(?:his|her|their)\s+(?:pfp|profile(?:\s+pic(?:ture)?)?)|him|her/i) > -1) {
 			const reply = await message.fetchReference();
 			if (!reply) throw Error("Printable error: You need to reply to someone.");
-			return reply.author.displayAvatarURL({ format: "png" });
+			return reply.author;
 		}
 
 		await message.guild.members.fetch();
 		const targetUser = await message.client.users.cache.find((u) => (u.tag.search(text) != -1));
 		if (!targetUser) throw Error(`Printable error: Sorry, I couldn't find a user by that name ("${text}").`);
-		return targetUser.displayAvatarURL();
+		return targetUser;
 
 	},
 
@@ -148,7 +148,7 @@ module.exports = {
 			return reply.attachments.at(0).attachment;
 		}
 
-		return await module.exports.getUserFromText(text, message);
+		return await module.exports.getUserFromText(text, message).displayAvatarURL({ format: "png" });
 
 	},
 };
