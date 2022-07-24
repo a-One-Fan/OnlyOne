@@ -15,10 +15,11 @@ module.exports = {
 
 		const row = await message.client.db.findOne({ where: { userID: user.id } });
 
+		const newval = regexResults[3] ? regexResults[3] : regexResults[4];
 		const newprop = {};
-		newprop[regexResults[2]] = regexResults[3];
+		newprop[regexResults[2]] = newval;
 		await message.client.db.update(newprop, { where: { userID: user.id } });
 
-		return { text: `Updated ${regexResults[2]} for user "${user.displayName}" (${user.id}) from [${row[regexResults[2]]}] to [${regexResults[3]}]` };
+		return { text: `Updated ${regexResults[2]} for user "${user.displayName}" (${user.id}) from [${row[regexResults[2]]}] to [${newval}]` };
 	},
 };
