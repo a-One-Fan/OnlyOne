@@ -10,13 +10,13 @@ const ANY = "This represents the possibility for any non-false/undefined input."
 const OPTIONAL = "This represents the possibility for completely optional input.";
 const SIMULATE_MESSAGE = "This represents that the function to test should be a simulated text message.";
 
-const MENTION_LINK = "https://www.mentionPfp.com/pfp.png";
-const AUTHOR_LINK = "https://www.authorpfp.com/pfp.png";
-const REPLIED_AUTHOR_LINK = "https://www.repliedpfp.com/pfp.png";
-const ONLYONE_LINK = "https://o.ne/pfp.png";
+const MENTION_LINK = "https://www.mentionPfp.com/pfp.png"; const MENTION_LINK_GUILD = "https://guild.mentionPfp.com/pfp.png";
+const AUTHOR_LINK = "https://www.authorpfp.com/pfp.png"; const AUTHOR_LINK_GUILD = "https://guild.authorpfp.com/pfp.png";
+const REPLIED_AUTHOR_LINK = "https://www.repliedpfp.com/pfp.png"; const REPLIED_AUTHOR_LINK_GUILD = "https://guild.repliedpfp.com/pfp.png";
+const ONLYONE_LINK = "https://o.ne/pfp.png"; const ONLYONE_LINK_GUILD = "https://o.ne/pfp_guild.png";
 const ATTACHMENT_LINK = "https://www.discord.com/attachment.png";
 const REPLIED_ATTACHMENT_LINK = "https://www.discord.com/other_attachment.png";
-const GUILD_USER_LINK = "https://www.who.com/pfp.png";
+const USER_LINK = "https://www.who.com/pfp.png"; const GUILD_USER_LINK = "https://guild.who.com/pfp.png";
 const FAKE_MESSAGE_FOR_LINKS = {
 	client:	{
 		users: {
@@ -27,19 +27,33 @@ const FAKE_MESSAGE_FOR_LINKS = {
 					return null;
 				}
 			},
-			cache: { find(func) { return { displayAvatarURL() { return GUILD_USER_LINK; } };} },
+			cache: { find(func) { return { displayAvatarURL() { return USER_LINK; } };} },
 		},
-		user: { displayAvatarURL() { return AUTHOR_LINK; } },
+		user: { displayAvatarURL() { return ONLYONE_LINK; } },
 	},
-	author: { displayAvatarURL() { return ONLYONE_LINK; } },
+	author: { displayAvatarURL() { return AUTHOR_LINK; } },
+	member: { displayAvatarURL() { return AUTHOR_LINK_GUILD; } },
 	attachments: { at(val) { return val == 0 ? { attachment: ATTACHMENT_LINK } : {}; } },
 	fetchReference() {
 		return {
 			author: { displayAvatarURL() { return REPLIED_AUTHOR_LINK; } },
+			member: { displayAvatarURL() { return REPLIED_AUTHOR_LINK_GUILD; } },
 			attachments: { at(val) { return val == 0 ? { attachment: REPLIED_ATTACHMENT_LINK } : {}; } },
 		};
 	},
-	guild: { members: { fetch() {return; } } },
+	guild: {
+		members: {
+			fetch(id) {
+				if (id == "111") {
+					return { displayAvatarURL() { return MENTION_LINK_GUILD; } };
+				} else {
+					return null;
+				}
+			},
+			fetchMe() { return { displayAvatarURL() { return ONLYONE_LINK_GUILD; } }; },
+			cache: { find(func) { return { displayAvatarURL() { return GUILD_USER_LINK; } };} },
+		},
+	},
 };
 
 module.exports = {
@@ -108,9 +122,9 @@ module.exports = {
 		{ in: ["aboobaahttps://www.test.com/a.png", FAKE_MESSAGE_FOR_LINKS], out: "https://www.test.com/a.png" },
 		{ in: ["https://testo.com/b.png", FAKE_MESSAGE_FOR_LINKS], out: "https://testo.com/b.png" },
 		{ in: ["https://testeee.com/woo.png    yay", FAKE_MESSAGE_FOR_LINKS], out: "https://testeee.com/woo.png" },
-		{ in: ["<@!111> its one", FAKE_MESSAGE_FOR_LINKS], out: MENTION_LINK },
-		{ in: ["<@!111>", FAKE_MESSAGE_FOR_LINKS], out: MENTION_LINK },
-		{ in: ["eyooo<@!111>", FAKE_MESSAGE_FOR_LINKS], out: MENTION_LINK },
+		{ in: ["<@!111> its one", FAKE_MESSAGE_FOR_LINKS], out: MENTION_LINK_GUILD },
+		{ in: ["<@!111>", FAKE_MESSAGE_FOR_LINKS], out: MENTION_LINK_GUILD },
+		{ in: ["eyooo<@!111>", FAKE_MESSAGE_FOR_LINKS], out: MENTION_LINK_GUILD },
 		{ in: ["this:", FAKE_MESSAGE_FOR_LINKS], out: ATTACHMENT_LINK },
 		{ in: ["this: https://www.first.this/link.png", FAKE_MESSAGE_FOR_LINKS], out: "https://www.first.this/link.png" },
 		{ in: ["this:   ", FAKE_MESSAGE_FOR_LINKS], out: ATTACHMENT_LINK },
@@ -121,9 +135,9 @@ module.exports = {
 		{ in: ["that:     ", FAKE_MESSAGE_FOR_LINKS], out: REPLIED_ATTACHMENT_LINK },
 		{ in: ["tHAT:     ", FAKE_MESSAGE_FOR_LINKS], out: REPLIED_ATTACHMENT_LINK },
 		{ in: ["that:   eyooo", FAKE_MESSAGE_FOR_LINKS], out: GUILD_USER_LINK },
-		{ in: ["his pfp", FAKE_MESSAGE_FOR_LINKS], out: REPLIED_AUTHOR_LINK },
-		{ in: ["her", FAKE_MESSAGE_FOR_LINKS], out: REPLIED_AUTHOR_LINK },
-		{ in: ["HER", FAKE_MESSAGE_FOR_LINKS], out: REPLIED_AUTHOR_LINK },
+		{ in: ["his pfp", FAKE_MESSAGE_FOR_LINKS], out: REPLIED_AUTHOR_LINK_GUILD },
+		{ in: ["her", FAKE_MESSAGE_FOR_LINKS], out: REPLIED_AUTHOR_LINK_GUILD },
+		{ in: ["HER", FAKE_MESSAGE_FOR_LINKS], out: REPLIED_AUTHOR_LINK_GUILD },
 		{ in: ["Babooga the First", FAKE_MESSAGE_FOR_LINKS], out: GUILD_USER_LINK },
 	],
 
