@@ -119,7 +119,7 @@ module.exports = {
 		}
 
 		await message.guild.members.fetch();
-		const targetUser = await message.guild.members.cache.find((u) => (u.tag.search(text) != -1));
+		const targetUser = await message.guild.members.cache.find((u) => (u.displayName.search(text) != -1));
 		if (!targetUser) throw Error(`Printable error: Sorry, I couldn't find a user by that name ("${text}").`);
 		return targetUser;
 
