@@ -19,6 +19,9 @@
         {"name": "setAuthorReactEmote", "regexParams": "i", "help": "Set my reaction emote to 944199066911395840!", "description": "Set what emote I will react to your messages with when you mention me.",
             "regex": "(re)?set\\s+my\\s+(?:custom\\s+)?react(?:ion)?\\s+emote(?:\\s+to)?(\\s+[^,.?!\\s]+)?[,.?!\\s]{0,3}\\s*$"},
 
+        {"name": "setAnyAny", "regexParams": "i", "help": "SetAny #@Two# rank 10", "description": "Set almost any property for some user (surrounded by # on each side).\nExceptions: No setting for the bot owner or setting spicy database columns,",
+            "regex": "setAny\\s+#([^#]+)#\\s+([a-zA-z0-9]+)\\s+([a-zA-z0-9]+)", "rank": 10},
+
         {"name": "ignoreChannel", "regexParams": "i", "help": "'Ignore this channel.', or 'Unignore channel 1111111111111.'", "description": "I will ignore (or not) all messages in a certain channel.", 
             "regex": "(un)?ignore\\s+(?:(this\\s+)?channel|channel\\s+(\\d+)|channel\\s+([a-zA-Z_\\-]+))[,.?!\\s]{0,3}\\s*$", "rank": 10},
 
