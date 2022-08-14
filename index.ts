@@ -3,7 +3,7 @@ const fs = require("fs");
 const Sequelize = require("sequelize");
 const { Client, Collection, Intents } = require("discord.js");
 const { token } = require("./config.json");
-const { currentStorage, currentCols } = require("./extras/database_stuff.js");
+const { currentStorage, currentCols } = require("./extras/database_stuff");
 
 // Create a new client instance
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.DIRECT_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MESSAGES,
@@ -21,7 +21,7 @@ const sequelize = new Sequelize("database", "user", "password", {
 client.db = sequelize.define("db", currentCols);
 
 client.commands = new Collection();
-const commandFiles = fs.readdirSync("./commands").filter((file: string) => file.endsWith(".js"));
+const commandFiles = fs.readdirSync("./commands").filter((file: string) => file.endsWith(".ts"));
 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
