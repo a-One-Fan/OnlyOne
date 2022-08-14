@@ -1,0 +1,162 @@
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const { openersBase, openersPunctuation, openersAdjectives, oneRegexes } = require("../config.json");
+const { remove } = require("./math_stuff.js");
+module.exports = {
+    // Whether 'text' matches any regex of "customOpeners"
+    // Returns the index of the regex and the rest of 'text' if valid, null otherwise.
+    // TODO: refactor regexes and use no whitespace option so they're actually readable?
+    testAnyRegex(text, customOpeners, regexParams = "") {
+        if (text == null)
+            return null;
+        for (const [i, opener] of customOpeners.entries()) {
+            const split = text.split(RegExp(opener, regexParams));
+            if (split.length > 1) {
+                return [i, remove(split, "")[0]];
+            }
+        }
+        return null;
+    },
+    flattenArraySeparate(arr, separator) {
+        let res = "";
+        for (let i = 0; i < arr.length - 1; i++) {
+            res += arr[i];
+            res += separator;
+        }
+        res += arr.at(-1);
+        return res;
+    },
+    makeOpenerRegex() {
+        const flatn = module.exports.flattenArraySeparate;
+        let puncts = flatn(openersPunctuation, "");
+        puncts += "\\s";
+        const adjs = flatn(openersAdjectives, "|");
+        const base = flatn(openersBase, "|");
+        return `(?:[${puncts}\\s]{1,5})?(?:(?:${adjs})[${puncts}]{1,5})*\\s*(?:(?:${base})[${puncts}]{1,5})\\s*(?:(?:${adjs})[${puncts}]{1,5})*(?:[${puncts}\\s]{1,5})?`;
+    },
+    // Whether 'text' starts with a regex from the config (a One-related opener).
+    validStart(text) {
+        const newOpeners = [];
+        const openers = [module.exports.makeOpenerRegex()];
+        for (const opener of openers) {
+            newOpeners.push("^\\s*" + opener + "\\s*");
+        }
+        return module.exports.testAnyRegex(text, newOpeners, "i");
+    },
+    validEnd(text) {
+        const newOpeners = [];
+        const openers = [module.exports.makeOpenerRegex()];
+        for (const opener of openers) {
+            newOpeners.push("\\s*" + opener + "\\s*$");
+        }
+        return module.exports.testAnyRegex(text, newOpeners, "i");
+    },
+    // Counts how many times 'text' has each string regex in 'bits' in it.
+    // Returns an array with the total, followed by the number of occurences of each thing.
+    countOcurrences(text, bits) {
+        if (text == null)
+            return null;
+        const res = [0];
+        text = " " + text + " ";
+        for (const bit of bits) {
+            let textCut = text;
+            let foundIdx = textCut.search(RegExp(bit));
+            let count = 0;
+            // Special code needed to match Regexes that slightly overlap, e.g.:
+            // One One One One One
+            // All of these are separated by 1 whitespace, by themselves they fit the regex but running the regex globally would "eat" the space from the first " One ", ending up with "One One One One ",
+            // won't match that first One in the remaining string. Using ^ here won't fix this, as this isn't really the start of the string.
+            while (foundIdx >= 0) {
+                textCut = textCut.substr(foundIdx + 1);
+                foundIdx = textCut.search(RegExp(bit));
+                count++;
+            }
+            res.push(count);
+            res[0] += count;
+        }
+        console.log(text, res);
+        return res;
+    },
+    // Counts how many times the user mentioned One.
+    // Returns: [Total, One mentions, one mentions, 1 mentions]
+    countOnes(text) {
+        return module.exports.countOcurrences(text, oneRegexes);
+    },
+    // TODO: implement useGuild
+    getUserFromText(text, message, useGuild = true) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let whitespaceStart = 0;
+            let i = 0;
+            while (i < text.length && text[i] == " ")
+                i++;
+            if (i != text.length)
+                whitespaceStart = i;
+            i = text.length - 1;
+            while (i >= 0 && text[i] == " ")
+                i--;
+            text = text.substring(whitespaceStart, i + 1);
+            const linkMatch = text.match(/<@!?([0-9]*)>/);
+            if (linkMatch) {
+                const targetUser = yield message.guild.members.fetch(linkMatch[1]);
+                if (!targetUser)
+                    throw Error(`Printable error: Sorry, I couldn't find a user by that ID ("${linkMatch[1]}").`);
+                return targetUser;
+            }
+            if (text.search(/yourself|you|u|urself|(?:your|ur)\s+(?:pfp|profile\s+pic(?:ture)?)/i) > -1)
+                return message.guild.members.fetchMe();
+            if (text.search(/me|myself|my\s+(?:pfp|profile\s+pic(?:ture)?)/i) > -1)
+                return message.member;
+            if (text.search(/(?:his|her|their)\s+(?:pfp|profile(?:\s+pic(?:ture)?)?)|him|her/i) > -1) {
+                const reply = yield message.fetchReference();
+                if (!reply)
+                    throw Error("Printable error: You need to reply to someone.");
+                return reply.member;
+            }
+            yield message.guild.members.fetch();
+            const targetUser = yield message.guild.members.cache.find((u) => (u.displayName.search(text) != -1));
+            if (!targetUser)
+                throw Error(`Printable error: Sorry, I couldn't find a user by that name ("${text}").`);
+            return targetUser;
+        });
+    },
+    getLinkFromText(text, message) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let whitespaceStart = 0;
+            let i = 0;
+            while (i < text.length && text[i] == " ")
+                i++;
+            if (i != text.length)
+                whitespaceStart = i;
+            i = text.length - 1;
+            while (i >= 0 && text[i] == " ")
+                i--;
+            text = text.substring(whitespaceStart, i + 1);
+            const linkMatch = text.match(/(https:\/\/[^ \n]+)/);
+            if (linkMatch)
+                return linkMatch[0];
+            if (text.search(/^this:?\s*$/mi) > -1) {
+                if (!message.attachments.at(0))
+                    throw Error("Printable error: You need to attach a file.");
+                return message.attachments.at(0).attachment;
+            }
+            if (text.search(/^that:?\s*$/mi) > -1) {
+                const reply = yield message.fetchReference();
+                if (!reply)
+                    throw Error("Printable error: You need to reply to someone.");
+                if (!reply.attachments.at(0))
+                    throw Error("Printable error: Your replied-to message needs to have a file.");
+                return reply.attachments.at(0).attachment;
+            }
+            return (yield module.exports.getUserFromText(text, message)).displayAvatarURL({ format: "png" });
+        });
+    },
+};
