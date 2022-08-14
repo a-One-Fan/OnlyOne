@@ -21,7 +21,7 @@ const sequelize = new Sequelize("database", "user", "password", {
 client.db = sequelize.define("db", currentCols);
 
 client.commands = new Collection();
-const commandFiles = fs.readdirSync("./commands").filter(file => file.endsWith(".js"));
+const commandFiles = fs.readdirSync("./commands").filter((file: string) => file.endsWith(".js"));
 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
@@ -31,14 +31,14 @@ for (const file of commandFiles) {
 }
 
 
-const eventFiles = fs.readdirSync("./events").filter(file => file.endsWith(".js"));
+const eventFiles = fs.readdirSync("./events").filter((file: string) => file.endsWith(".js"));
 
 for (const file of eventFiles) {
 	const event = require(`./events/${file}`);
 	if (event.once) {
-		client.once(event.name, (...args) => event.execute(...args));
+		client.once(event.name, (...args: any) => event.execute(...args));
 	} else {
-		client.on(event.name, (...args) => event.execute(...args));
+		client.on(event.name, (...args: any) => event.execute(...args));
 	}
 }
 
