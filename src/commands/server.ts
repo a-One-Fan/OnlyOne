@@ -8,4 +8,4 @@ async function execute(interaction: any) {
 	await interaction.reply("Server info.");
 }
 
-module.exports = { data, execute };
+export { data, execute };

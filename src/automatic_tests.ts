@@ -162,7 +162,7 @@ class TestResult{
 }
 
 async function doTests() {
-	const tests = module.exports.auto_tests;
+	const tests = auto_tests;
 	let unsuccessful = 0;
 	let func_to_test: any = SIMULATE_MESSAGE;
 	const results: TestResult[] = [];
@@ -172,7 +172,7 @@ async function doTests() {
 
 	// The call:
 	// message.client.db.findOne({ where: { userID: message.author.id } });
-	const fakeMessage = { content: "",
+	const fakeMessage: any = { content: "",
 		client: { db: { findOne(query: any) {
 			if (query && query.where && query.where.userID == 1) return fakeRow;
 			return undefined;

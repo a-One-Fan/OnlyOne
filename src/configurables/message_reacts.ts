@@ -37,9 +37,9 @@ const reactTypes = [
 	},
 ]
 function reactChoose(message: any, row: any, oneCount: number[]) {
-	if (row.reactType < 0 || row.reactType >= module.exports.reactTypes.length) return [];
+	if (row.reactType < 0 || row.reactType >= reactTypes.length) return [];
 
-	const res = module.exports.reactTypes[row.reactType].testReact(message, row, oneCount);
+	const res = reactTypes[row.reactType].testReact(message, row, oneCount);
 	let reactID = oneReactID;
 	if (row.customReact) reactID = row.customReact;
 	if (res && (Math.random() <= row.reactChance)) return [reactID];

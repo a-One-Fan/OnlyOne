@@ -1,10 +1,10 @@
-const { getRedirect } = require("../extras/networking_stuff.js");
+import { getRedirect } from "../extras/networking_stuff";
 
-module.exports = {
-	async execute(message: any, regexResults: string[]) {
+async function execute(message: any, regexResults: RegExpExecArray) {
 
-		const resRedirect = await getRedirect("https://en.uncyclopedia.co/wiki/Special:RandomRootpage/Main");
+	const resRedirect = await getRedirect("https://en.uncyclopedia.co/wiki/Special:RandomRootpage/Main");
 
-		return { text: resRedirect };
-	},
-};
+	return { text: resRedirect };
+}
+
+export { execute }

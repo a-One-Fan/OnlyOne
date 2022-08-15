@@ -1,8 +1,8 @@
-const { TextComamndResult } = require("./text_command_utils");
+import { TextCommandResult } from "./text_command_utils";
 
-module.exports = {
-	async execute(message: any, regexResults: string[], extraRegex?: string[][]): Promise<typeof TextComamndResult> {
+async function execute(message: any, regexResults: RegExpExecArray, extraRegex?: (RegExpExecArray|null)[]): Promise<TextCommandResult> {
 
-		return { text: "Done.", files: [] };
-	},
-};
+	return { text: "Done.", files: [] };
+}
+
+export { execute };

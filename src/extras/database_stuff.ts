@@ -38,15 +38,15 @@ const newCols = {
 
 async function migrateAny(oldTable: object[], oldCols: any, newCols: any) {
 
-	if (existsSync(module.exports.newStorage)) {
-		throw Error(`Database "${module.exports.newStorage}" exists!\n`);
+	if (existsSync(newStorage)) {
+		throw Error(`Database "${newStorage}" exists!\n`);
 	}
 
 	const newdbconnection = new Sequelize.Sequelize("database", "user", "password", {
 		host: "localhost",
 		dialect: "sqlite",
 		logging: false,
-		storage: module.exports.newStorage,
+		storage: newStorage,
 	});
 	const ignoreCols: any = {};
 	Object.assign(ignoreCols, newCols);

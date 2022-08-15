@@ -1,6 +1,6 @@
-module.exports = {
-	async execute(message: any, regexResults: string[]) {
+async function execute(message: any, regexResults: RegExpExecArray) {
 
-		return { text: "https://imgur.com/J4bT846.png" };
-	},
-};
+	return { text: "https://imgur.com/J4bT846.png" };
+}
+
+export { execute }

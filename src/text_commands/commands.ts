@@ -8,6 +8,7 @@ interface ITextCommand {
     extraRegex?: RegExp[]
 
     rank?: number
+    hidden?: boolean
 }
 
 // TODO: complain about typescript - why do I need to add ! to these, when they ARE definitely assigned, as they're required in the interface?
@@ -21,6 +22,7 @@ export class TextCommand {
     extraRegex?: RegExp[]
 
     rank: number = 0;
+    hidden: boolean = false;
 
     constructor(obj: ITextCommand) {
         Object.assign(this, obj);

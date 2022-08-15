@@ -5,12 +5,15 @@ const chunkTypes = {
 	closingBracket: 3,
 }
 
+type chunkOp = ((a: MathExpressionChunk) => MathExpressionChunk) | ((a: MathExpressionChunk, b: MathExpressionChunk) => MathExpressionChunk)
+
 interface IMathExpressionChunk {
 	chunkType: number;
 	priorty?: number;
 	value?: number;
 	args?: number;
 	righty?: boolean;
+	op?: chunkOp;
 }
 
 // TODO: Split into 3 classes?
@@ -20,7 +23,8 @@ export class MathExpressionChunk {
 	value?: number;
 	args?: number;
 	righty?: boolean;
-	unit?: Unit
+	unit?: Unit;
+	op?: chunkOp;
 	constructor(obj: IMathExpressionChunk) {
 		Object.assign(this, obj)
 	}
@@ -221,7 +225,13 @@ const operators = [
 
 	new Operator({ args: 1, names: ["nop", "noop", "pass", "id", "identity", "to"], op: (val: number) => { return val; } }),
 ]
-const converters = {
+interface coverter_sub {
+	[to: string]: ((val: number, from: Unit, to: Unit) => number)
+}
+interface converterList {
+	[from: string]: coverter_sub
+}
+const converters: converterList = {
 	"metric heat": { "imperial heat": (val: number, from: Unit, to: Unit) => {return (val * 1.8) + 32; } },
 	"imperial heat": { "metric heat": (val: number, from: Unit, to: Unit) => {return (val - 32) / 1.8; } },
 }
@@ -280,17 +290,17 @@ function convertUnit(val: MathExpressionChunk, newunit: Unit) {
 		return val;
 	}
 
-	if (val.unit.type == newunit.type) {
-		const converter = getConverter(val.unit, newunit);
-		if (!converter) {
-			val.value *= val.unit.value / newunit.value;
-			val.unit = newunit;
-			return val;
-		} else {
-			val.value = converter(val.value, val.unit, newunit);
-			val.unit = newunit;
-			return val;
-		}
+
+	//if (val.unit.type == newunit.type) {
+	const converter = getConverter(val.unit, newunit);
+	if (!converter) {
+		val.value *= val.unit.value / newunit.value;
+		val.unit = newunit;
+		return val;
+	} else {
+		val.value = converter(val.value, val.unit, newunit);
+		val.unit = newunit;
+		return val;
 	}
 }
 // TODO: do this better?

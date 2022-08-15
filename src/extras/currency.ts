@@ -31,7 +31,7 @@ function updateCurrencies() {
 	const lastUpdatedDate = new Date(lastUpdated);
 	const diff = now.getTime() - lastUpdatedDate.getTime();
 	if (diff < currencyUpdateInterval) return diff;
-	module.exports.forceUpdateCurrencies();
+	forceUpdateCurrencies();
 	return 0;
 }
 

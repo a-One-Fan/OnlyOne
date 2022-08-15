@@ -7,6 +7,7 @@ export class TextCommandResult{
 	files?: any[] = [];
 	emotes?: string[] = [];
 	embeds?: any[] = [];
+	cleanup?: string[] = [];
 }
 
 function findCommand(text: string): [any, RegExpExecArray, (RegExpExecArray|null)[], TextCommand ] | undefined {
@@ -37,7 +38,7 @@ async function executeCommand(message: any, errorType?: number, parseType?: numb
 	if (!parsed || !parsed.valid) return {};
 
 	let err = undefined, commandRes = undefined, foundCommand = undefined;
-	const res = module.exports.findCommand(parsed.culledText);
+	const res = findCommand(parsed.culledText);
 	const row = await message.client.db.findOne({ where: { userID: message.author.id } });
 	if (res) {
 		const [func, regexRes, extraRes, _foundCommand] = res;
@@ -54,7 +55,7 @@ async function executeCommand(message: any, errorType?: number, parseType?: numb
 		}
 	}
 	// TODO: DM the error to me? :)
-	// !! TS fail                                       \/
+	// !! TS fail                                                      \/
 	const errorRes = errorChoose(err, foundCommand, errorType as number);
 	return commandRes ? commandRes : errorRes;
 }
@@ -72,7 +73,7 @@ function mergeMessagePayload(obj1: TextCommandResult, obj2: TextCommandResult) {
 }
 
 function decoupleMessageReacts(obj: TextCommandResult) {
-	const newObj = { text: obj.text, files: obj.files, embeds: obj.embeds };
+	const newObj = { text: obj.text, files: obj.files, embeds: obj.embeds, cleanup: obj.cleanup };
 	return [obj.emotes, newObj];
 }
 

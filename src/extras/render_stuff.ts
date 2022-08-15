@@ -3,12 +3,13 @@ import { downloadImage } from "./networking_stuff";
 import { doFfmpeg, renderBlend, toGoodVideo, getResolution } from "./image_manip";
 import { evenify, clamp, find, pickRandom } from "../extras/math_stuff";
 import { MessageAttachment } from "discord.js";
+import { TextCommandResult } from "../text_commands/text_command_utils";
 
 function gett(ref: Date) {
 	return ((new Date()).getTime() - ref.getTime()) / 1000.0;
 }
 
-async function renderMonkeys(link: string, doLog = true) {
+async function renderMonkeys(link: string, doLog = true): Promise<TextCommandResult> {
 	if (doLog) console.log("Working on monkeys...");
 
 	const uuid = Math.random().toString(36).substring(2, 7) + Math.random().toString(36).substring(2, 7);
@@ -39,11 +40,11 @@ bpy.data.images["monkeyStuff.png"].filepath = "//../tmp/${uuid}/monkeyStuff.png"
 	}
 
 	const _file = new MessageAttachment(`./tmp/${uuid}/monkeyPic0000.png`);
-	return { files: [_file], cleanup: `./tmp/${uuid}` };
+	return { files: [_file], cleanup: [`./tmp/${uuid}`] };
 }
 
 
-async function renderBarrel(link: string, doLog = true) {
+async function renderBarrel(link: string, doLog = true): Promise<TextCommandResult> {
 	const uuid = Math.random().toString(36).substring(2, 7) + Math.random().toString(36).substring(2, 7);
 	mkdirSync(`./tmp/${uuid}`);
 
@@ -77,7 +78,7 @@ bpy.data.images["barrelPicture"].filepath = "//../tmp/${uuid}/barrelPicture.mkv"
 	if (doLog) console.log(`Barrel took ${gett(time)}s to convert output to gif.`);
 
 	const _file = new MessageAttachment(`./tmp/${uuid}/barrelRoll.gif`);
-	return { files: [_file], cleanup: `./tmp/${uuid}` };
+	return { files: [_file], cleanup: [`./tmp/${uuid}`] };
 }
 
 export interface SnapParams {
