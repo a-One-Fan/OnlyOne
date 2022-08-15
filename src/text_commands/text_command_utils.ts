@@ -2,7 +2,7 @@ const commandData = require("../text_commands/commands");
 const { errorChoose } = require("../configurables/error_message");
 const { parseChoose } = require("../configurables/valid_message");
 
-class TextComamndResult{
+export class TextCommandResult{
 	text: string = "";
 	files: any[] = [];
 	reacts: string[] = [];
@@ -10,7 +10,6 @@ class TextComamndResult{
 }
 
 module.exports = {
-	TextComamndResult: TextComamndResult,
 	findCommand(text : string) {
 		for (const command of commandData.commands) {
 			const regexRes = RegExp(command.regex, command.regexParams).exec(text);
@@ -60,10 +59,10 @@ module.exports = {
 		return commandRes ? commandRes : errorRes;
 	},
 
-	mergeMessagePayload(obj1: TextComamndResult, obj2: TextComamndResult) {
-		const newObj = new TextComamndResult();
+	mergeMessagePayload(obj1: TextCommandResult, obj2: TextCommandResult) {
+		const newObj = new TextCommandResult();
 
-		let prop: keyof TextComamndResult;
+		let prop: keyof TextCommandResult;
 		for (prop in newObj) {
 			// TODO do not find a solution to this because it's likely a typescript bug, thank you typescript devs; the `as any` should not be needed here
 			newObj[prop].concat(obj1[prop] as any);

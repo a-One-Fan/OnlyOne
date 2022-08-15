@@ -11,7 +11,7 @@ interface ITextCommand {
 }
 
 // TODO: complain about typescript - why do I need to add ! to these, when they ARE definitely assigned, as they're required in the interface?
-class TextCommand {
+export class TextCommand {
     name!: string;
     help!: string;
     extraHelp?: string
