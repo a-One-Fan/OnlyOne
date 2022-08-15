@@ -8,7 +8,7 @@ node_modules
 *.gif
 *.jpeg
 *.mov
-ts_transpile/
-database/
-backup/
-tmp/
+ts_transpile/**
+database/**
+backup/**
+tmp/**
