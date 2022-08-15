@@ -28,9 +28,9 @@ export class TextCommand {
     
 }
 
-const unknown = ["I didn't quite catch that, care to try again?\n", "I couldn't quite parse that, sorry.\n", "I don't know what you mean, sorry.\n"]
-const unignore = "One, I'd like to interact with you!"
-const unignoreChannel = "One, unignore this channel!"
+const UNKNOWN_COMMAND = ["I didn't quite catch that, care to try again?\n", "I couldn't quite parse that, sorry.\n", "I don't know what you mean, sorry.\n"]
+const UNIGNORE_SELF = "One, I'd like to interact with you!"
+const UNIGNORE_CHANNEL = "One, unignore this channel!"
 const commands = [
     new TextCommand({name: "printAuthor", help: "What are my stats?", description: "I will reply with info about you.",
         regex: /what\s+(?:do\s+)?you\s+know\s+about\s+me[,.?!\s]{0,3}\s*$|what\s+(?:are\s+)?my\s+stats[,.?!\s]{0,3}\s*$|what\s+(?:do\s+)?you\s+think\s+(?:of\s+)?me[,.?!\s]{0,3}\s*$/i}),
@@ -129,4 +129,4 @@ const commands = [
         regex: /random\s+uncyclopedia(?:\s+(?:page|article))?[,.?!\s]{0,3}\s*$/i})
 ]
 
-export { unknown, unignore, unignoreChannel, commands };
+export { UNKNOWN_COMMAND, UNIGNORE_SELF, UNIGNORE_CHANNEL, commands };

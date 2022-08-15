@@ -80,7 +80,7 @@ bpy.data.images["barrelPicture"].filepath = "//../tmp/${uuid}/barrelPicture.mkv"
 	return { files: [_file], cleanup: `./tmp/${uuid}` };
 }
 
-interface SnapParams {
+export interface SnapParams {
 	angle?: number,
 	shape?: string,
 	distance?: number,
@@ -170,10 +170,10 @@ bpy.data.materials["Plane background"].node_tree.nodes["Emission"].inputs[0].def
 }
 
 const WELCOME_SCENES = ["toaruWelcome", "toaruWelcome2", "toaruWelcome3", "utahimeWelcome", "utahimeWelcome2"];
-interface WelcomeParams {
+export interface WelcomeParams {
 	userMention?: string,
 	hideText?: boolean,
-	scene?: typeof WELCOME_SCENES
+	scene?: string
 }
 async function renderWelcome(link: string, renderParams: WelcomeParams, doLog = true) {
 	const uuid = Math.random().toString(36).substring(2, 7) + Math.random().toString(36).substring(2, 7);

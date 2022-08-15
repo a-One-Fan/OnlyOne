@@ -1,20 +1,20 @@
-const { userJoinChannelsFilepath } = require("../config.json");
-const { readFileSync } = require("fs");
+import { userJoinChannelsFilepath } from "../config.json";
+import { readFileSync } from "fs";
 
-module.exports = {
-	name: "guildMemberRemove",
-	async execute(member) {
-		const channels = JSON.parse(readFileSync(userJoinChannelsFilepath));
+const name = "guildMemberRemove";
+async function execute(member: any) {
+	const channels = JSON.parse(readFileSync(userJoinChannelsFilepath).toString());
 
-		const channelId = channels.servers[member.guild.id];
+	const channelId = channels.servers[member.guild.id];
 
-		console.log(`User left guild ${member.guild.id}, trying to post to channel ${channelId}`);
+	console.log(`User left guild ${member.guild.id}, trying to post to channel ${channelId}`);
 
-		if (channelId && !channelId.disabled) {
-			const channel = member.client.channels.cache.get(channelId);
-			if (channel) {
-				channel.send(`<@${member.id}> ("${member.displayName}") has left us.`);
-			}
+	if (channelId && !channelId.disabled) {
+		const channel = member.client.channels.cache.get(channelId);
+		if (channel) {
+			channel.send(`<@${member.id}> ("${member.displayName}") has left us.`);
 		}
-	},
-};
+	}
+}
+
+export { name, execute }

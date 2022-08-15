@@ -1,4 +1,4 @@
-import { translateChunk, chunkTypes, isNumeric, remove, stringifyChunk, convertInfix } from "../extras/math_stuff";
+import { translateChunk, chunkTypes, isNumeric, remove, stringifyChunk, convertInfix, MathExpressionChunk } from "../extras/math_stuff";
 
 module.exports = {
 	async execute(message: any, regexResults: string[]) {
@@ -47,7 +47,8 @@ module.exports = {
 			polish = translated;
 		}
 
-		const stack: MathExpressionChunk = [];
+		// TODO: move more of this into math_stuff?
+		const stack: MathExpressionChunk[] = [];
 
 		for (let i = 0; i < polish.length; i++) {
 			if (polish[i].chunkType == chunkTypes.openingBracket || polish[i].chunkType == chunkTypes.closingBracket) return { text: "You can't use brackets in polish notation." };

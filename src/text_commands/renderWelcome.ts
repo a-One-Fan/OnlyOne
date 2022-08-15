@@ -1,28 +1,28 @@
-const { renderWelcome } = require("../extras/render_stuff.js");
-const { getLinkFromText } = require("../extras/text_recognition.js");
+import { renderWelcome, WelcomeParams } from "../extras/render_stuff";
+import { getLinkFromText } from "../extras/text_recognition";
 
-module.exports = {
-	async execute(message: any, regexResults: string) {
-		const renderParams = {};
+async function execute(message: any, regexResults: string) {
+	const renderParams: WelcomeParams = {};
 
-		if (regexResults[1]) {
-			renderParams.scene = regexResults[1];
-		}
+	if (regexResults[1]) {
+		renderParams.scene = regexResults[1];
+	}
 
-		if (regexResults[2]) {
-			renderParams.userMention = regexResults[2];
-		}
+	if (regexResults[2]) {
+		renderParams.userMention = regexResults[2];
+	}
 
-		if (regexResults[3]) {
-			renderParams.hideText = true;
-		}
+	if (regexResults[3]) {
+		renderParams.hideText = true;
+	}
 
-		const link = await getLinkFromText(regexResults[4], message);
+	const link = await getLinkFromText(regexResults[4], message);
 
-		const renderResult = await renderWelcome(link, renderParams);
+	const renderResult = await renderWelcome(link, renderParams) as any;
 
-		renderResult.text = "Here's your customized welcome(-ish?) image.";
+	renderResult.text = "Here's your customized welcome(-ish?) image.";
 
-		return renderResult;
-	},
-};
+	return renderResult;
+}
+
+export { execute };

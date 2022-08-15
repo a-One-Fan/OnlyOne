@@ -1,16 +1,16 @@
-const { access, writeFileSync } = require("fs");
-const { ffmpegFolderLocation, blenderLocation, ignoredChannelsFilepath, userJoinChannelsFilepath } = require("../config.json");
-const { updateCurrencies } = require("../extras/currency.js");
-const { migrate } = require("../extras/database_stuff.js");
-const { doTests } = require("../automatic_tests.js");
-const { exit } = require("process");
+import { access, writeFileSync } from "fs";
+import { ffmpegFolderLocation, blenderLocation, ignoredChannelsFilepath, userJoinChannelsFilepath } from "../config.json";
+import { updateCurrencies } from "../extras/currency";
+import { migrate } from "../extras/database_stuff";
+import { doTests } from "../automatic_tests";
+import { exit } from "process";
 
 const doMigrate = false;
 
 module.exports = {
 	name: "ready",
 	once: true,
-	async execute(client) {
+	async execute(client: any) {
 		const db = await client.db.sync();
 		console.log(`Loaded db "${db}"`);
 

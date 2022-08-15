@@ -14,7 +14,7 @@ interface IMathExpressionChunk {
 }
 
 // TODO: Split into 3 classes?
-class MathExpressionChunk {
+export class MathExpressionChunk {
 	chunkType!: number;
 	priority?: number;
 	value?: number;
@@ -106,7 +106,7 @@ function binarySearchF(test: (i: number) => boolean, len: number): number {
 	return lo;
 }
 function binarySearch(arr: any[], val: number) {
-	return module.exports.binarySearchF((i: number) => {return arr[i] < val;}, arr.length);
+	return binarySearchF((i: number) => {return arr[i] < val;}, arr.length);
 }
 function pickRandomWeighted(arr: [any, number][]) {
 	const summedWeights: number[] = [];
@@ -116,7 +116,7 @@ function pickRandomWeighted(arr: [any, number][]) {
 		summedWeights.push(sum);
 	}
 	const rand = Math.random() * sum;
-	const resIndex = module.exports.binarySearchF((i: number) => {return summedWeights[i] < rand;}, arr.length);
+	const resIndex = binarySearchF((i: number) => {return summedWeights[i] < rand;}, arr.length);
 	return arr[resIndex][0];
 }
 // Mismatched types will override one another.
@@ -230,8 +230,8 @@ function getConverter(oldunit: Unit, newunit: Unit) {
 
 	if (oldunit.subtype == newunit.subtype) return false;
 
-	if (module.exports.converters[oldunit.subtype] && module.exports.converters[oldunit.subtype][newunit.subtype]) {
-		return module.exports.converters[oldunit.subtype][newunit.subtype];
+	if (converters[oldunit.subtype] && converters[oldunit.subtype][newunit.subtype]) {
+		return converters[oldunit.subtype][newunit.subtype];
 	}
 
 	return false;
@@ -268,10 +268,10 @@ function isDigit(char: string) {
 	return char >= "0" && char <= "9";
 }
 function isNumeric(char: string) {
-	return module.exports.isDigit(char) || char == "-" || char == ".";
+	return isDigit(char) || char == "-" || char == ".";
 }
 function convertUnit(val: MathExpressionChunk, newunit: Unit) {
-	if (!val.chunkType == module.exports.chunkTypes.number || !val.unit || !val.value) throw Error(`Trying to convert not-number ${val} to units ${newunit}`);
+	if (!(val.chunkType == chunkTypes.number) || !val.unit || !val.value) throw Error(`Trying to convert not-number ${val} to units ${newunit}`);
 
 	if (val.unit == newunit) return val;
 
@@ -281,7 +281,7 @@ function convertUnit(val: MathExpressionChunk, newunit: Unit) {
 	}
 
 	if (val.unit.type == newunit.type) {
-		const converter = module.exports.getConverter(val.unit, newunit);
+		const converter = getConverter(val.unit, newunit);
 		if (!converter) {
 			val.value *= val.unit.value / newunit.value;
 			val.unit = newunit;
@@ -296,17 +296,20 @@ function convertUnit(val: MathExpressionChunk, newunit: Unit) {
 // TODO: do this better?
 function makeOp1Arg(op: opType) {
 	return (val: MathExpressionChunk) => {
-		val.value = op(val.value);
+		// !!    Why does it expect a 2nd parameter here???
+		val.value = (op as any)(val.value);
 		return val;
 	};
 }
 function makeOp2Arg(op: opType) {
 	return (val1: MathExpressionChunk, val2: MathExpressionChunk) => {
 		if (val1.unit != val2.unit) {
-			if (val1.unit != module.exports.units.untyped) {
-				val2 = module.exports.convertUnit(val2, val1.unit);
+			if (val1.unit != units[UNTYPED_UNIT]) {
+				if (!val1.unit) throw Error("val1 is unitless!")
+				val2 = convertUnit(val2, val1.unit);
 			} else {
-				val1 = module.exports.convertUnit(val1, val2.unit);
+				if (!val2.unit) throw Error("val2 is unitless!")
+				val1 = convertUnit(val1, val2.unit);
 			}
 		}
 		if (typeof val1.value === "undefined" || typeof val2.value === "undefined") throw Error("val1 or val2 have no value defined!");
@@ -314,36 +317,36 @@ function makeOp2Arg(op: opType) {
 		return val1;
 	};
 }
-function translateChunk(chunk: string) {
+function translateChunk(chunk: string): MathExpressionChunk {
 	const numRegex = /^-?(?:(?:\d*\.\d*)|\d+)$/.exec(chunk);
 	if (numRegex) {
-		return { chunkType: module.exports.chunkTypes.number, value: parseFloat(chunk), unit: units[UNTYPED_UNIT] };
+		return { chunkType: chunkTypes.number, value: parseFloat(chunk), unit: units[UNTYPED_UNIT] };
 	} else {
 		let u: Unit
-		for (u of module.exports.units) {
-			if (module.exports.find(u.names, chunk) > -1) {
-				return { chunkType: module.exports.chunkTypes.operator, args: 1, op: (val: MathExpressionChunk) => { return module.exports.convertUnit(val, u); }, righty: true };
+		for (u of units) {
+			if (find(u.names, chunk) > -1) {
+				return { chunkType: chunkTypes.operator, args: 1, op: (val: MathExpressionChunk) => { return convertUnit(val, u); }, righty: true };
 			}
 		}
 		let o: Operator
-		for (o of module.exports.operators) {
-			if (module.exports.find(o.names, chunk) > -1) {
+		for (o of operators) {
+			if (find(o.names, chunk) > -1) {
 				// TODO: see line 120
-				if (o.args == 1) return { chunkType: module.exports.chunkTypes.operator, args: o.args, op: module.exports.makeOp1Arg(o.op) };
-				else return { chunkType: module.exports.chunkTypes.operator, args: o.args, op: module.exports.makeOp2Arg(o.op) };
+				if (o.args == 1) return { chunkType: chunkTypes.operator, args: o.args, op: makeOp1Arg(o.op) };
+				else return { chunkType: chunkTypes.operator, args: o.args, op: makeOp2Arg(o.op) };
 			}
 		}
-		if (chunk == "(") return { chunkType: module.exports.chunkTypes.openingBracket };
-		if (chunk == ")") return { chunkType: module.exports.chunkTypes.closingBracket };
+		if (chunk == "(") return { chunkType: chunkTypes.openingBracket };
+		if (chunk == ")") return { chunkType: chunkTypes.closingBracket };
 		try {
 			const { currencies } = require("./currencies.json");
 			const { currencySynonyms } = require("./currencySynonyms.json");
 			for (const cur in currencies) {
-				if (chunk.toUpperCase() == cur || (module.exports.find(currencySynonyms[cur], chunk) > -1)) {
+				if (chunk.toUpperCase() == cur || (find(currencySynonyms[cur], chunk) > -1)) {
 					let _names = [cur];
 					if (currencySynonyms[cur]) _names = _names.concat(currencySynonyms[cur]);
-					return { chunkType: module.exports.chunkTypes.operator, args: 1, op: (val: MathExpressionChunk) => {
-						return module.exports.convertUnit(val, { value: 1.0 / currencies[cur], type: "currency", names: _names });
+					return { chunkType: chunkTypes.operator, args: 1, op: (val: MathExpressionChunk) => {
+						return convertUnit(val, { value: 1.0 / currencies[cur], type: "currency", names: _names });
 					}, righty: true };
 				}
 			}
@@ -360,13 +363,12 @@ function stringifyChunk(chunk: MathExpressionChunk) {
 
 	if (typeof chunk.unit === "undefined") throw Error("Unitless chunk!")
 	if (chunk.chunkType != chunkTypes.number) throw Error("Unknown chunk type!")
-		return `${chunk.value}${chunk.unit == module.exports.units.untyped ? "" : ` ${chunk.unit.names.at(-1)}`}`;
+		return `${chunk.value}${chunk.unit == units[UNTYPED_UNIT] ? "" : ` ${chunk.unit.names.at(-1)}`}`;
 }
-function convertInfix(translated: MathExpressionChunk[]) {
+function convertInfix(translated: MathExpressionChunk[]): [MathExpressionChunk[], number, number] {
 	let ignoredOpenBrackets = 0, ignoredClosingBrackets = 0;
 	const conversionStack: MathExpressionChunk[] = [];
 	const polish: MathExpressionChunk[] = [];
-	const chunkTypes = module.exports.chunkTypes;
 	for (const c of translated) {
 		if (c.chunkType == chunkTypes.number) {
 			polish.push(c);

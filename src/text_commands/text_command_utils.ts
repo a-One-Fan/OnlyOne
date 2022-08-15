@@ -3,13 +3,13 @@ import { errorChoose } from "../configurables/error_message";
 import { parseChoose } from "../configurables/valid_message";
 
 export class TextCommandResult{
-	text: string = "";
-	files: any[] = [];
-	reacts: string[] = [];
-	embeds: any[] = [];
+	text?: string = "";
+	files?: any[] = [];
+	emotes?: string[] = [];
+	embeds?: any[] = [];
 }
 
-function findCommand(text: string): [any, RegExpExecArray, (RegExpExecArray|null)[], TextCommand ] {
+function findCommand(text: string): [any, RegExpExecArray, (RegExpExecArray|null)[], TextCommand ] | undefined {
 	for (const command of commands) {
 		const regexRes = command.regex.exec(text);
 		if (regexRes) {
@@ -19,7 +19,7 @@ function findCommand(text: string): [any, RegExpExecArray, (RegExpExecArray|null
 					extraRes.push(extraRegex.exec(text));
 				}
 			}
-			const func = require("../text_commands/" + command.name + ".js");
+			const func = import("../text_commands/" + command.name + ".js");
 			return [func, regexRes, extraRes, command];
 		}
 	}
@@ -54,7 +54,8 @@ async function executeCommand(message: any, errorType?: number, parseType?: numb
 		}
 	}
 	// TODO: DM the error to me? :)
-	const errorRes = errorChoose(err, foundCommand, errorType);
+	// !! TS fail                                       \/
+	const errorRes = errorChoose(err, foundCommand, errorType as number);
 	return commandRes ? commandRes : errorRes;
 }
 
@@ -63,16 +64,16 @@ function mergeMessagePayload(obj1: TextCommandResult, obj2: TextCommandResult) {
 
 	let prop: keyof TextCommandResult;
 	for (prop in newObj) {
-		// TODO do not find a solution to this because it's likely a typescript bug, thank you typescript devs; the `as any` should not be needed here
-		newObj[prop].concat(obj1[prop] as any);
-		newObj[prop].concat(obj2[prop] as any);
+		// !! Extreme typescript paranoia here
+		(newObj[prop] as any).concat(obj1[prop] as any);
+		(newObj[prop] as any).concat(obj2[prop] as any);
 	}
 	return newObj;
 }
 
 function decoupleMessageReacts(obj: TextCommandResult) {
 	const newObj = { text: obj.text, files: obj.files, embeds: obj.embeds };
-	return [obj.reacts, newObj];
+	return [obj.emotes, newObj];
 }
 
 export { findCommand, executeCommand, mergeMessagePayload, decoupleMessageReacts };

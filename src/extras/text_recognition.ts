@@ -56,7 +56,13 @@ function validEnd(text: string) {
 // Counts how many times 'text' has each string regex in 'bits' in it.
 // Returns an array with the total, followed by the number of occurences of each thing.
 function countOcurrences(text: string, bits: string[]) {
-	if (text == null) return null;
+	if (text == null) {
+		let resArr: number[] = [];
+		for (let i=0; i<bits.length; i++){
+			resArr.concat(0);
+		}
+		return resArr;
+	}
 
 	const res = [0];
 	text = " " + text + " ";

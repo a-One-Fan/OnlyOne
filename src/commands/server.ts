@@ -1,10 +1,11 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
+import { SlashCommandBuilder } from "@discordjs/builders";
 
-module.exports = {
-	data: new SlashCommandBuilder()
-		.setName("server")
-		.setDescription("Replies with nothing useful."),
-	async execute(interaction) {
-		await interaction.reply("Server info.");
-	},
-};
+const data = new SlashCommandBuilder()
+	.setName("server")
+	.setDescription("Replies with nothing useful.")
+
+async function execute(interaction: any) {
+	await interaction.reply("Server info.");
+}
+
+module.exports = { data, execute };

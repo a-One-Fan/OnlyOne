@@ -1,11 +1,11 @@
 const errorEmote = "⚠️";
-import { unknown } from "../text_commands/commands";
+import { UNKNOWN_COMMAND } from "../text_commands/commands";
 import { pickRandom } from "../extras/math_stuff";
 
 import { TextCommand } from "../text_commands/commands"
 import { TextCommandResult } from  "../text_commands/text_command_utils"
 
-function userFriendifyError(error: Error | undefined) {
+function userFriendifyError(error: any) {
 	if (!error || !error.message) return "";
 	let text = "";
 	if (error.message.startsWith("Printable error: ")) text += error.message.substr(17) + "\n";
@@ -17,37 +17,37 @@ function userFriendifyError(error: Error | undefined) {
 const errorTypes = [
 	// The name should start with something that you could sensibly add "When an error occurs, I will respond with " to, and not end with punctuation.
 	{ name: "text, always",
-		transformError(error: Error | undefined, command: TextCommand, commandRes?: TextCommandResult) {
-			if (!command) return { text: pickRandom(unknown) };
+		transformError(error: any, command: TextCommand, commandRes?: TextCommandResult): TextCommandResult {
+			if (!command) return { text: pickRandom(UNKNOWN_COMMAND) };
 			return { text: `Looks like something went wrong when trying to execute "${command.name}".\n` + userFriendifyError(error) + "Now try again." };
 		},
 	},
 	{ name: "an emote and, if possible, a more descriptive message",
-		transformError(error: Error | undefined, command: TextCommand, commandRes?: TextCommandResult) {
+		transformError(error: any, command: TextCommand, commandRes?: TextCommandResult): TextCommandResult {
 			let descriptiveText = "";
 			if (module.exports.userFriendifyError(error)) descriptiveText = module.exports.errorTypes[0].transformError(error, command, commandRes);
 			return { emotes: [errorEmote], text: descriptiveText };
 		},
 	},
 	{ name: "only an emote",
-		transformError(error: Error | undefined, command: TextCommand, commandRes?: TextCommandResult) {
+		transformError(error: any, command: TextCommand, commandRes?: TextCommandResult): TextCommandResult {
 			return { emotes: [errorEmote] };
 		},
 	},
 	{ name: "a more descriptive message, if possible",
-		transformError(error: Error | undefined, command: TextCommand, commandRes?: TextCommandResult) {
-			let descriptiveText = "";
-			if (module.exports.userFriendifyError(error)) descriptiveText = errorTypes[0].transformError(error, command, commandRes).text;
+		transformError(error: any, command: TextCommand, commandRes?: TextCommandResult): TextCommandResult {
+			let descriptiveText = ""; // !!                                    This   \/             is very defined, and has .text, right there ^
+			if (module.exports.userFriendifyError(error)) descriptiveText = errorTypes[0].transformError(error, command, commandRes).text as string;
 			return { text: descriptiveText };
 		},
 	},
 	{ name: "nothing",
-		transformError(error: Error | undefined, command: TextCommand, commandRes?: TextCommandResult) {
+		transformError(error: any, command: TextCommand, commandRes?: TextCommandResult): TextCommandResult {
 			return {};
 		},
 	},
 ]
-function errorChoose(error: Error | undefined, command: TextCommand, id: number) {
+function errorChoose(error: any, command: TextCommand, id: number) {
 	return errorTypes[id].transformError(error, command);
 }
 const unknownErrorType = "Unknown error type";

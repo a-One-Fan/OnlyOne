@@ -315,7 +315,7 @@ async function doTests() {
 
 		if (res.test.outList) {
 			console.log("one of ");
-			console.log(res.text.outList);
+			console.log(res.test.outList);
 		}
 
 		if (res.test.notOut) {
@@ -325,7 +325,7 @@ async function doTests() {
 
 		if (res.test.notOutList) {
 			console.log("NOT one of ");
-			console.log(res.text.notOutList);
+			console.log(res.test.notOutList);
 		}
 
 		if (res.error) {
