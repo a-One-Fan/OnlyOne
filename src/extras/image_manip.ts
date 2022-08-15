@@ -6,7 +6,7 @@ const { blenderLocation, ffmpegFolderLocation } = require("../config.json");
 function renderBlend(filepath: string, args: string[], pythonics = "pass") {
 	return new Promise((resolve, reject) => {
 		const args_combined = ["-b", filepath, "--python-expr", pythonics].concat(args);
-		const cp = execFile(blenderLocation, args_combined, (error, stdout, stderr) => {
+		const cp = execFile(blenderLocation, args_combined, (error: any, stdout: string, stderr: string) => {
 			if (stderr) console.log(stderr);
 			if (error) {
 				reject(`Error when rendering!\nError:\n${error}\nstdout:\n${stdout}\nstderr:\n${stderr}`);

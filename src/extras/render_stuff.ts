@@ -80,8 +80,14 @@ bpy.data.images["barrelPicture"].filepath = "//../tmp/${uuid}/barrelPicture.mkv"
 	return { files: [_file], cleanup: `./tmp/${uuid}` };
 }
 
-
-async function renderSnap(link: string, renderParams, messageToReply: any | undefined = undefined, replyPayload = { content: "Working on snap..." }, doLog = true) {
+interface SnapParams {
+	angle?: number,
+	shape?: string,
+	distance?: number,
+	size?: number,
+	color?: string
+}
+async function renderSnap(link: string, renderParams: SnapParams, messageToReply: any | undefined = undefined, replyPayload = { content: "Working on snap..." }, doLog = true) {
 	const uuid = Math.random().toString(36).substring(2, 7) + Math.random().toString(36).substring(2, 7);
 	mkdirSync(`./tmp/${uuid}`);
 
@@ -163,7 +169,13 @@ bpy.data.materials["Plane background"].node_tree.nodes["Emission"].inputs[0].def
 	return { files: [_file], cleanup: `./tmp/${uuid}` };
 }
 
-async function renderWelcome(link: string, renderParams, doLog = true) {
+const WELCOME_SCENES = ["toaruWelcome", "toaruWelcome2", "toaruWelcome3", "utahimeWelcome", "utahimeWelcome2"];
+interface WelcomeParams {
+	userMention?: string,
+	hideText?: boolean,
+	scene?: typeof WELCOME_SCENES
+}
+async function renderWelcome(link: string, renderParams: WelcomeParams, doLog = true) {
 	const uuid = Math.random().toString(36).substring(2, 7) + Math.random().toString(36).substring(2, 7);
 	mkdirSync(`./tmp/${uuid}`);
 
@@ -192,11 +204,10 @@ for c in bpy.data.collections:
 	if "text" in c.name:
 		c.hide_render = True
 `;
-	const SCENES = ["toaruWelcome", "toaruWelcome2", "toaruWelcome3", "utahimeWelcome", "utahimeWelcome2"];
-	if (!renderParams.scene || (find(SCENES, renderParams.scene) < 0)) {
-		renderParams.scene = pickRandom(SCENES);
+	if (!renderParams.scene || (find(WELCOME_SCENES, renderParams.scene) < 0)) {
+		renderParams.scene = pickRandom(WELCOME_SCENES);
 	}
-	await renderBlend("./extras/welcome.blend", ["-S", renderParams.scene, "-o", `//../tmp/${uuid}/welcomeResult####`, "-f", "0"], python);
+	await renderBlend("./extras/welcome.blend", ["-S", renderParams.scene as unknown as string, "-o", `//../tmp/${uuid}/welcomeResult####`, "-f", "0"], python);
 	if (doLog) {
 		console.log(`Welcome took ${gett(time)}s to render.`);
 		time = new Date();
