@@ -1,5 +1,5 @@
 module.exports = {
-	async execute(message, regexResults) {
+	async execute(message: any, regexResults: string[]) {
 		let chance = parseFloat(regexResults[1]);
 		if (regexResults[1][regexResults[1].length - 1] == "%") chance = chance * 0.01;
 

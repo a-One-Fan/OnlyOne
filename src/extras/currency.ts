@@ -4,12 +4,12 @@ const fs = require("fs");
 
 module.exports = {
 	async forceUpdateCurrencies() {
-		let res = [];
+		let res: string = "";
 		res = await new Promise((resolve, reject) => {
-			https.get(`https://v6.exchangerate-api.com/v6/${exchangerateApiKey}/latest/${baseCurrency}`, (msg) => {
+			https.get(`https://v6.exchangerate-api.com/v6/${exchangerateApiKey}/latest/${baseCurrency}`, (msg: any) => {
 				msg.setEncoding("utf-8");
 				let str = "";
-				msg.on("data", (data) => { str += data; });
+				msg.on("data", (data: any) => { str += data; });
 				msg.on("end", () => {resolve(str);});
 
 			}).on("error", reject);
@@ -30,7 +30,8 @@ module.exports = {
 		const { lastUpdated } = require("./currencies.json");
 		const now = new Date();
 		const lastUpdatedDate = new Date(lastUpdated);
-		if ((now - lastUpdatedDate) < currencyUpdateInterval) return now - lastUpdatedDate;
+		const diff = now.getTime() - lastUpdatedDate.getTime();
+		if (diff < currencyUpdateInterval) return diff;
 		module.exports.forceUpdateCurrencies();
 		return 0;
 	},

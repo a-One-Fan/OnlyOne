@@ -6,7 +6,7 @@ const enums = [reacts.reactTypes, parses.parseTypes, errors.errorTypes];
 const listText = [reacts.listText, parses.listText, errors.listText];
 
 module.exports = {
-	execute(message, regexResults) {
+	execute(message: any, regexResults: string[]) {
 		let enumID = 0;
 		for (let i = 0; i < enums.length; i++) {
 			if (regexResults[i + 1]) {

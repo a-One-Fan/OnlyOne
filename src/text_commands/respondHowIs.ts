@@ -1,7 +1,7 @@
 const { pickRandom } = require("../extras/math_stuff.js");
 
 module.exports = {
-	async execute(message, regexResults) {
+	async execute(message: any, regexResults: string) {
 		const reg = regexResults[1];
 		let resText = "";
 		if (/two|tou/i.exec(reg) || /three/i.exec(reg) || /four?/i.exec(reg) || /five|faibu/i.exec(reg)) {

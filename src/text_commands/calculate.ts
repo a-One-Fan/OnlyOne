@@ -1,7 +1,7 @@
 const { translateChunk, chunkTypes, isNumeric, remove, stringifyChunk, convertInfix } = require("../extras/math_stuff.js");
 
 module.exports = {
-	async execute(message, regexResults) {
+	async execute(message: any, regexResults: string[]) {
 		let resText = "";
 		let padded = "";
 		let prevCharNumeric = false;

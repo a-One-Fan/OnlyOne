@@ -3,7 +3,7 @@ const { getLinkFromText } = require("../extras/text_recognition.js");
 const { clamp, pickRandom } = require("../extras/math_stuff.js");
 
 module.exports = {
-	async execute(message, regexResults, extraRegex) {
+	async execute(message: any, regexResults: string[], extraRegex: string[][]) {
 		const renderParams = {};
 		let bonusText = "Snapping that";
 		let hasWith = false;

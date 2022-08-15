@@ -3,7 +3,7 @@ const { ignoredChannelsFilepath } = require("../config.json");
 const { find, remove } = require("../extras/math_stuff.js");
 
 module.exports = {
-	async execute(message, regexResults, extraRegex) {
+	async execute(message: any, regexResults: string[]) {
 		const ignored = JSON.parse(readFileSync(ignoredChannelsFilepath));
 		let channelId = "";
 
@@ -18,7 +18,7 @@ module.exports = {
 
 		// Name of the channel
 		if (regexResults[4]) {
-			const foundChannel = message.channel.guild.channels.cache.find((channel) => channel.name.toLowerCase() == regexResults[4].toLowerCase());
+			const foundChannel = message.channel.guild.channels.cache.find((channel: any) => channel.name.toLowerCase() == regexResults[4].toLowerCase());
 			channelId = foundChannel.id;
 		}
 

@@ -1,7 +1,7 @@
 const { getWebpage } = require("../extras/networking_stuff.js");
 
 module.exports = {
-	async execute(message, regexResults, extraRegex) {
+	async execute(message: any, regexResults: string[]) {
 
 		const resHtmlWiki = await getWebpage(`https://www.fandom.com/?s=${encodeURIComponent(regexResults[1])}`);
 		const wiki = /<div class="mediawiki-article__content">\s*<a href="https:\/\/([a-zA-Z0-9]+)\.fandom\.com\/wiki/.exec(resHtmlWiki);

@@ -3,7 +3,7 @@ const parses = require("../configurables/valid_message.js");
 const errors = require("../configurables/error_message.js");
 
 module.exports = {
-	async execute(message, regexResults) {
+	async execute(message: any, regexResults: string[]) {
 		const row = await message.client.db.findOne({ where: { userID: message.author.id } });
 
 		const reactTypeText = "I will " + reacts.reactTypes[row.reactType].name;

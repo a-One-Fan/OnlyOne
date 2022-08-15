@@ -3,7 +3,7 @@ const { getUserFromText } = require("../extras/text_recognition.js");
 const { ownerId } = require("../config.json");
 
 module.exports = {
-	async execute(message, regexResults, extraRegex) {
+	async execute(message: any, regexResults: string[]) {
 		const user = await getUserFromText(regexResults[1], message);
 		if (!user) throw Error(`Printable error: Could not find user by ${regexResults[1]}`);
 
@@ -16,7 +16,7 @@ module.exports = {
 		const row = await message.client.db.findOne({ where: { userID: user.id } });
 
 		const newval = regexResults[3] ? regexResults[3] : regexResults[4];
-		const newprop = {};
+		const newprop: any = {};
 		newprop[regexResults[2]] = newval;
 		await message.client.db.update(newprop, { where: { userID: user.id } });
 

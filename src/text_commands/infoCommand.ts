@@ -1,7 +1,7 @@
 const { commands } = require("./commands.json");
 
 module.exports = {
-	async execute(message, regexResults) {
+	async execute(message: any, regexResults: string[]) {
 		let command = [];
 		for (const c of commands) {
 			if (c.name == regexResults[1]) {

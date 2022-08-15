@@ -4,7 +4,7 @@ const { clamp } = require("../extras/math_stuff.js");
 const commandsPerPage = 8;
 
 module.exports = {
-	async execute(message, regexResults) {
+	async execute(message: any, regexResults: string[]) {
 		let page = 1;
 		if (regexResults[1]) page = parseInt(regexResults[1]);
 		const fakePage = page;

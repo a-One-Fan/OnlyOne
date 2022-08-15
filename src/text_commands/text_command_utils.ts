@@ -1,9 +1,17 @@
-const commandData = require("../text_commands/commands.json");
-const { errorChoose } = require("../configurables/error_message.js");
-const { parseChoose } = require("../configurables/valid_message.js");
+const commandData = require("../text_commands/commands");
+const { errorChoose } = require("../configurables/error_message");
+const { parseChoose } = require("../configurables/valid_message");
+
+class TextComamndResult{
+	text: string = "";
+	files: any[] = [];
+	reacts: string[] = [];
+	embeds: any[] = [];
+}
 
 module.exports = {
-	findCommand(text) {
+	TextComamndResult: TextComamndResult,
+	findCommand(text : string) {
 		for (const command of commandData.commands) {
 			const regexRes = RegExp(command.regex, command.regexParams).exec(text);
 			if (regexRes) {
@@ -20,7 +28,7 @@ module.exports = {
 		return undefined;
 	},
 
-	async executeCommand(message, errorType, parseType) {
+	async executeCommand(message: any, errorType: object, parseType: object) {
 		if (errorType == undefined || parseType == undefined) {
 			const row = await message.client.db.findOne({ where: { userID: message.author.id } });
 			if (errorType == undefined) errorType = row.errorType;
@@ -52,16 +60,19 @@ module.exports = {
 		return commandRes ? commandRes : errorRes;
 	},
 
-	mergeMessagePayload(obj1, obj2) {
-		const newObj = { text: "", files: [], reacts: [], embeds: [] };
-		for (const prop in newObj) {
-			if (obj1[prop]) newObj[prop].concat(obj1[prop]);
-			if (obj2[prop]) newObj[prop].concat(obj2[prop]);
+	mergeMessagePayload(obj1: TextComamndResult, obj2: TextComamndResult) {
+		const newObj = new TextComamndResult();
+
+		let prop: keyof TextComamndResult;
+		for (prop in newObj) {
+			// TODO do not find a solution to this because it's likely a typescript bug, thank you typescript devs; the `as any` should not be needed here
+			newObj[prop].concat(obj1[prop] as any);
+			newObj[prop].concat(obj2[prop] as any);
 		}
 		return newObj;
 	},
 
-	decoupleMessageReacts(obj) {
+	decoupleMessageReacts(obj: any) {
 		const newObj = { text: obj.text, files: obj.files, embeds: obj.embeds };
 		return [obj.reacts, newObj];
 	},

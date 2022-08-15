@@ -1,5 +1,5 @@
 module.exports = {
-	async execute(message, regexResults, extraRegex) {
+	async execute(message: any, regexResults: string[]) {
 		if (regexResults[1]) {
 			await message.client.db.update({ customReact: null }, { where: { userID: message.author.id } });
 			return { text: "I've reset your react emote. I might use the old one one last time." };

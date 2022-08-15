@@ -1,6 +1,6 @@
-const Sequelize = require("sequelize");
-const { existsSync } = require("fs");
-const { findDict } = require("./math_stuff.js");
+import Sequelize from "sequelize";
+import { existsSync } from "fs";
+import { findDict } from "./math_stuff.js";
 const { lte } = Sequelize.Op;
 
 module.exports = {
@@ -36,7 +36,7 @@ module.exports = {
 		parseType: { type: Sequelize.INTEGER, defaultValue: 0, allowNull: false },
 		customReact: { type: Sequelize.STRING(32) },
 	},
-	async migrateAny(oldTable, oldCols, newCols) {
+	async migrateAny(oldTable: object[], oldCols: object, newCols: object) {
 
 		if (existsSync(module.exports.newStorage)) {
 			throw Error(`Database "${module.exports.newStorage}" exists!\n`);
@@ -48,7 +48,7 @@ module.exports = {
 			logging: false,
 			storage: module.exports.newStorage,
 		});
-		const ignoreCols = {};
+		const ignoreCols: any = {};
 		Object.assign(ignoreCols, newCols);
 		for (const col in ignoreCols) {
 			if (findDict(oldCols, col) != -1) ignoreCols[col] = { doType: 1 };
@@ -58,9 +58,11 @@ module.exports = {
 		await newdb.sync();
 		console.log("newdb:", newdb);
 		let i = 0;
-		for (const row of oldTable) {
-			const newRow = {};
+		let row: any
+		for (row of oldTable) {
+			const newRow: any = {};
 			Object.assign(newRow, ignoreCols);
+			// TODO: bitch about typescript again - how is "for prop in obj" not implemented properly???
 			for (const col in newRow) {
 				if (newRow[col].doType == 1) {
 					newRow[col] = row[col];
@@ -74,7 +76,7 @@ module.exports = {
 
 		return { count: i, sample: await newdb.findAll({ where: { id: { [lte]: 3 } }, raw: true }) };
 	},
-	async migrate(db) {
+	async migrate(db: Sequelize.Database) {
 		return module.exports.migrateAny(await db.findAll(), module.exports.currentCols, module.exports.newCols);
 	},
 };

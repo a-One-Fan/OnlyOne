@@ -1,7 +1,7 @@
 const { pickRandom } = require("../extras/math_stuff.js");
 
 module.exports = {
-	async execute(message, regexResults) {
+	async execute(message: any, regexResults: string) {
 		let responses = [];
 		if (regexResults[1] == "is" || regexResults[1] == "'s" || regexResults[1] == "s") {
 			responses = ["1.", "11.", "10.", "A dog.", "A cat.", "A dragon.", "My dragon friend.", "It's pointless.", "It's crazy.", "It's stupid.",
