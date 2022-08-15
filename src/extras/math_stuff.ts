@@ -76,7 +76,7 @@ class Operator {
 }
 
 // Make resolution even so that h264 can properly encode.
-function evenify(resolution: [number, number]) {
+function evenify(resolution: [number, number]): [number, number] {
 	resolution = [Math.floor(resolution[0]), Math.floor(resolution[1])];
 	return [resolution[0] + resolution[0] % 2, resolution[1] + resolution[1] % 2];
 }
