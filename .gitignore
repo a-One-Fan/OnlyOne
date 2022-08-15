@@ -8,8 +8,7 @@ node_modules
 *.gif
 *.jpeg
 *.mov
-extras/currencies.json
-extras/assets
-database/*
-backup/*
-tmp/*
+ts_transpile/
+database/
+backup/
+tmp/
