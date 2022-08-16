@@ -46,12 +46,15 @@ function downloadImage(url: string, filepath = downloadFilepath): Promise<[strin
 			return reject(new Error("Bad URL: " + url));
 		}
 		const extensionlessPath = filepath;
-		filepath = filepath + "." + regexResult[1];
+		const extRegexRes = /\.([a-zA-Z0-9]{1,9})$/.exec(url);
+		let ext = ""
+		if(extRegexRes) ext = extRegexRes[1];
+		filepath = filepath + "." + ext;
 		https.get(url, (msg) => {
 			if (msg.statusCode === 200) {
 				msg.pipe(fs.createWriteStream(filepath))
 					.on("error", reject)
-					.once("close", () => resolve([extensionlessPath, regexResult[1]]));
+					.once("close", () => resolve([extensionlessPath, ext]));
 			} else {
 				msg.resume();
 				reject(new Error(`Request failed with status code: ${msg.statusCode}`));
