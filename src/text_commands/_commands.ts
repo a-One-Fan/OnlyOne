@@ -159,7 +159,7 @@ const commands = [
         regex: /(Thanos\s+)?snap(?:\s+((?:[,.?!\s]?[^,.?!\s]+)+))?[,.?!\s]{0,3}\s*$/i,
         extraRegex: [
             /rotated\s+(-?(?:\d+|\d*\.\d*))(r|rad|radians)?(?:d|deg|degrees)?/i,
-            /(?:using|shaped?(?:\s+like)?)\s+(\w+)/i,
+            /(?:using(?:\\s+shape)|shaped?(?:\s+like)?)\s+(\w+)/i,
             /(?:min\s+|minimum\s+)?distance\s+(-?(?:\d+|\d*\.\d*))/i,
             /size\s+(-?(?:\d+|\d*\.\d*))/i,
             /(?:bgcolor|background(?:\s*color)?)\s+#?([A-Fa-f0-9]{6})/i
