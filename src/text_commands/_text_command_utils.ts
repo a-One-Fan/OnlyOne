@@ -1,17 +1,8 @@
-import { TextCommand, commands } from "../text_commands/commands";
+import { TextCommand, TextCommandResult, textCommandExecType, commands } from "./_commands";
 import { errorChoose } from "../configurables/error_message";
 import { parseChoose } from "../configurables/valid_message";
 
-export class TextCommandResult{
-	text?: string = "";
-	files?: any[] = [];
-	emotes?: string[] = [];
-	embeds?: any[] = [];
-	cleanup?: string[] = [];
-	abortReact?: boolean;
-}
-
-function findCommand(text: string): [any, RegExpExecArray, (RegExpExecArray|null)[], TextCommand ] | undefined {
+function findCommand(text: string): [textCommandExecType, RegExpExecArray, (RegExpExecArray|null)[], TextCommand ] | undefined {
 	for (const command of commands) {
 		const regexRes = command.regex.exec(text);
 		if (regexRes) {
@@ -21,14 +12,13 @@ function findCommand(text: string): [any, RegExpExecArray, (RegExpExecArray|null
 					extraRes.push(extraRegex.exec(text));
 				}
 			}
-			const func = import("../text_commands/" + command.name + ".js");
-			return [func, regexRes, extraRes, command];
+			return [command.execute, regexRes, extraRes, command];
 		}
 	}
 	return undefined;
 }
 
-async function executeCommand(message: any, errorType?: number, parseType?: number) {
+async function executeCommand(message: any, errorType?: number, parseType?: number): Promise<TextCommandResult> {
 	if (errorType == undefined || parseType == undefined) {
 		const row = await message.client.db.findOne({ where: { userID: message.author.id } });
 		if (errorType == undefined) errorType = row.errorType;
@@ -38,7 +28,10 @@ async function executeCommand(message: any, errorType?: number, parseType?: numb
 	const parsed = parseChoose(message.content, parseType as number);
 	if (!parsed || !parsed.valid) return {};
 
-	let err = undefined, commandRes = undefined, foundCommand = undefined;
+	let err = undefined;
+	let commandRes: TextCommandResult | undefined = undefined;
+	let foundCommand: TextCommand | undefined = undefined;
+
 	const res = findCommand(parsed.culledText);
 	const row = await message.client.db.findOne({ where: { userID: message.author.id } });
 	if (res) {
@@ -48,7 +41,7 @@ async function executeCommand(message: any, errorType?: number, parseType?: numb
 			err = { message: `Printable error: Your rank (${row.rank}) is too low to execute this command (${foundCommand.rank}).` };
 		} else {
 			try {
-				commandRes = await func.execute(message, regexRes, extraRes);
+				commandRes = await func(message, regexRes, extraRes);
 			} catch (error) {
 				err = error;
 				console.log(err);
