@@ -3,8 +3,8 @@ import { existsSync } from "fs";
 import { findDict } from "./math_stuff";
 const { lte } = Sequelize.Op;
 
-const currentStorage = "database.sqlite"
-const newStorage = "newdatabase.sqlite"
+const currentStorage = "./database/database.sqlite"
+const newStorage = "./database/newdatabase.sqlite"
 const currentCols = {
 	userID: { type: Sequelize.STRING, unique: true, allowNull: false },
 	reputation: { type: Sequelize.FLOAT, defaultValue: 0, allowNull: false },
