@@ -165,7 +165,7 @@ bpy.data.node_groups["Tile fadeout"].nodes["Distribution distance"].outputs[0].d
 bpy.data.node_groups["Tile fadeout"].nodes["Size modifier"].outputs[0].default_value = ${size}
 #Function for conversion from linear to sRGB + mapping 255-0 to 1-0
 def tolin(c):
-return pow((((c / 255.0) + 0.055)/1.055), 2.4)
+	return pow((((c / 255.0) + 0.055)/1.055), 2.4)
 (r, g, b) = map(tolin, bytes.fromhex("${color}"))
 bpy.data.materials["Plane background"].node_tree.nodes["Emission"].inputs[0].default_value = (r, g, b, 1)
 `;
