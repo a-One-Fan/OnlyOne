@@ -89,8 +89,8 @@ async function execute(message: any) {
 	let _files = [];
 	if (commandRes && commandRes.files) _files = commandRes.files;
 
-	if (typeof textContent != "undefined" || typeof _files != "undefined") {
-		if (typeof _files != "undefined") await message.reply({ content: textContent, allowedMentions: { repliedUser: false }, files: _files });
+	if ((typeof textContent != "undefined" && textContent != "") || (typeof _files != "undefined" && (_files.length > 0))) {
+		if (typeof _files != "undefined" && (_files.length > 0)) await message.reply({ content: textContent, allowedMentions: { repliedUser: false }, files: _files });
 		else await message.reply({ content: textContent, allowedMentions: { repliedUser: false } });
 	}
 
