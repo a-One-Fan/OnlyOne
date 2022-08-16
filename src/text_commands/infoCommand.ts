@@ -1,4 +1,4 @@
-import { commands, TextCommand } from "./commands";
+import { commands, TextCommand } from "./_commands";
 
 async function execute(message: any, regexResults: RegExpExecArray) {
 	let command: TextCommand | undefined = undefined;

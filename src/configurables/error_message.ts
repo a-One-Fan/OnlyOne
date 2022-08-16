@@ -1,9 +1,6 @@
 const errorEmote = "⚠️";
-import { UNKNOWN_COMMAND } from "../text_commands/commands";
+import { UNKNOWN_COMMAND, TextCommand, TextCommandResult } from "../text_commands/_commands";
 import { pickRandom } from "../extras/math_stuff";
-
-import { TextCommand } from "../text_commands/commands"
-import { TextCommandResult } from  "../text_commands/text_command_utils"
 
 function userFriendifyError(error: any) {
 	if (!error || !error.message) return "";

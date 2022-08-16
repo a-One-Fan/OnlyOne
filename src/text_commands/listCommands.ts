@@ -1,4 +1,4 @@
-import { commands } from "./commands";
+import { commands } from "./_commands";
 import { clamp } from "../extras/math_stuff";
 
 const commandsPerPage = 8;

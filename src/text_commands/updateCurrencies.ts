@@ -1,6 +1,6 @@
 import { updateCurrencies } from "../extras/currency";
 import { currencyUpdateInterval } from "../config.json";
-import { TextCommandResult } from "./text_command_utils";
+import { TextCommandResult } from "./_commands";
 
 async function execute(message: object, regexResults: RegExpMatchArray): Promise<TextCommandResult> {
 

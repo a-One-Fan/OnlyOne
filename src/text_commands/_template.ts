@@ -1,4 +1,4 @@
-import { TextCommandResult } from "./text_command_utils";
+import { TextCommandResult } from "./_commands";
 
 async function execute(message: any, regexResults: RegExpExecArray, extraRegex?: (RegExpExecArray|null)[]): Promise<TextCommandResult> {
 

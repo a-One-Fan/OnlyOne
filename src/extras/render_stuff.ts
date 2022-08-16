@@ -3,7 +3,7 @@ import { downloadImage } from "./networking_stuff";
 import { doFfmpeg, renderBlend, toGoodVideo, getResolution } from "./image_manip";
 import { evenify, clamp, find, pickRandom } from "../extras/math_stuff";
 import { MessageAttachment } from "discord.js";
-import { TextCommandResult } from "../text_commands/text_command_utils";
+import { TextCommandResult } from "../text_commands/_commands";
 
 function gett(ref: Date) {
 	return ((new Date()).getTime() - ref.getTime()) / 1000.0;
