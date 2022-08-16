@@ -13,7 +13,7 @@ function makeuuid() {
 	return Math.random().toString(36).substring(2, 7) + Math.random().toString(36).substring(2, 7);
 }
 
-const TMPDIR = "./tmp/";
+export const TMPDIR = "./tmp/";
 const BLEND_TO_TMPDIR = "//../tmp/"
 const BLENDSDIR = "./blends"
 

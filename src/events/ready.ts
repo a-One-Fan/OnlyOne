@@ -1,14 +1,34 @@
-import { access, writeFileSync } from "fs";
+import { access, writeFileSync, readdirSync } from "fs";
 import { ffmpegFolderLocation, blenderLocation, ignoredChannelsFilepath, userJoinChannelsFilepath } from "../config.json";
-import { updateCurrencies } from "../extras/currency";
+import { updateCurrencies, CURRENCIES_PATH } from "../extras/currency";
 import { migrate } from "../extras/database_stuff";
 import { doTests } from "../automatic_tests";
 import { exit } from "process";
+import { TMPDIR } from "../extras/render_stuff"
+import { cleanup } from "../extras/file_stuff";
 
 const doMigrate = false;
 
 const name = "ready";
 const once = true;
+
+function accessTryCreate(filepath: string, name: string, json: any){
+	access(filepath, (err) => {
+		if (err) {
+			console.log(`Error when trying to open ${name} file at "${filepath}":\n${err}\nAttempting to create file...`);
+			try {
+				writeFileSync(filepath, JSON.stringify(json, null, 4));
+				console.log("Created ignored channels file.");
+			} catch (err) {
+				console.log(`Error\n${err}\nWhile trying to create ignored channels file! Please create the file yourself or ensure OnlyOne has sufficient permissions.`);
+				exit(1);
+			}
+		} else {
+			console.log(`File for ${name} can be opened successfully.`);
+		}
+	});
+}
+
 async function execute(client: any) {
 	const db = await client.db.sync();
 	console.log(`Loaded db "${db}"`);
@@ -39,40 +59,24 @@ async function execute(client: any) {
 		else console.log("Blender exe can be opened successfully.");
 	});
 
-	// TODO: make function for automatically checking and setting up a config file like this
-	access(ignoredChannelsFilepath, (err) => {
-		if (err) {
-			console.log(`Error when trying to open ignored channels file at "${ignoredChannelsFilepath}":\n${err}\nAttempting to create file...`);
-			const blankIgnoredChannels = { channels: [] };
-			try {
-				writeFileSync(ignoredChannelsFilepath, JSON.stringify(blankIgnoredChannels, null, 4));
-				console.log("Created ignored channels file.");
-			} catch (err) {
-				console.log(`Error\n${err}\nWhile trying to create ignored channels file! Please create the file yourself or ensure OnlyOne has sufficient permissions.`);
-				exit(1);
-			}
-		} else {
-			console.log("Ignored channels can be opened successfully.");
-		}
-	});
+	accessTryCreate(ignoredChannelsFilepath, "ignored channels", { channels: [] });
 
-	access(userJoinChannelsFilepath, (err) => {
-		if (err) {
-			console.log(`Error when trying to open user join/leave channels file at "${userJoinChannelsFilepath}":\n${err}\nAttempting to create file...`);
-			const blankUserJoinChannels = { servers: {} };
-			try {
-				writeFileSync(userJoinChannelsFilepath, JSON.stringify(blankUserJoinChannels, null, 4));
-				console.log("Created user join/leave channels file.");
-			} catch (err) {
-				console.log(`Error\n${err}\nWhile trying to create user join/leave channels file! Please create the file yourself or ensure OnlyOne has sufficient permissions.`);
-				exit(1);
-			}
-		} else {
-			console.log("User join/leave channels can be opened successfully.");
+	accessTryCreate(userJoinChannelsFilepath, "user join/leave channels", { channels: [] });
+
+	let dirPaths = readdirSync(TMPDIR)
+	if (dirPaths) {
+		console.log("Unclean tmp directory! Cleaning:");
+		let i: number;
+		for (i=0; i<dirPaths.length; i++){
+			dirPaths[i] = TMPDIR + dirPaths[i]
 		}
-	});
+		console.log(dirPaths);
+		cleanup(dirPaths);
+	}
 
 	try {
+		await accessTryCreate(CURRENCIES_PATH, "currencies", { lastUpdated: new Date(1000) })
+
 		const updateRes = updateCurrencies();
 		if (updateRes > 0) {
 			console.log(`Did not update currencies. Last updated ${updateRes / 1000} seconds ago.`);
