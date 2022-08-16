@@ -113,7 +113,7 @@ async function getUserFromText(text: string, message: any, useGuild = true) {
 		return targetUser;
 	}
 
-	if (text.search(/yourself|you|u|urself|(?:your|ur)\s+(?:pfp|profile\s+pic(?:ture)?)/i) > -1) return message.guild.members.fetchMe();
+	if (text.search(/yourself|you|u|urself|(?:your|ur)\s+(?:pfp|profile\s+pic(?:ture)?)/i) > -1) return message.guild.me;
 
 	if (text.search(/me|myself|my\s+(?:pfp|profile\s+pic(?:ture)?)/i) > -1) return message.member;
 

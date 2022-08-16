@@ -50,9 +50,9 @@ const FAKE_MESSAGE_FOR_LINKS = {
 					return null;
 				}
 			},
-			fetchMe() { return { displayAvatarURL() { return ONLYONE_LINK_GUILD; } }; },
 			cache: { find(func: any) { return { displayAvatarURL() { return GUILD_USER_LINK; } };} },
 		},
+		me: { displayAvatarURL() { return ONLYONE_LINK_GUILD; } }
 	},
 };
 
