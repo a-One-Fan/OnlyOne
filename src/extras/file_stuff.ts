@@ -50,9 +50,6 @@ class CachedJson {
         this.#filepath = filepath;
         this.#stringCache = "";
         this.#lastModifiedTime = new Date(10000);
-        if (!fs.existsSync(this.#filepath)) {
-            this.#writeString('');
-        }
         this.reload();
     }
 }
