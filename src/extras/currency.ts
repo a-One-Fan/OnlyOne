@@ -4,7 +4,7 @@ import { CachedJson } from "./file_stuff";
 
 const CURRENCIES_PATH = "./database/currencies.json"
 
-const currenciesCache= new CachedJson(CURRENCIES_PATH);
+const currenciesCache = new CachedJson(CURRENCIES_PATH);
 
 async function forceUpdateCurrencies() {
 	let res: string = "";
