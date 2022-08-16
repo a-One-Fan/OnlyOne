@@ -1,5 +1,5 @@
 import { execFile } from "child_process";
-const { blenderLocation, ffmpegFolderLocation } = require("../config.json");
+import { blenderLocation, ffmpegFolderLocation } from "../config.json";
 
 // TODO: no .on("error") if we already have if (error) ?
 // Automatically renders borderless.

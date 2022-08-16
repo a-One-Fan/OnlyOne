@@ -1,7 +1,7 @@
 // @ts-check
 import https from "https";
 import fs from "fs";
-const { permittedUrls, downloadFilepath } = require("../config.json");
+import { permittedUrls, downloadFilepath } from "../config.json";
 
 async function getWebpage(address: string) {
 	let resHtml = new Promise<string>((resolve, reject) => {

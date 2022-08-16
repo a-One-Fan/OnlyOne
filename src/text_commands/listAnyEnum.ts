@@ -1,6 +1,6 @@
-import reacts from "../configurables/message_reacts";
-import parses from "../configurables/valid_message";
-import errors from "../configurables/error_message";
+import * as reacts from "../configurables/message_reacts";
+import * as parses from "../configurables/valid_message";
+import * as errors from "../configurables/error_message";
 
 const enums = [reacts.reactTypes, parses.parseTypes, errors.errorTypes];
 const listText = [reacts.listText, parses.listText, errors.listText];

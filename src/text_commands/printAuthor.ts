@@ -1,6 +1,6 @@
-const reacts = require("../configurables/message_reacts.js");
-const parses = require("../configurables/valid_message.js");
-const errors = require("../configurables/error_message.js");
+import * as reacts from "../configurables/message_reacts";
+import * as parses from "../configurables/valid_message";
+import * as errors from "../configurables/error_message";
 
 async function execute(message: any, regexResults: RegExpExecArray) {
 	const row = await message.client.db.findOne({ where: { userID: message.author.id } });

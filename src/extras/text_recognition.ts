@@ -1,4 +1,4 @@
-const { openersBase, openersPunctuation, openersAdjectives, oneRegexes } = require("../config.json");
+import { openersBase, openersPunctuation, openersAdjectives, oneRegexes } from "../config.json";
 import { remove } from "./math_stuff";
 
 // Whether 'text' matches any regex of "customOpeners"
