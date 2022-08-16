@@ -1,5 +1,4 @@
 import fs from "fs"
-import { Json } from "sequelize/types/utils";
 
 class CachedJson {
     // In miliseconds
