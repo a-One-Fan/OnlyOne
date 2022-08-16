@@ -118,7 +118,7 @@ async function renderSnap(link: string, renderParams: SnapParams, messageToReply
 
 	let resolution = await getResolution(impath + "." + extension);
 	resolution = evenify(resolution);
-	await toGoodVideo(impath + "." + extension, 30, `${dir}/snapvid`, 7, resolution[0], resolution[1]);
+	await toGoodVideo(impath + "." + extension, 30, `${dir}/snapvid`, 9, resolution[0], resolution[1]);
 	if (doLog) {
 		console.log(`Snap took ${gett(time)}s to convert input.`);
 		time = new Date();
@@ -175,7 +175,7 @@ bpy.data.materials["Plane background"].node_tree.nodes["Emission"].inputs[0].def
 		time = new Date();
 	}
 
-	await doFfmpeg(["-i", `${dir}/snaprender.mp4`, "-i", `${dir}/snapvid.mkv`, "-map", "0:v", "-map", "1:a?", "-af", "afade=t=out:st=4:d=3.5", "-y", `${dir}/snapped.mp4`]);
+	await doFfmpeg(["-i", `${dir}/snaprender.mp4`, "-i", `${dir}/snapvid.mkv`, "-map", "0:v", "-map", "1:a?", "-af", "afade=t=out:st=4.8:d=3.5", "-y", `${dir}/snapped.mp4`]);
 	if (doLog) {
 		console.log(`Snap took ${gett(time)}s to merge audio.`);
 		time = new Date();
