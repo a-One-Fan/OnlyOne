@@ -64,7 +64,7 @@ async function execute(client: any) {
 	accessTryCreate(userJoinChannelsFilepath, "user join/leave channels", { channels: [] });
 
 	let dirPaths = readdirSync(TMPDIR)
-	if (dirPaths) {
+	if (dirPaths.length > 0) {
 		console.log("Unclean tmp directory! Cleaning:");
 		let i: number;
 		for (i=0; i<dirPaths.length; i++){
