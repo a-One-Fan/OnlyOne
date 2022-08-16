@@ -4,4 +4,6 @@ import * as interactionCreate from "./interactionCreate"
 import * as messageCreate from "./messageCreate"
 import * as ready from "./ready"
 
-export { guildMemberAdd, guildMemberRemove, interactionCreate, messageCreate, ready }
+const events: any = [guildMemberAdd, guildMemberRemove, interactionCreate, messageCreate, ready]
+
+export { events }
