@@ -2,7 +2,7 @@ import https from "https";
 import { exchangerateApiKey, baseCurrency, currencyUpdateInterval } from "../config.json";
 import { CachedJson } from "./file_stuff";
 
-const CURRENCIES_PATH = "../../database/currencies.json"
+const CURRENCIES_PATH = "./database/currencies.json"
 
 const currenciesCache= new CachedJson(CURRENCIES_PATH);
 
