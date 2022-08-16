@@ -1,7 +1,7 @@
 import { renderWelcome, WelcomeParams } from "../extras/render_stuff";
 import { getLinkFromText } from "../extras/text_recognition";
 
-async function execute(message: any, regexResults: string) {
+async function execute(message: any, regexResults: RegExpExecArray) {
 	const renderParams: WelcomeParams = {};
 
 	if (regexResults[1]) {

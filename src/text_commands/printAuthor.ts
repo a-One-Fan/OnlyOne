@@ -1,8 +1,9 @@
 import * as reacts from "../configurables/message_reacts";
 import * as parses from "../configurables/valid_message";
 import * as errors from "../configurables/error_message";
+import { TextCommandResult } from "./_commands";
 
-async function execute(message: any, regexResults: RegExpExecArray) {
+async function execute(message: any, regexResults: RegExpExecArray): Promise<TextCommandResult> {
 	const row = await message.client.db.findOne({ where: { userID: message.author.id } });
 
 	const reactTypeText = "I will " + reacts.reactTypes[row.reactType].name;
