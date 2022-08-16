@@ -1,7 +1,7 @@
 import { renderSnap, SnapParams } from "../extras/render_stuff";
 import { getLinkFromText } from "../extras/text_recognition";
 import { clamp, pickRandom } from "../extras/math_stuff";
-import { TextCommandResult } from "./_text_command_utils";
+import { TextCommandResult } from "./_commands";
 
 async function execute(message: any, regexResults: RegExpExecArray, extraRegex: (RegExpExecArray|null)[]) {
 	const renderParams: SnapParams = {};

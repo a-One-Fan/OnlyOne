@@ -1,4 +1,4 @@
-import { executeCommand, TextCommandResult } from "./text_commands/text_command_utils";
+import { executeCommand } from "./text_commands/_text_command_utils";
 import { evenify, clamp, find, findDict, remove } from "./extras/math_stuff";
 import { getLinkFromText } from "./extras/text_recognition";
 import { rm } from "fs";

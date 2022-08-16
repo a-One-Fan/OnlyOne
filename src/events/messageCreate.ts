@@ -1,10 +1,10 @@
 import { countOnes } from "../extras/text_recognition";
-import { UNIGNORE_SELF, UNIGNORE_CHANNEL } from "../text_commands/commands";
+import { UNIGNORE_SELF, UNIGNORE_CHANNEL, TextCommandResult } from "../text_commands/_commands";
 import { ownerId, ignoredChannelsFilepath } from "../config.json";
 import { reactChoose } from "../configurables/message_reacts.js";
-import { executeCommand, TextCommandResult } from "../text_commands/text_command_utils.js";
+import { executeCommand } from "../text_commands/_text_command_utils.js";
 import { find, remove } from "../extras/math_stuff";
-import { rm, statSync, readFileSync, writeFileSync } from "fs";
+import { statSync, readFileSync, writeFileSync } from "fs";
 import { cleanup } from "../extras/file_stuff";
 
 let ignoredChannelsModified = new Date();
