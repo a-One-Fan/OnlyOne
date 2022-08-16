@@ -9,20 +9,30 @@ function gett(ref: Date) {
 	return ((new Date()).getTime() - ref.getTime()) / 1000.0;
 }
 
+function makeuuid() {
+	return Math.random().toString(36).substring(2, 7) + Math.random().toString(36).substring(2, 7);
+}
+
+const TMPDIR = "./tmp/";
+const BLEND_TO_TMPDIR = "//../tmp/"
+const BLENDSDIR = "./blends"
+
 async function renderMonkeys(link: string, doLog = true): Promise<TextCommandResult> {
 	if (doLog) console.log("Working on monkeys...");
 
-	const uuid = Math.random().toString(36).substring(2, 7) + Math.random().toString(36).substring(2, 7);
-	mkdirSync(`./tmp/${uuid}`);
+	const uuid = makeuuid();
+	const dir = TMPDIR + uuid;
+	const dir_blend = BLEND_TO_TMPDIR + uuid;
+	mkdirSync(dir);
 
 	let time = new Date();
-	const [ impath, extension ] = await downloadImage(link, `./tmp/${uuid}/monkeyDownload`);
+	const [ impath, extension ] = await downloadImage(link, `${dir}/monkeyDownload`);
 	if (doLog) {
 		console.log(`Monkeys took ${gett(time)}s to download input.`);
 		time = new Date();
 	}
 
-	await doFfmpeg(["-i", impath + "." + extension, "-frames:v", "1", "-y", `./tmp/${uuid}/monkeyStuff.png`]);
+	await doFfmpeg(["-i", impath + "." + extension, "-frames:v", "1", "-y", `${dir}/monkeyStuff.png`]);
 	if (doLog) {
 		console.log(`Monkeys took ${gett(time)}s to convert input.`);
 		time = new Date();
@@ -31,33 +41,35 @@ async function renderMonkeys(link: string, doLog = true): Promise<TextCommandRes
 	const pythonics =
 `
 import bpy
-bpy.data.images["monkeyStuff.png"].filepath = "//../tmp/${uuid}/monkeyStuff.png"
+bpy.data.images["monkeyStuff.png"].filepath = "${dir_blend}/monkeyStuff.png"
 `;
-	await renderBlend("./extras/monkeys.blend", ["-o", `//../tmp/${uuid}/monkeyPic####`, "-f", "0"], pythonics);
+	await renderBlend(`${BLENDSDIR}/monkeys.blend`, ["-o", `${dir_blend}/monkeyPic####`, "-f", "0"], pythonics);
 	if (doLog) {
 		console.log(`Monkeys took ${gett(time)}s to render.`);
 		time = new Date();
 	}
 
-	const _file = new MessageAttachment(`./tmp/${uuid}/monkeyPic0000.png`);
-	return { files: [_file], cleanup: [`./tmp/${uuid}`] };
+	const _file = new MessageAttachment(`${dir}/monkeyPic0000.png`);
+	return { files: [_file], cleanup: [`${dir}`] };
 }
 
 
 async function renderBarrel(link: string, doLog = true): Promise<TextCommandResult> {
-	const uuid = Math.random().toString(36).substring(2, 7) + Math.random().toString(36).substring(2, 7);
-	mkdirSync(`./tmp/${uuid}`);
+	const uuid = makeuuid();
+	const dir = TMPDIR + uuid;
+	const dir_blend = BLEND_TO_TMPDIR + uuid;
+	mkdirSync(dir);
 
 	if (doLog) console.log("Working on barrel...");
 	let time = new Date();
 
-	const [ impath, extension ] = await downloadImage(link, `./tmp/${uuid}/barrelDownload`);
+	const [ impath, extension ] = await downloadImage(link, `${dir}/barrelDownload`);
 	if (doLog) {
 		console.log(`Barrel took ${gett(time)}s to download input.`);
 		time = new Date();
 	}
 
-	await toGoodVideo(impath + "." + extension, 25, `${uuid}/barrelPicture`, 2.5);
+	await toGoodVideo(impath + "." + extension, 25, `${dir}/barrelPicture`, 2.5);
 	if (doLog) {
 		console.log(`Barrel took ${gett(time)}s to convert input to video.`);
 		time = new Date();
@@ -66,19 +78,19 @@ async function renderBarrel(link: string, doLog = true): Promise<TextCommandResu
 	const pythonics =
 `
 import bpy
-bpy.data.images["barrelPicture"].filepath = "//../tmp/${uuid}/barrelPicture.mkv"
+bpy.data.images["barrelPicture"].filepath = "${dir_blend}/barrelPicture.mkv"
 `;
-	await renderBlend("./extras/barrel.blend", ["-o", `//../tmp/${uuid}/barrelResult.mkv`, "-a"], pythonics);
+	await renderBlend(`${BLENDSDIR}/barrel.blend`, ["-o", `${dir_blend}/barrelResult.mkv`, "-a"], pythonics);
 	if (doLog) {
 		console.log(`Barrel took ${gett(time)}s to render.`);
 		time = new Date();
 	}
 
-	await doFfmpeg(["-i", `./tmp/${uuid}/barrelResult.mkv`, "-lavfi", "[0:v]palettegen[pal]; [0:v][pal]paletteuse", "-y", `./tmp/${uuid}/barrelRoll.gif`]);
+	await doFfmpeg(["-i", `${dir}/barrelResult.mkv`, "-lavfi", "[0:v]palettegen[pal]; [0:v][pal]paletteuse", "-y", `${dir}/barrelRoll.gif`]);
 	if (doLog) console.log(`Barrel took ${gett(time)}s to convert output to gif.`);
 
-	const _file = new MessageAttachment(`./tmp/${uuid}/barrelRoll.gif`);
-	return { files: [_file], cleanup: [`./tmp/${uuid}`] };
+	const _file = new MessageAttachment(`${dir}/barrelRoll.gif`);
+	return { files: [_file], cleanup: [dir] };
 }
 
 export interface SnapParams {
@@ -88,14 +100,17 @@ export interface SnapParams {
 	size?: number,
 	color?: string
 }
-async function renderSnap(link: string, renderParams: SnapParams, messageToReply: any | undefined = undefined, replyPayload = { content: "Working on snap..." }, doLog = true) {
-	const uuid = Math.random().toString(36).substring(2, 7) + Math.random().toString(36).substring(2, 7);
-	mkdirSync(`./tmp/${uuid}`);
+async function renderSnap(link: string, renderParams: SnapParams, messageToReply: any | undefined = undefined, 
+	replyPayload = { content: "Working on snap..." }, doLog = true): Promise<TextCommandResult> {
+	const uuid = makeuuid();
+	const dir = TMPDIR + uuid;
+	const dir_blend = BLEND_TO_TMPDIR + uuid;
+	mkdirSync(dir);
 
 	if (doLog) console.log("Working on snap...");
 	let time = new Date();
 
-	const [ impath, extension ] = await downloadImage(link, `./tmp/${uuid}/snapDownload`);
+	const [ impath, extension ] = await downloadImage(link, `${dir}/snapDownload`);
 	if (doLog) {
 		console.log(`Snap took ${gett(time)}s to download input.`);
 		time = new Date();
@@ -103,7 +118,7 @@ async function renderSnap(link: string, renderParams: SnapParams, messageToReply
 
 	let resolution = await getResolution(impath + "." + extension);
 	resolution = evenify(resolution);
-	await toGoodVideo(impath + "." + extension, 30, `${uuid}/snapvid`, 7, resolution[0], resolution[1]);
+	await toGoodVideo(impath + "." + extension, 30, `${dir}/snapvid`, 7, resolution[0], resolution[1]);
 	if (doLog) {
 		console.log(`Snap took ${gett(time)}s to convert input.`);
 		time = new Date();
@@ -137,7 +152,7 @@ async function renderSnap(link: string, renderParams: SnapParams, messageToReply
 
 	const pythonics = `
 import bpy
-bpy.data.images["snapvid"].filepath = "//../tmp/${uuid}/snapvid.mkv"
+bpy.data.images["snapvid"].filepath = "${dir_blend}/snapvid.mkv"
 bpy.data.scenes["Scene"].render.resolution_x = ${newHeight}
 bpy.data.scenes["Scene"].render.resolution_y = ${newWidth}
 bpy.data.node_groups["Tile fadeout"].nodes["Rotation input"].outputs[0].default_value = ${angle}
@@ -154,20 +169,20 @@ return pow((((c / 255.0) + 0.055)/1.055), 2.4)
 (r, g, b) = map(tolin, bytes.fromhex("${color}"))
 bpy.data.materials["Plane background"].node_tree.nodes["Emission"].inputs[0].default_value = (r, g, b, 1)
 `;
-	await renderBlend("extras/snapped.blend", ["-o", `//../tmp/${uuid}/snaprender.mp4`, "-a"], pythonics);
+	await renderBlend(`${BLENDSDIR}/snapped.blend`, ["-o", `${dir_blend}/snaprender.mp4`, "-a"], pythonics);
 	if (doLog) {
 		console.log(`Snap took ${gett(time)}s to render.`);
 		time = new Date();
 	}
 
-	await doFfmpeg(["-i", `./tmp/${uuid}/snaprender.mp4`, "-i", `./tmp/${uuid}/snapvid.mkv`, "-map", "0:v", "-map", "1:a?", "-af", "afade=t=out:st=4:d=3.5", "-y", `./tmp/${uuid}/snapped.mp4`]);
+	await doFfmpeg(["-i", `${dir}/snaprender.mp4`, "-i", `${dir}/snapvid.mkv`, "-map", "0:v", "-map", "1:a?", "-af", "afade=t=out:st=4:d=3.5", "-y", `${dir}/snapped.mp4`]);
 	if (doLog) {
 		console.log(`Snap took ${gett(time)}s to merge audio.`);
 		time = new Date();
 	}
 
-	const _file = new MessageAttachment(`./tmp/${uuid}/snapped.mp4`);
-	return { files: [_file], cleanup: `./tmp/${uuid}` };
+	const _file = new MessageAttachment(`${dir}/snapped.mp4`);
+	return { files: [_file], cleanup: [`${dir}`] };
 }
 
 const WELCOME_SCENES = ["toaruWelcome", "toaruWelcome2", "toaruWelcome3", "utahimeWelcome", "utahimeWelcome2"];
@@ -176,14 +191,16 @@ export interface WelcomeParams {
 	hideText?: boolean,
 	scene?: string
 }
-async function renderWelcome(link: string, renderParams: WelcomeParams, doLog = true) {
-	const uuid = Math.random().toString(36).substring(2, 7) + Math.random().toString(36).substring(2, 7);
-	mkdirSync(`./tmp/${uuid}`);
+async function renderWelcome(link: string, renderParams: WelcomeParams, doLog = true): Promise<TextCommandResult> {
+	const uuid = makeuuid();
+	const dir = TMPDIR + uuid;
+	const dir_blend = BLEND_TO_TMPDIR + uuid;
+	mkdirSync(dir);
 
 	if (doLog) console.log("Welcoming new user...");
 	let time = new Date();
 
-	const [ , extension ] = await downloadImage(link, `./tmp/${uuid}/welcomeDownload`);
+	const [ , extension ] = await downloadImage(link, `${dir}/welcomeDownload`);
 	if (doLog) {
 		console.log(`Welcome took ${gett(time)}s to download input.`);
 		time = new Date();
@@ -198,7 +215,7 @@ async function renderWelcome(link: string, renderParams: WelcomeParams, doLog = 
 	const python =
 `
 import bpy
-bpy.data.images["PFP"].filepath = "//../tmp/${uuid}/welcomeDownload.${extension}"
+bpy.data.images["PFP"].filepath = "${dir_blend}/welcomeDownload.${extension}"
 bpy.data.curves["UserMention"].body = "${userMention}"
 if ${hideText ? "True" : "False"}:
 for c in bpy.data.collections:
@@ -208,15 +225,15 @@ for c in bpy.data.collections:
 	if (!renderParams.scene || (find(WELCOME_SCENES, renderParams.scene) < 0)) {
 		renderParams.scene = pickRandom(WELCOME_SCENES);
 	}
-	await renderBlend("./extras/welcome.blend", ["-S", renderParams.scene as unknown as string, "-o", `//../tmp/${uuid}/welcomeResult####`, "-f", "0"], python);
+	await renderBlend(`${BLENDSDIR}/welcome.blend`, ["-S", renderParams.scene as unknown as string, "-o", `${dir_blend}/welcomeResult####`, "-f", "0"], python);
 	if (doLog) {
 		console.log(`Welcome took ${gett(time)}s to render.`);
 		time = new Date();
 	}
 
-	const _file = new MessageAttachment(`./tmp/${uuid}/welcomeResult0000.png`);
+	const _file = new MessageAttachment(`${dir}/welcomeResult0000.png`);
 
-	return { files: [_file], cleanup: `./tmp/${uuid}` };
+	return { files: [_file], cleanup: [`${dir}`] };
 }
 
 

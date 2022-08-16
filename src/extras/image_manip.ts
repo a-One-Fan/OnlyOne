@@ -38,7 +38,7 @@ async function toGoodVideo(file: string, fps: number, outname: string, length: n
 	} else {
 		lavfi = `[0:v]scale=${resolution_x}:${resolution_y}[scaled], [scaled]fps=fps=${fps}`;
 	}
-	const args = ["-stream_loop", "-1", "-i", file, "-lavfi", lavfi, "-t", `${length}`, "-c:v", "ffv1", "-y", "./tmp/" + outname + ".mkv"];
+	const args = ["-stream_loop", "-1", "-i", file, "-lavfi", lavfi, "-t", `${length}`, "-c:v", "ffv1", "-y", outname + ".mkv"];
 	await doFfmpeg(args);
 }
 function getResolution(filepath: string): Promise<[number, number]> {
