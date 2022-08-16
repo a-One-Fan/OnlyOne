@@ -8,6 +8,7 @@ export class TextCommandResult{
 	emotes?: string[] = [];
 	embeds?: any[] = [];
 	cleanup?: string[] = [];
+	abortReact?: boolean;
 }
 
 function findCommand(text: string): [any, RegExpExecArray, (RegExpExecArray|null)[], TextCommand ] | undefined {

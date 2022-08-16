@@ -58,4 +58,14 @@ class CachedJson {
     }
 }
 
-export { CachedJson };
+function cleanup(dirs: string[] | undefined){
+    if(!dirs) {
+        return;
+    }
+    let dir: string;
+    for (dir of dirs) {
+        fs.rm(dir, { recursive: true, force: true }, (err) => { if (err) console.log("Got error while deleting:", err); });
+    }
+}
+
+export { CachedJson, cleanup };

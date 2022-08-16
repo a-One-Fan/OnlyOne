@@ -2,6 +2,7 @@ import { executeCommand, TextCommandResult } from "./text_commands/text_command_
 import { evenify, clamp, find, findDict, remove } from "./extras/math_stuff";
 import { getLinkFromText } from "./extras/text_recognition";
 import { rm } from "fs";
+import { cleanup } from "./extras/file_stuff";
 
 // Some long string of stuff that you won't manually write.
 // If a test has this string in its out for one of its attributes, then it will consider as valid anything in that attribute.
@@ -282,7 +283,9 @@ async function doTests() {
 
 	console.log("\n");
 
-	for (const test of results) if (test.result && test.result.cleanup) rm(test.result.cleanup, { recursive: true, force: true }, (err) => { if (err) console.log("Got error while deleting:", err); });
+	for (const test of results) if (test.result && test.result.cleanup) {
+		cleanup(test.result.cleanup)
+	}
 
 	if (!unsuccessful) {
 		// "\x1b[32m" is green

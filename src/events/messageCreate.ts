@@ -2,9 +2,10 @@ import { countOnes } from "../extras/text_recognition";
 import { UNIGNORE_SELF, UNIGNORE_CHANNEL } from "../text_commands/commands";
 import { ownerId, ignoredChannelsFilepath } from "../config.json";
 import { reactChoose } from "../configurables/message_reacts.js";
-import { executeCommand } from "../text_commands/text_command_utils.js";
+import { executeCommand, TextCommandResult } from "../text_commands/text_command_utils.js";
 import { find, remove } from "../extras/math_stuff";
 import { rm, statSync, readFileSync, writeFileSync } from "fs";
+import { cleanup } from "../extras/file_stuff";
 
 let ignoredChannelsModified = new Date();
 let ignoredChannels: {channels: string[]} = {channels: []};
@@ -70,7 +71,7 @@ async function execute(message: any) {
 	message.client.db.update({ upperOne: row.upperOne + oneCount[1], lowerOne: row.lowerOne + oneCount[2], digitOne: row.digitOne + oneCount[3] }, { where: { userID: message.author.id } });
 	let emotes = reactChoose(message, row, oneCount);
 
-	let commandRes = null;
+	let commandRes: TextCommandResult | undefined;
 	if (!firstCommand) commandRes = await executeCommand(message);
 
 	if (commandRes && commandRes.emotes) emotes = emotes.concat(commandRes.emotes);
@@ -88,12 +89,14 @@ async function execute(message: any) {
 	let _files = [];
 	if (commandRes && commandRes.files) _files = commandRes.files;
 
-	if (textContent != "" || _files != "") {
-		if (_files != "") await message.reply({ content: textContent, allowedMentions: { repliedUser: false }, files: _files });
+	if (typeof textContent != "undefined" || typeof _files != "undefined") {
+		if (typeof _files != "undefined") await message.reply({ content: textContent, allowedMentions: { repliedUser: false }, files: _files });
 		else await message.reply({ content: textContent, allowedMentions: { repliedUser: false } });
 	}
 
-	if (commandRes && commandRes.cleanup) rm(commandRes.cleanup, { recursive: true, force: true }, (err) => { if (err) console.log("Got error while deleting:", err); });
+	if (commandRes) {
+		cleanup(commandRes.cleanup);
+	}
 }
 
 export { name, execute };

@@ -2,6 +2,7 @@ import { userJoinChannelsFilepath } from "../config.json";
 import { renderWelcome } from "../extras/render_stuff";
 import { pickRandom } from "../extras/math_stuff";
 import { rm, readFileSync } from "fs";
+import { cleanup } from "../extras/file_stuff";
 
 const name = "guildMemberAdd";
 
@@ -27,7 +28,7 @@ async function execute(member: any) {
 	const text = `Welcome to the ${pickRandom(["not-Toaru", "not-quite-Utahime", "One", "not-Railgun", "not-Raildex", "OnlyOne"])} server, <@${member.id}>!`;
 	await channel.send({ content: text, files: renderResult.files });
 
-	rm(renderResult.cleanup, { recursive: true, force: true }, (err) => { if (err) console.log("Got error while deleting:", err); });
+	cleanup(renderResult.cleanup);
 }
 
 export { name, execute };
