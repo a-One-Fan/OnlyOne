@@ -1,6 +1,10 @@
 import https from "https";
 import { exchangerateApiKey, baseCurrency, currencyUpdateInterval } from "../config.json";
-import fs from "fs";
+import { CachedJson } from "./file_stuff";
+
+const CURRENCIES_PATH = "../../database/currencies.json"
+
+const currenciesCache= new CachedJson(CURRENCIES_PATH);
 
 async function forceUpdateCurrencies() {
 	let res: string = "";
@@ -15,18 +19,18 @@ async function forceUpdateCurrencies() {
 	});
 
 	const jsonedRes = JSON.parse(res);
-	const currencyData = require("./currencies.json");
 
 	if (jsonedRes.result != "success") throw Error(`Failed to get currencies: ${jsonedRes.result}`);
 
+	const currencyData = currenciesCache.JSON;
 	currencyData.currencies = jsonedRes.conversion_rates;
 	currencyData.lastUpdated = (new Date(jsonedRes.time_last_update_unix * 1000)).toJSON();
 
-	fs.writeFileSync("./extras/currencies.json", JSON.stringify(currencyData, null, 2));
+	currenciesCache.write(currencyData);
+	currenciesCache.reload();
 }
 function updateCurrencies() {
-	delete require.cache[require.resolve("./currencies.json")];
-	const { lastUpdated } = require("./currencies.json");
+	const { lastUpdated } = currenciesCache.JSON;
 	const now = new Date();
 	const lastUpdatedDate = new Date(lastUpdated);
 	const diff = now.getTime() - lastUpdatedDate.getTime();
@@ -35,4 +39,4 @@ function updateCurrencies() {
 	return 0;
 }
 
-export { updateCurrencies };
+export { updateCurrencies, CURRENCIES_PATH };

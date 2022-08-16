@@ -1,3 +1,9 @@
+import { CachedJson } from "./file_stuff";
+import { CURRENCIES_PATH } from "./currency";
+import { currencySynonyms } from "./currencySynonyms.json";
+
+const retypedSynonyms = currencySynonyms as unknown as {[val: string]: string[]};
+
 const chunkTypes = {
 	number: 0,
 	operator: 1,
@@ -327,6 +333,8 @@ function makeOp2Arg(op: opType) {
 		return val1;
 	};
 }
+
+const currenciesCache = new CachedJson(CURRENCIES_PATH);
 function translateChunk(chunk: string): MathExpressionChunk {
 	const numRegex = /^-?(?:(?:\d*\.\d*)|\d+)$/.exec(chunk);
 	if (numRegex) {
@@ -349,12 +357,13 @@ function translateChunk(chunk: string): MathExpressionChunk {
 		if (chunk == "(") return { chunkType: chunkTypes.openingBracket };
 		if (chunk == ")") return { chunkType: chunkTypes.closingBracket };
 		try {
-			const { currencies } = require("./currencies.json");
-			const { currencySynonyms } = require("./currencySynonyms.json");
+			currenciesCache.reload();
+			const { currencies } = currenciesCache.JSON;
 			for (const cur in currencies) {
-				if (chunk.toUpperCase() == cur || (find(currencySynonyms[cur], chunk) > -1)) {
+				// !! 3 bugs found, 20+ times I've had to tell typescript off because it fails at basic things!
+				if (chunk.toUpperCase() == cur || (find(retypedSynonyms[cur], chunk) > -1)) {
 					let _names = [cur];
-					if (currencySynonyms[cur]) _names = _names.concat(currencySynonyms[cur]);
+					if (retypedSynonyms[cur]) _names = _names.concat(retypedSynonyms[cur]);
 					return { chunkType: chunkTypes.operator, args: 1, op: (val: MathExpressionChunk) => {
 						return convertUnit(val, { value: 1.0 / currencies[cur], type: "currency", names: _names });
 					}, righty: true };
