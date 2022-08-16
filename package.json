@@ -1,6 +1,6 @@
 {
-  "name": "one-pisscorp-bot",
-  "version": "1.0.0",
+  "name": "only-one-discord-bot",
+  "version": "2.0.0",
   "description": "A Discord bot that counts when people mention Lady One, and some other One-related things.",
   "main": "./ts_transpile/index.js",
   "scripts": {
