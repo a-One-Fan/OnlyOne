@@ -28,7 +28,7 @@ async function renderMonkeys(link: string, doLog = true): Promise<TextCommandRes
 	let time = new Date();
 	const [ impath, extension ] = await downloadImage(link, `${dir}/monkeyDownload`);
 	if (doLog) {
-		console.log(`Monkeys took ${gett(time)}s to download input.`);
+		console.log(`Monkeys took ${gett(time)}s to download input (${link} -> ${impath}.${extension}).`);
 		time = new Date();
 	}
 
@@ -65,7 +65,7 @@ async function renderBarrel(link: string, doLog = true): Promise<TextCommandResu
 
 	const [ impath, extension ] = await downloadImage(link, `${dir}/barrelDownload`);
 	if (doLog) {
-		console.log(`Barrel took ${gett(time)}s to download input.`);
+		console.log(`Barrel took ${gett(time)}s to download input (${link} -> ${impath}.${extension}).`);
 		time = new Date();
 	}
 
@@ -112,7 +112,7 @@ async function renderSnap(link: string, renderParams: SnapParams, messageToReply
 
 	const [ impath, extension ] = await downloadImage(link, `${dir}/snapDownload`);
 	if (doLog) {
-		console.log(`Snap took ${gett(time)}s to download input.`);
+		console.log(`Snap took ${gett(time)}s to download input (${link} -> ${impath}.${extension}).`);
 		time = new Date();
 	}
 
@@ -200,9 +200,9 @@ async function renderWelcome(link: string, renderParams: WelcomeParams, doLog = 
 	if (doLog) console.log("Welcoming new user...");
 	let time = new Date();
 
-	const [ , extension ] = await downloadImage(link, `${dir}/welcomeDownload`);
+	const [impath , extension ] = await downloadImage(link, `${dir}/welcomeDownload`);
 	if (doLog) {
-		console.log(`Welcome took ${gett(time)}s to download input.`);
+		console.log(`Welcome took ${gett(time)}s to download input (${link} -> ${impath}.${extension})`);
 		time = new Date();
 	}
 
@@ -211,16 +211,15 @@ async function renderWelcome(link: string, renderParams: WelcomeParams, doLog = 
 
 	let hideText = false;
 	if (renderParams.hideText) hideText = true;
-
 	const python =
 `
 import bpy
 bpy.data.images["PFP"].filepath = "${dir_blend}/welcomeDownload.${extension}"
 bpy.data.curves["UserMention"].body = "${userMention}"
 if ${hideText ? "True" : "False"}:
-for c in bpy.data.collections:
-	if "text" in c.name:
-		c.hide_render = True
+	for c in bpy.data.collections:
+		if "text" in c.name:
+			c.hide_render = True
 `;
 	if (!renderParams.scene || (find(WELCOME_SCENES, renderParams.scene) < 0)) {
 		renderParams.scene = pickRandom(WELCOME_SCENES);
