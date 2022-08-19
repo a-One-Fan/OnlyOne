@@ -11,6 +11,14 @@ function renderBlend(filepath: string, args: string[], pythonics = "pass") {
 			if (error) {
 				reject(`Error when rendering!\nError:\n${error}\nstdout:\n${stdout}\nstderr:\n${stderr}`);
 			}
+			if (stdout) {
+				const split = stdout.split(/\s*\n\r?\n?/);
+				const filterfunc = (str: string) => {
+					return str != "" && !(str.startsWith("Fra:")) && !(str.startsWith("Append")) && !(str.startsWith(" Time"));
+				};
+				const culled = split.filter(filterfunc).join("\n")
+				if (culled != "") console.log(culled);
+			}
 		});
 		cp.on("error", (err) => reject(err))
 			.once("close", (code) => resolve(code));
