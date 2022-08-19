@@ -174,7 +174,7 @@ const commands = [
     }),
 
     new TextCommand({name: "renderWelcome", help: "Welcome using utahimeWelcome2 and text '@Lovely Bot' @OnlyOne", description: "I'll make a welcome picture for the specified person(/image) with the specified scene (or a random scene) and text.",
-        regex: /welcome\s+(?:using\s+([a-zA-Z0-9]+)\s+)?(?:(?:and\s+)?(?:text\s+)?'([^']+)'\s+|(?:and\s+)?(without\s+text))?(.*)/i,
+        regex: /welcome\s+(?:using\s+([a-zA-Z0-9]+)\s+)?(?:(?:and\s+)?(?:(?:with|using)\s+)?(?:text\s+)?'([^']+)'\s+|(?:and\s+)?(without\s+text))?(.*)/i,
         execute: renderWelcome.execute
     }),
 
