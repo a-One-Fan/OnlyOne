@@ -73,9 +73,10 @@ const auto_tests = [
 	{ in: "One, calculate 1 m to cm", out: { text: "100 centimetres." } },
 
 	{ category: "Renders" },
-	{ in: "One, snap this: https://i.imgur.com/J4bT846.png", out: { text: ANY, files: ANY, cleanup: OPTIONAL } },
-	{ in: "One, test render this: https://i.imgur.com/J4bT846.png", out: { text: "Here's your render.", files: ANY, cleanup: OPTIONAL } },
-	{ in: "One, barrel roll https://i.imgur.com/J4bT846.png", out: { text: "Rolling...", files: ANY, cleanup: OPTIONAL } },
+	{ in: "One, snap this: https://i.imgur.com/J4bT846.png", out: { text: ANY, files: ANY, cleanup: ANY } },
+	{ in: "One, test render this: https://i.imgur.com/J4bT846.png", out: { text: "Here's your render.", files: ANY, cleanup: ANY } },
+	{ in: "One, barrel roll https://i.imgur.com/J4bT846.png", out: { text: "Rolling...", files: ANY, cleanup: ANY } },
+	{ in: "One, welcome with text 'Test render' https://i.imgur.com/J4bT846.png", out: { text: "Here's your customized welcome(-ish?) image.", files: ANY, cleanup: ANY} },
 
 	{ category: "Image Macros" },
 	{ in: "One, hello!", out: { text: "https://imgur.com/J4bT846.png" } },
