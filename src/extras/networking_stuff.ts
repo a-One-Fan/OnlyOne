@@ -46,7 +46,8 @@ function downloadImage(url: string, filepath = downloadFilepath): Promise<[strin
 			return reject(new Error("Bad URL: " + url));
 		}
 		const extensionlessPath = filepath;
-		const extRegexRes = /\.([a-zA-Z0-9]{1,9})$/.exec(url);
+		// TODO: get and set extension based on what the file actually is?
+		const extRegexRes = /\.([a-zA-Z0-9]{1,9})(?:[\?#].*)$/.exec(url);
 		let ext = ""
 		if(extRegexRes) ext = extRegexRes[1];
 		filepath = filepath + "." + ext;
