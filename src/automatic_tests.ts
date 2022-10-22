@@ -76,7 +76,7 @@ const auto_tests = [
 	{ in: "One, snap this: https://i.imgur.com/J4bT846.png", out: { text: ANY, files: ANY, cleanup: ANY } },
 	{ in: "One, test render this: https://i.imgur.com/J4bT846.png", out: { text: "Here's your render.", files: ANY, cleanup: ANY } },
 	{ in: "One, barrel roll https://i.imgur.com/J4bT846.png", out: { text: "Rolling...", files: ANY, cleanup: ANY } },
-	{ in: "One, welcome with text 'Test render' https://i.imgur.com/J4bT846.png", out: { text: "Here's your customized welcome(-ish?) image.", files: ANY, cleanup: ANY} },
+	{ in: "One, welcome using utahimeWelcome with text 'Test render' https://i.imgur.com/J4bT846.png", out: { text: "Here's your customized welcome(-ish?) image.", files: ANY, cleanup: ANY} },
 
 	{ category: "Image Macros" },
 	{ in: "One, hello!", out: { text: "https://imgur.com/J4bT846.png" } },
