@@ -12,3 +12,4 @@ ts_transpile/**
 database/**
 backup/**
 tmp/**
+src/OnlyOne.code-workspace
