@@ -45,22 +45,46 @@ function downloadImage(url: string, filepath = downloadFilepath): Promise<[strin
 		if (!regexResult) {
 			return reject(new Error("Bad URL: " + url));
 		}
-		const extensionlessPath = filepath;
-		// TODO: get and set extension based on what the file actually is?
-		const extRegexRes = /\.([a-zA-Z0-9]{1,9})(?:[\?#].*)?$/.exec(url);
-		let ext = ""
-		if(extRegexRes) ext = extRegexRes[1];
-		filepath = filepath + "." + ext;
-		https.get(url, (msg) => {
-			if (msg.statusCode === 200) {
-				msg.pipe(fs.createWriteStream(filepath))
+		function getRedirected(redir_url: string) {
+			https.get(redir_url, (msg) => {
+				if (msg.statusCode == 200) {
+					if (msg.headers["content-type"]?.startsWith("text")) {
+						let page_text = ""
+						msg.on("data", (d) => {
+							page_text += d;
+						})
+							.once("close", () => {
+								let redir_meta_tag = /<meta[^>]+property="og:image"[^>]*content="([^"]+)">/.exec(page_text);
+								if (redir_meta_tag && redir_meta_tag[1]) {
+									getRedirected(redir_meta_tag[1]);
+								} else {
+									reject(new Error(`Text webpage has no proper meta tag for embed @ ${redir_url}`));
+								}
+							});
+						return;
+					}
+
+					const extensionlessPath = filepath;
+					// TODO: get and set extension based on what the file actually is?
+					const extRegexRes = /\.([a-zA-Z0-9]{1,9})(?:[\?#].*)?$/.exec(url);
+					let ext = "";
+					if(extRegexRes) ext = extRegexRes[1];
+					if(ext == "") ext = "a";
+					filepath = filepath + "." + ext;
+
+					msg.pipe(fs.createWriteStream(filepath))
 					.on("error", reject)
 					.once("close", () => resolve([extensionlessPath, ext]));
-			} else {
-				msg.resume();
-				reject(new Error(`Request failed with status code: ${msg.statusCode}`));
-			}
-		});
+				} else {
+					if((msg.statusCode == 301 || msg.statusCode == 302) && msg.headers.location) {
+						getRedirected(msg.headers.location);
+						return;
+					}
+					reject(new Error(`Request failed with status code: ${msg.statusCode}`));
+				}
+			});
+		}
+		getRedirected(url);
 	});
 }
 
