@@ -140,7 +140,7 @@ const units = [
 	new Unit({ value: 0.001, type: "weight", subtype: "metric weight", names: ["g", "gram", "grams"] }),
 	new Unit({ value: 1, type: "weight", subtype: "metric weight", names: ["kg", "kilogram", "kilograms", "kilos"] }),
 	new Unit({ value: 1000, type: "weight", subtype: "metric weight", names: ["t", "ton", "tons"] }),
-	new Unit({ value: 2.204623, type: "weight", subtype: "imperial weight", names: ["lb", "pounds"] }),
+	new Unit({ value: 0.4535924, type: "weight", subtype: "imperial weight", names: ["lb", "pounds"] }),
 
 	new Unit({ value: 0.001, type: "distance", subtype: "metric distance", names: ["mm", "milimetre", "mmilimeter", "milimeters", "milimetres"] }),
 	new Unit({ value: 0.01, type: "distance", subtype: "metric distance", names: ["cm", "centimetre", "centimeter", "centimeters", "centimetres"] }),
