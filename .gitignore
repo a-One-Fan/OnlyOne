@@ -13,3 +13,4 @@ database/**
 backup/**
 tmp/**
 src/OnlyOne.code-workspace
+*.code-workspace
