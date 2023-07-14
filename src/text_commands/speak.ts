@@ -19,9 +19,9 @@ async function execute(message: any, regexResults: RegExpExecArray, extraRegex?:
 
 	var lowerVoice = regexResults[1];
 	if (lowerVoice == null) {
-		lowerVoice = "one"
+		lowerVoice = "one";
 	}
-	lowerVoice = lowerVoice.toLowerCase()
+	lowerVoice = lowerVoice.toLowerCase();
 
 	if (find(["one", "misaka"], lowerVoice) < 0) {
 		throw Error("Printable error: I don't recognize that voice.");
@@ -35,7 +35,7 @@ async function execute(message: any, regexResults: RegExpExecArray, extraRegex?:
 
 			sock.once("close", () => {
 				if(Date.now() - start_time < MINWAIT) {
-					reject(Error(`Speakserver closed the socket early.`))
+					reject(Error(`Speakserver closed the socket early.`));
 				} else {
 					resolve(res_filename);
 				}
@@ -67,10 +67,10 @@ async function execute(message: any, regexResults: RegExpExecArray, extraRegex?:
 
 			sock.pipe(fs.createWriteStream(res_filename)
 			.on("error", (e) => {reject(Error(`Could not save generated speech: ${e}`))})
-			)
+			);
 		});
 
-		sock.on("error", (e) => {reject(Error(`Could not connect to speakserver: ${e}`))})
+		sock.on("error", (e) => {reject(Error(`Could not connect to speakserver: ${e}`))});
 
 	})
 
