@@ -62,6 +62,8 @@ async function execute(message: any, regexResults: RegExpExecArray, extraRegex?:
 			const buf_as_buf = new Uint8Array(buf, 0, 2096);
 	
 			sock.write(buf_as_buf);
+			
+			message.reply("Speaking...");
 
 			sock.pipe(fs.createWriteStream(res_filename)
 			.on("error", (e) => {reject(Error(`Could not save generated speech: ${e}`))})
@@ -74,7 +76,7 @@ async function execute(message: any, regexResults: RegExpExecArray, extraRegex?:
 
 	const file = new MessageAttachment(await filename);
 	
-	return { text: "Done.", files: [file], cleanup: [await filename] };
+	return { text: "Here:", files: [file], cleanup: [await filename] };
 }
 
 export { execute };
