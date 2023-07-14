@@ -15,7 +15,9 @@
 	"userJoinChannelsFilepath": "./database/userJoinChannels.json",
 	"exchangerateApiKey": "",
 	"baseCurrency": "USD",
-	"currencyUpdateInterval": 86400000
+	"currencyUpdateInterval": 86400000,
+	"speakServerHost": "localhost",
+	"speakServerPort": 21001
 }
 
 
@@ -86,5 +88,10 @@ Example values:
 	"baseCurrency": "USD",
 
 	// How frequently currencies are allowed to be updated, in miliseconds
-	"currencyUpdateInterval": 86400000 
+	"currencyUpdateInterval": 86400000,
+
+	"speakServerHost": "127.0.0.1",
+
+	// OnlyOne will try to connect to this port, but the speakServer may have a different one. If you're changing this, make sure you changed it for both.
+	"speakServerPort": 6101
 }

@@ -78,6 +78,7 @@ import * as setAuthorAnyEnum from "./setAuthorAnyEnum"
 import * as setAuthorReactChance from "./setAuthorReactChance"
 import * as setAuthorReactEmote from "./setAuthorReactEmote"
 import * as updateCurrencies from "./updateCurrencies"
+import * as speak from "./speak"
 
 const commands = [
     new TextCommand({name: "printAuthor", help: "What are my stats?", description: "I will reply with info about you.",
@@ -182,6 +183,11 @@ const commands = [
         regex: /calculate\s+((?:(?:using|with)\s+|with\s+)?(?:reverse\s+polish(?:\s+notation)|RPN)\s+)?(.+)$/i,
         extraHelp: "Subtraction should have spaces around it! To write a negative number, make the - a part of the number (e.g. -2 and not - 2).\nSupported operators are:\n+ - * / ^ | || & && % mod log sin cos tan cotan\nabs floor ceil fract round (rounds up) ~ (boolean negation, aka not)\nkg g t lb\nm cm dm km mile ft yd in\nrad deg\nc f\ns ms min h day month year decade century\nl ml\nb B kb kB kib kiB and other byte units, up to and including tera\nuntype\nUnit unary operators will assign a kind of unit to your value, and attempt to convert to other kinds you specify.\nIf they're mismatched types, e.g. seconds (time) then celsius (heat), the type will simply be overridden preserving the value.\nKnowing this, use 'untype' to directly change the type of convertible units without converting.",
         execute: calculate.execute
+    }),
+
+    new TextCommand({name: "speak", help:"Say I love One!", description: "I will speak text.",
+        regex: /(?:speak|say)\s+(?:(?:with\s+|using\s+)?(?:voice\s+([a-zA-Z0-9_]{1,16})\s+))?(.*)/i,
+        execute: speak.execute
     }),
 
     new TextCommand({name: "updateCurrencies", help: "Update currency conversion rates.", description: "I will update my currency conversion rates if enough time has passed.",

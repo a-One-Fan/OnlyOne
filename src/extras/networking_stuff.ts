@@ -88,5 +88,19 @@ function downloadImage(url: string, filepath = downloadFilepath): Promise<[strin
 	});
 }
 
+function writeStrIntoBuf(buf: ArrayBuffer, str: string, offs = 0, len = -1) {
+	if(len == -1) {
+		len = str.length + 1;
+	}
+	const u8 = new Uint8Array(buf, offs, len);
+	const lesslen = (len-1) < str.length ? (len-1) : str.length;
+	for(var i = 0; i < lesslen; i++) {
+		u8[i] = str[i].charCodeAt(0);
+	}
+	// Is an ArrayBuffer zeroed at creation? I would expect not, but it looks like it is. Either way, better be safe.
+	for(var i = lesslen; i < len; i++) {
+		u8[i] = 0;
+	}
+}
 
-export { getWebpage, getRedirect, downloadImage};
+export { getWebpage, getRedirect, downloadImage, writeStrIntoBuf};
