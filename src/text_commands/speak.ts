@@ -31,7 +31,7 @@ async function execute(message: any, regexResults: RegExpExecArray, extraRegex?:
 		const sock = createConnection({ host: speakServerHost, port: speakServerPort, timeout: 2.0}, () => {
 			
 			const start_time = Date.now();
-			const res_filename = `./tmp/onespeech_${makeuuid()}.wav`;
+			const res_filename = `./tmp/${lowerVoice}_speech_${makeuuid()}.wav`;
 
 			sock.once("close", () => {
 				if(Date.now() - start_time < MINWAIT) {
@@ -73,6 +73,10 @@ async function execute(message: any, regexResults: RegExpExecArray, extraRegex?:
 		sock.on("error", (e) => {reject(Error(`Could not connect to speakserver: ${e}`))});
 
 	})
+
+	if(fs.statSync(await filename).size < 64) {
+		throw Error(`Speech file ${filename} is too small`);
+	}
 
 	const file = new MessageAttachment(await filename);
 	
