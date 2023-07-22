@@ -14,6 +14,8 @@ BATCHSIZE = 8
 modelDict = {"one": ["./models/One_350_model.pth", "./models/One_350_latents.pth"], "misaka": ["./models/Misaka_240_model.pth", "./models/Misaka_240_latents.pth"]}
 
 CHILD_ADDR = ("127.0.0.1", 6102)
+CHILD_PY_NAME = "speakserver_child.py"
+CHILD_SH_NAME = "speakserver_child_start.sh"
 
 SOCK_RETRY_TIME = 0.5
 # I don't want to have multiple files, this file will create the other file
@@ -38,7 +40,7 @@ while not success:
     try:
         sock.bind({CHILD_ADDR})
         success = True
-    except:
+    except Exception as e:
         time.sleep({SOCK_RETRY_TIME})
 
 sock.listen()
@@ -73,16 +75,17 @@ while True:
     connected_sock.close()
 """
 
-childstart = """
+childstart = f"""
 #!/bin/bash
 source /opt/intel/oneapi/mkl/latest/env/vars.sh
 source /opt/intel/oneapi/compiler/latest/env/vars.sh
 source ./ai-voice-cloning-oneapi/venv/bin/activate
-python ./speakserver_child.py
+python {CHILD_PY_NAME}
 """
 
 class TTSwrapper:
     modelname = None
+    childps = None
 
     def stopchild(self):
         print("Stopping child...")
@@ -93,18 +96,23 @@ class TTSwrapper:
         time.sleep(0.5) # Is this necessary? Probably a good idea to have this here
         print("Child stopped")
 
+    def killchild(self):
+        print(f"Trying to kill child with pid {self.childps.pid}...")
+        self.childps.kill()
+        print("Child killed.")
+
     def startchild(self, modelname):
         print("Starting child...")
         childcode = gen_child_code(modelDict[modelname][0], modelDict[modelname][1])
-        childfile = open("speakserver_child.py", "w")
+        childfile = open(CHILD_PY_NAME, "w")
         childfile.write(childcode)
         childfile.close()
 
-        childstartfile = open("speakserver_child_start.sh", "w")
+        childstartfile = open(CHILD_SH_NAME, "w")
         childstartfile.write(childstart)
         childstartfile.close()
 
-        subprocess.Popen(["bash", f"{os.getcwd()}/speakserver_child_start.sh"],
+        self.childps = subprocess.Popen(["bash", f"{os.getcwd()}/{CHILD_SH_NAME}"],
                          #stdin=None, stdout=None, stderr=None,
                          )
         
@@ -114,13 +122,13 @@ class TTSwrapper:
             try:
                 sock.connect(CHILD_ADDR)
                 success = True
-            except:
+            except Exception as e:
                 time.sleep(SOCK_RETRY_TIME)
 
         sock.send(b'ping' + bytearray(2096-4), 2096)
         sock.recv(2096)
         sock.close()
-        print("Child started")
+        print(f"Child started with pid {self.childps.pid}")
 
     def query_child(self, query):
         sock = socket.socket()
@@ -138,41 +146,54 @@ class TTSwrapper:
             self.modelname = model
             self.reload(model)
     
-    def __init__(self):
-        self.modelname = 'one'
-        self.startchild('one')
+    def init(self, model = 'one'):
+        self.modelname = model
+        self.startchild(model)
 
-wrapper = TTSwrapper()
+    def __init__(self, do_full_init = True):
+        if do_full_init:
+            self.init()
+        
 
-sock = socket.socket()
-success = False
-while not success:
-    try:
-        sock.bind(ADDR)
-        success = True
-    except:
-        time.sleep(SOCK_RETRY_TIME)
-sock.listen()
+wrapper = TTSwrapper(False)
 
-print("Server listening...")
-while True:
-    connected_sock = sock.accept()[0]
+try:
+    wrapper.init()
+    sock = socket.socket()
+    success = False
+    while not success:
+        try:
+            sock.bind(ADDR)
+            success = True
+        except Exception as e:
+            time.sleep(SOCK_RETRY_TIME)
+    sock.listen()
 
-    msg = connected_sock.recv(4096)
-    # Model, autoregressive samples, diffusion iters, temperature, diffusion temperature, P value, length penalty, repetition penalty, conditioning free k, text
+    print("Server listening...")
+    while True:
+        connected_sock = sock.accept()[0]
 
-    model, samples, iters, temp, diff_temp, p, length_pen, repetition_pen, cond_k, text = struct.unpack("16s2i6f2048s", msg)
-    model = model.decode('ascii').split("\x00")[0]
-    text = text.decode('ascii').split("\x00")[0]
-    print(f"Received request: {(model, samples, iters, temp, diff_temp, p, length_pen, repetition_pen, cond_k, text)}")
+        msg = connected_sock.recv(4096)
+        # Model, autoregressive samples, diffusion iters, temperature, diffusion temperature, P value, length penalty, repetition penalty, conditioning free k, text
 
-    wrapper.maybe_reload(model)
-    wrapper.query_child(msg)
+        model, samples, iters, temp, diff_temp, p, length_pen, repetition_pen, cond_k, text = struct.unpack("16s2i6f2048s", msg)
+        model = model.decode('ascii').split("\x00")[0]
+        text = text.decode('ascii').split("\x00")[0]
+        print(f"Received request: {(model, samples, iters, temp, diff_temp, p, length_pen, repetition_pen, cond_k, text)}")
 
-    file = open("generated_aud.wav", "rb")
-    chunk = True
-    while(chunk):
-        chunk = file.read(4096)
-        connected_sock.send(chunk, 4096)
+        wrapper.maybe_reload(model)
+        wrapper.query_child(msg)
 
-    connected_sock.close()
+        file = open("generated_aud.wav", "rb")
+        chunk = True
+        while(chunk):
+            chunk = file.read(4096)
+            connected_sock.send(chunk, 4096)
+
+        connected_sock.close()
+except Exception as e:
+    print(f"Got exception: {e}")
+    wrapper.killchild()
+    os.remove(CHILD_PY_NAME)
+    os.remove(CHILD_SH_NAME)
+    exit()
