@@ -142,7 +142,7 @@ const commands = [
     }),
 
     new TextCommand({name: "IMHello", help: "'Hello!' or 'Goodbye!'", description: "\\*waving\\*",
-        regex: /(?:wave\s+)?(?:hello|(?:good\s*)?(?:morning|bye|night)(?:\s+to(?:.*))?|see\s+y(?:a|ou)(?:\s+later)?\s*)[,.?!\s]{0,3}\s*$/i,
+        regex: /(?:wave\s+)?(?:h(?:ello|i)|(?:good\s*)?(?:morning|bye|night)(?:\s+to(?:.*))?|see\s+y(?:a|ou)(?:\s+later)?\s*)[,.?!\s]{0,3}\s*$/i,
         execute: IMHello.execute
     }),
     
